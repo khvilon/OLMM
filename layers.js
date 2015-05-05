@@ -16,11 +16,16 @@ OLMM.prototype.createLayers = function ()
 
 
 OLMM.prototype.addPntSelect = function (handleFunction)
-{	var selectSingleClick = new ol.interaction.Select(
-	{		layers: [this.pntsLayer],
-		condition: ol.events.condition.click,	});
-	selectSingleClick.handleEvent = handleFunction;
-
-	this.map.addInteraction(selectSingleClick);}
-
-
+{
+    this.map.on('singleclick', function(evt){
+        var feature = this.forEachFeatureAtPixel(evt.pixel,
+            function(feature, layer) {
+                return feature;
+            });
+        if (feature && feature.get('name') == 'Point') {
+            var id = feature.getId()
+            console.log(feature.get('name'), id)
+            handleFunction(id)
+        }
+    });
+}

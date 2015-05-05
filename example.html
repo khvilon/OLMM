@@ -21,15 +21,16 @@
     <div id="map" class="map"></div>
     <script type="text/javascript">
 
-    sel = function(data){console.log(data);}
+    sel = function(id){console.log(id);}
 
      var olmm = new OLMM();
      olmm.init('map', sel);
 
 	 var pnts = [{lat:55, lon: 35, rot: 331, proj: {lat: 56, lon:35}},
-				{lat:55, lon: 35, rot: 180, proj: {lat: 57, lon:36}}];
+				{lat:57, lon: 35, rot: 180, proj: {lat: 57, lon:36}}];
      olmm.draw_points(pnts);
 	 olmm.show_points(0);
+	 olmm.show_points(1);
     </script>
   </body>
 </html>

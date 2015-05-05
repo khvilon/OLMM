@@ -17,7 +17,8 @@ OLMM.prototype.transform = function (data)
 
 OLMM.prototype.createPntFeature = function(pnt, num)
 {
-	var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords)});
+	var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords),
+                                 name: 'Point'});
 	feature.rot = pnt.rot;
     feature.setId(num);
     return feature;}
