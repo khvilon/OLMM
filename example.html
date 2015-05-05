@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="OpenLayers/css/ol.css" type="text/css">
+    <script src="OpenLayers/build/ol.js" type="text/javascript"></script>
+    <script src="init.js" type="text/javascript"></script>
+    <script src="styles.js" type="text/javascript"></script>
+    <script src="layers.js" type="text/javascript"></script>
+
+    <style>
+      .map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <title>my example</title>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+
+    sel = function(data){console.log(data);}
+
+     var olmm = new OLMM();
+     olmm.init('map', sel);
+
+	 var pnts = [{lat:55, lon: 35, rot: 331, proj: {lat: 56, lon:35}},
+				{lat:55, lon: 35, rot: 180, proj: {lat: 57, lon:36}}];
+     olmm.draw_points(pnts);
+	 olmm.show_points(0);
+    </script>
+  </body>
+</html>
