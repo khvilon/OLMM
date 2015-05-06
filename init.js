@@ -7,10 +7,11 @@ OLMM.prototype.createMap = function (divName) {
            new ol.layer.Tile({
               preload: 4,
               source: new ol.source.OSM()
-            }), this.pntsLayer,
+            }),
                 this.lastProjLayer,
                 this.pointsProjLayer,
                 this.projLayer,
+                this.pntsLayer,
         ],
       });
 }
@@ -26,8 +27,8 @@ OLMM.prototype.createPntFeature = function(pnt, num) {
     return feature;
 }
 
-OLMM.prototype.createProjFeature = function(pnt, num)
-{   var proj_coords = this.transform([pnt.proj.lon, pnt.proj.lat]);
+OLMM.prototype.createProjFeature = function(pnt, num) {
+    var proj_coords = this.transform([pnt.proj.lon, pnt.proj.lat]);
     var line_feature = new ol.Feature({geometry: new ol.geom.LineString([
                 pnt.coords,proj_coords])});
     line_feature.setId(num);
@@ -40,18 +41,26 @@ OLMM.prototype.draw_points = function (data) {
     var line_features = [];
 
     //points and main projections features creation
-    for(var i = 0; i < data.length; i++)
-    {    data[i].coords = this.transform([data[i].lon, data[i].lat]);
+    for(var i = 0; i < data.length; i++) {
+        data[i].coords = this.transform([data[i].lon, data[i].lat]);
 
         features.push(this.createPntFeature(data[i], i));
 
-        if(data[i].proj) line_features.push(this.createProjFeature(data[i], i))}
+        if(data[i].proj) {
+            if (Object.keys(data[i].proj).length == 2) {
+                line_features.push(this.createProjFeature(data[i], i))
+            }
+        }
+    }
     //adding features to map
+    console.log('length', line_features.length)
     this.pntsSource.addFeatures(features);
-    this.projSource.addFeatures(line_features);
+    if (line_features.length > 0) {
+        this.projSource.addFeatures(line_features);
+    }
 
     //centering map to view all points
-    var extent = this.projSource.getExtent();
+    var extent = this.pntsSource.getExtent();
     this.map.getView().fitExtent(extent, this.map.getSize());
 }
 
@@ -123,10 +132,28 @@ OLMM.prototype.show_point_info = function (data) {
 }
 
 
+OLMM.prototype.delete_projs = function () {
+    this.pointsProjSource.clear();
+}
+
+
+OLMM.prototype.set_good_arc = function (data) {
+    var pointId = data.point_num;
+    var proj = data.proj;
+    var point = this.pntsSource.getFeatureById(pointId);
+    var pointCoords = point.getGeometry().getCoordinates();
+    var projCoords = this.transform([proj.lon, proj.lat]);
+    var new_feature = new ol.Feature({
+            geometry: new ol.geom.LineString([
+            pointCoords, projCoords])
+    });
+    this.projSource.setFeatureById(i);
+
+}
+
+
 OLMM.prototype.init = function (divName, selectPntFunction) {
     this.createLayers();
-
     this.createMap(divName);
-
     this.addPntSelect(selectPntFunction);
 }
