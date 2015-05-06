@@ -53,7 +53,6 @@ OLMM.prototype.draw_points = function (data) {
         }
     }
     //adding features to map
-    console.log('length', line_features.length)
     this.pntsSource.addFeatures(features);
     if (line_features.length > 0) {
         this.projSource.addFeatures(line_features);
@@ -68,14 +67,14 @@ OLMM.prototype.draw_points = function (data) {
 OLMM.prototype.show_points = function (last_data) {
     this.lastProjSource.clear()
     var maxInd = last_data.point_num;
-    var features = [];
-    for(var i = 0; i < maxInd; i++) {
+    for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
         var feature = this.pntsSource.getFeatureById(i);
-        feature.visible = true;
+        feature.visible = i < maxInd;
+        console.log(feature.visible)
         feature.changed();
         var line_feature = this.projSource.getFeatureById(i);
         if(line_feature) {
-            line_feature.visible = true;
+            line_feature.visible = i < maxInd;
             line_feature.changed();
         }
     }
@@ -116,7 +115,6 @@ OLMM.prototype.show_point_info = function (data) {
     var pointCoords = point.getGeometry().getCoordinates();
     var projs = data.proj;
     for (var i = 0; i < projs.length; i++) {
-        console.log(i);
         var projCoords = this.transform(
                 [projs[i].lon, projs[i].lat]);
         var line_feature = new ol.Feature({
