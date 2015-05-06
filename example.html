@@ -62,16 +62,26 @@
                                                       "arc_id":"470187"
                                                      }]
                               }
-    var pnts = [{"lat":55.724993,"lon":37.5502,"rot":326},
-    //var pnts = [{"lat":55.724993,"lon":37.5502,"rot":326,"proj":{"lat":55.72499371540099,"lon":37.55020063875089}},
+    var pnts = [{"lat":55.724993,"lon":37.5502,"rot":326,"proj":{"lat":55.72499371540099,"lon":37.55020063875089}},
                 {"lat":55.725266,"lon":37.549904,"rot":329}];
                 //{"lat":55.725266,"lon":37.549904,"rot":329,"proj":{"lat":55.72527009512485,"lon":37.5499079001189}}];
 
+    data_to_set = {"point_num":1,"proj": {
+            "lat":59.72503,
+            "lon":39.55016,
+            "geometry":[{"type":"LineString",
+                "coordinates":[[55.72503,37.55016],
+                [55.72527009512485,37.5499079001189]]}
+            ],
+                "arc_id":"470187"
+    }}
+
     olmm.draw_points(pnts);
-	olmm.show_points(data_to_show_points_0);
-	olmm.show_points(data_to_show_points_1);
+    olmm.show_points(data_to_show_points_0);
+    olmm.show_points(data_to_show_points_1);
     olmm.show_point_info(data_to_show_points_0);
     olmm.delete_projs();
+    olmm.set_good_arc(data_to_set);
 
     </script>
   </body>

@@ -88,19 +88,21 @@ OLMM.prototype.show_points = function (last_data) {
     lastPoint.visible = true;
     lastPoint.changed();
     var pointCoords = lastPoint.getGeometry().getCoordinates();
-    for (var i = 0; i < last_data.proj.length; i++) {
-        var projCoords = this.transform(
-                [last_data.proj[i].lon, last_data.proj[i].lat]);
-        var line_feature = new ol.Feature({
-                geometry: new ol.geom.LineString([
-                pointCoords,projCoords])
-    });
+    if (last_data.proj) {
+        for (var i = 0; i < last_data.proj.length; i++) {
+            var projCoords = this.transform(
+                    [last_data.proj[i].lon, last_data.proj[i].lat]);
+            var line_feature = new ol.Feature({
+                    geometry: new ol.geom.LineString([
+                    pointCoords,projCoords])
+            });
 
-        line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
-        this.lastProjSource.addFeature(line_feature);
-        if (line_feature) {
-            line_feature.visible = true;
-            line_feature.changed();
+            line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
+            this.lastProjSource.addFeature(line_feature);
+            if (line_feature) {
+                line_feature.visible = true;
+                line_feature.changed();
+            }
         }
     }
 }
@@ -147,8 +149,14 @@ OLMM.prototype.set_good_arc = function (data) {
             geometry: new ol.geom.LineString([
             pointCoords, projCoords])
     });
-    this.projSource.setFeatureById(i);
-
+    new_feature.visible = true;
+    new_feature.changed()
+    new_feature.setId(pointId);
+    var old_feature = this.projSource.getFeatureById(pointId);
+    if (old_feature) {
+        this.projSource.removeFeature(old_feature);
+    }
+    this.projSource.addFeature(new_feature);
 }
 
 
