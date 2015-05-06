@@ -19,7 +19,6 @@ OLMM.prototype.stylePntFunction = function(feature, resolution)
 };
 
 
-
 OLMM.prototype.styleProjFunction = function(feature, resolution) {
 
 	if (feature.visible) opacity = 1;
@@ -30,7 +29,7 @@ OLMM.prototype.styleProjFunction = function(feature, resolution) {
     	// linestring
 		new ol.style.Style({
       	stroke: new ol.style.Stroke({
-        	color: [255, 204, 51, opacity],//'#ffcc33',
+        	color: [86, 204, 51, opacity],
         	width: 2
       	})
 		})
@@ -57,7 +56,40 @@ OLMM.prototype.styleProjFunction = function(feature, resolution) {
       		image: new ol.style.Circle({
         		radius: 4,
         		stroke: new ol.style.Stroke({
-		        	color: [255, 204, 51, opacity],
+        	        color: [86, 204, 51, opacity],
+		        	width: 2
+		      	})
+      		})
+    	}));
+	});
+
+	return styles;
+};
+
+
+OLMM.prototype.styleLastProjFunction = function(feature, resolution) {
+
+	if (feature.visible) opacity = 1;
+	else opacity = 0;
+
+  	var geometry = feature.getGeometry();
+  	var styles = [
+    	// linestring
+		new ol.style.Style({
+      	stroke: new ol.style.Stroke({
+        	color: [255, 204, 51, opacity],//'#ffcc33',
+        	width: 2
+      	})
+		})
+  	];
+
+	geometry.forEachSegment(function(start, end) {
+    	styles.push(new ol.style.Style({
+			geometry: new ol.geom.Point(end),
+      		image: new ol.style.Circle({
+        		radius: 4,
+        		stroke: new ol.style.Stroke({
+        	        color: [255, 204, 51, opacity],//'#ffcc33',
 		        	width: 2
 		      	})
       		})

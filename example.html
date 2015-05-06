@@ -23,14 +23,53 @@
 
     sel = function(id){console.log(id);}
 
-     var olmm = new OLMM();
-     olmm.init('map', sel);
+    var olmm = new OLMM();
+    olmm.init('map', sel);
 
-	 var pnts = [{lat:55, lon: 35, rot: 331, proj: {lat: 56, lon:35}},
-				{lat:57, lon: 35, rot: 180, proj: {lat: 57, lon:36}}];
-     olmm.draw_points(pnts);
-	 olmm.show_points(0);
-	 olmm.show_points(1);
+    var data_to_show_points_0 = {"point_num":0,"proj":[{"lat":55.72499371540099,
+                                                      "lon":37.55020063875089,
+                                                      "geometry":[{"type":"LineString",
+                                                                   "coordinates":[[55.72499371540099,37.55020063875089],
+                                                                                  [55.72503,37.55016],
+                                                                                  [55.72527009512485,37.5499079001189]]}
+                                                      ],
+                                                      "arc_id":"470186"
+                                                     },
+                                                     {"lat":55.72503,
+                                                      "lon":37.55016,
+                                                      "geometry":[{"type":"LineString",
+                                                                   "coordinates":[[55.72503,37.55016],
+                                                                                  [55.72527009512485,37.5499079001189]]}
+                                                      ],
+                                                      "arc_id":"470187"
+                                                     }]
+                              }
+    var data_to_show_points_1 = {"point_num":1,"proj":[{"lat":56.72499371540099,
+                                                      "lon":38.55020063875089,
+                                                      "geometry":[{"type":"LineString",
+                                                                   "coordinates":[[55.72499371540099,37.55020063875089],
+                                                                                  [55.72503,37.55016],
+                                                                                  [55.72527009512485,37.5499079001189]]}
+                                                      ],
+                                                      "arc_id":"470186"
+                                                     },
+                                                     {"lat":59.72503,
+                                                      "lon":39.55016,
+                                                      "geometry":[{"type":"LineString",
+                                                                   "coordinates":[[55.72503,37.55016],
+                                                                                  [55.72527009512485,37.5499079001189]]}
+                                                      ],
+                                                      "arc_id":"470187"
+                                                     }]
+                              }
+    var pnts = [{"lat":55.724993,"lon":37.5502,"rot":326,"proj":{"lat":55.72499371540099,"lon":37.55020063875089}},
+                {"lat":55.725266,"lon":37.549904,"rot":329,"proj":{"lat":55.72527009512485,"lon":37.5499079001189}}];
+
+    olmm.draw_points(pnts);
+	olmm.show_points(data_to_show_points_0);
+	olmm.show_points(data_to_show_points_1);
+    olmm.show_point_info(data_to_show_points_0);
+
     </script>
   </body>
 </html>

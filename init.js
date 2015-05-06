@@ -1,76 +1,132 @@
 function OLMM() {}
 
-
-OLMM.prototype.createMap = function (divName)
-{	this.map = new ol.Map({
+OLMM.prototype.createMap = function (divName) {
+    this.map = new ol.Map({
         target: divName,
         layers: [
            new ol.layer.Tile({
-		      preload: 4,
-		      source: new ol.source.OSM()
-		    }), this.pntsLayer, this.projLayer
+              preload: 4,
+              source: new ol.source.OSM()
+            }), this.pntsLayer,
+                this.lastProjLayer,
+                this.pointsProjLayer,
+                this.projLayer,
         ],
-      });}
+      });
+}
 
-OLMM.prototype.transform = function (data)
-{	return ol.proj.transform(data, 'EPSG:4326', 'EPSG:3857');}
+OLMM.prototype.transform = function (data) {
+    return ol.proj.transform(data, 'EPSG:4326', 'EPSG:3857');}
 
-OLMM.prototype.createPntFeature = function(pnt, num)
-{
-	var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords),
+OLMM.prototype.createPntFeature = function(pnt, num) {
+    var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords),
                                  name: 'Point'});
-	feature.rot = pnt.rot;
+    feature.rot = pnt.rot;
     feature.setId(num);
-    return feature;}
+    return feature;
+}
 
 OLMM.prototype.createProjFeature = function(pnt, num)
-{	var proj_coords = this.transform([pnt.proj.lon, pnt.proj.lat]);
-    var line_feature = new ol.Feature({geometry: new ol.geom.LineString([pnt.coords,proj_coords])});
+{   var proj_coords = this.transform([pnt.proj.lon, pnt.proj.lat]);
+    var line_feature = new ol.Feature({geometry: new ol.geom.LineString([
+                pnt.coords,proj_coords])});
     line_feature.setId(num);
-    return line_feature;}
+    return line_feature;
+}
 
 //adding points and main projections features to map hidden
-OLMM.prototype.draw_points = function (data)
-{
-	var features = [];
-	var line_features = [];
+OLMM.prototype.draw_points = function (data) {
+    var features = [];
+    var line_features = [];
 
-	//points and main projections features creation	for(var i = 0; i < data.length; i++)
-	{		data[i].coords = this.transform([data[i].lon, data[i].lat]);
+    //points and main projections features creation
+    for(var i = 0; i < data.length; i++)
+    {    data[i].coords = this.transform([data[i].lon, data[i].lat]);
 
-		features.push(this.createPntFeature(data[i], i));
+        features.push(this.createPntFeature(data[i], i));
 
-		if(data[i].proj) line_features.push(this.createProjFeature(data[i], i))	}
-	//adding features to map
-	this.pntsSource.addFeatures(features);
-	this.projSource.addFeatures(line_features);
+        if(data[i].proj) line_features.push(this.createProjFeature(data[i], i))}
+    //adding features to map
+    this.pntsSource.addFeatures(features);
+    this.projSource.addFeatures(line_features);
 
-	//centering map to view all points
-	var extent = this.projSource.getExtent();
-	this.map.getView().fitExtent(extent, this.map.getSize());}
-
-
-OLMM.prototype.show_points = function (last_num)
-{
-	var features = [];
-	for(var i = 0; i < this.pntsSource.getFeatures().length; i++)
-	{		var feature =  this.pntsSource.getFeatureById(i);
-		feature.visible = i <= last_num;
-		feature.changed();
-		var line_feature = this.projSource.getFeatureById(i);
-		if(line_feature)
-		{			line_feature.visible = i <= last_num;
-			line_feature.changed();
-		}
-	}
+    //centering map to view all points
+    var extent = this.projSource.getExtent();
+    this.map.getView().fitExtent(extent, this.map.getSize());
 }
 
 
-OLMM.prototype.init = function (divName, selectPntFunction)
-{
-	this.createLayers();
+OLMM.prototype.show_points = function (last_data) {
+    this.lastProjSource.clear()
+    var maxInd = last_data.point_num;
+    var features = [];
+    for(var i = 0; i < maxInd; i++) {
+        var feature = this.pntsSource.getFeatureById(i);
+        feature.visible = true;
+        feature.changed();
+        var line_feature = this.projSource.getFeatureById(i);
+        if(line_feature) {
+            line_feature.visible = true;
+            line_feature.changed();
+        }
+    }
+    var good_arc_proj = this.projSource.getFeatureById(maxInd);
+    if(good_arc_proj) {
+        good_arc_proj.visible = true;
+        good_arc_proj.changed();
+    }
+    var lastPoint = this.pntsSource.getFeatureById(maxInd);
+    lastPoint.visible = true;
+    lastPoint.changed();
+    var pointCoords = lastPoint.getGeometry().getCoordinates();
+    for (var i = 0; i < last_data.proj.length; i++) {
+        var projCoords = this.transform(
+                [last_data.proj[i].lon, last_data.proj[i].lat]);
+        var line_feature = new ol.Feature({
+                geometry: new ol.geom.LineString([
+                pointCoords,projCoords])
+    });
 
-	this.createMap(divName);
+        line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
+        this.lastProjSource.addFeature(line_feature);
+        if (line_feature) {
+            line_feature.visible = true;
+            line_feature.changed();
+        }
+    }
+}
 
-	this.addPntSelect(selectPntFunction);
+
+OLMM.prototype.show_point_info = function (data) {
+    var pointId = data.point_num;
+    var point = this.pntsSource.getFeatureById(pointId);
+    point.visible = true;
+    point.changed();
+    var pointCoords = point.getGeometry().getCoordinates();
+    var projs = data.proj;
+    for (var i = 0; i < projs.length; i++) {
+        console.log(i);
+        var projCoords = this.transform(
+                [projs[i].lon, projs[i].lat]);
+        var line_feature = new ol.Feature({
+                geometry: new ol.geom.LineString([
+                pointCoords,projCoords])
+        });
+
+        line_feature.setId(pointId.toString() + '_' + projs[i].arc_id);
+        this.pointsProjSource.addFeature(line_feature);
+        if (line_feature) {
+            line_feature.visible = true;
+            line_feature.changed();
+        }
+    }
+}
+
+
+OLMM.prototype.init = function (divName, selectPntFunction) {
+    this.createLayers();
+
+    this.createMap(divName);
+
+    this.addPntSelect(selectPntFunction);
 }
