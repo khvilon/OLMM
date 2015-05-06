@@ -1,7 +1,7 @@
 OLMM.prototype.stylePntFunction = function(feature, resolution)
 {
 	if (feature.visible) opacity = 1;
-	else opacity = 0;
+	else opacity = 0.4;
 
   	styles = [new ol.style.Style({
       		   image: new ol.style.Icon({
@@ -22,7 +22,7 @@ OLMM.prototype.stylePntFunction = function(feature, resolution)
 OLMM.prototype.styleProjFunction = function(feature, resolution) {
 
 	if (feature.visible) opacity = 1;
-	else opacity = 0;
+	else opacity = 0.4;
 
   	var geometry = feature.getGeometry();
   	var styles = [

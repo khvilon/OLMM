@@ -70,7 +70,6 @@ OLMM.prototype.show_points = function (last_data) {
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
         var feature = this.pntsSource.getFeatureById(i);
         feature.visible = i < maxInd;
-        console.log(feature.visible)
         feature.changed();
         var line_feature = this.projSource.getFeatureById(i);
         if(line_feature) {
