@@ -1,3 +1,43 @@
+OLMM.prototype.styleGraphFunction = function(feature, resolution)
+{
+	opacity = 0.9;
+    width = 10;
+  	var geometry = feature.getGeometry();
+  	var styles = [
+    	// linestring
+		new ol.style.Style({
+      	stroke: new ol.style.Stroke({
+        	color: [0, 0, 0, opacity],
+        	width: width
+      	})
+		})
+  	];
+
+	geometry.forEachSegment(function(start, end) {
+    	styles.push(new ol.style.Style({
+			geometry: new ol.geom.Point(end),
+      		image: new ol.style.Circle({
+        		radius: 2,
+        		stroke: new ol.style.Stroke({
+        	        color: [0, 0, 0, opacity],
+		        	width: width
+		      	})
+      		})
+    	}));
+    	styles.push(new ol.style.Style({
+			geometry: new ol.geom.Point(start),
+      		image: new ol.style.Circle({
+        		radius: 2,
+        		stroke: new ol.style.Stroke({
+        	        color: [0, 0, 0, opacity],
+		        	width: width
+		      	})
+      		})
+    	}));
+	});
+  	return styles;
+};
+
 OLMM.prototype.stylePntFunction = function(feature, resolution)
 {
 	if (feature.visible) opacity = 1;
@@ -15,11 +55,43 @@ OLMM.prototype.stylePntFunction = function(feature, resolution)
     	];
 
   	return styles;
-
 };
 
 
-OLMM.prototype.styleProjFunction = function(feature, resolution) {
+OLMM.prototype.styleMmProjFunction = function(feature, resolution) {
+
+	if (feature.visible) opacity = 1;
+	else opacity = 0.4;
+
+  	var geometry = feature.getGeometry();
+  	var styles = [
+    	// linestring
+		new ol.style.Style({
+      	stroke: new ol.style.Stroke({
+        	color: [239, 20, 20, opacity],
+        	width: 2
+      	})
+		})
+  	];
+
+	geometry.forEachSegment(function(start, end) {
+    	styles.push(new ol.style.Style({
+			geometry: new ol.geom.Point(end),
+      		image: new ol.style.Circle({
+        		radius: 4,
+        		stroke: new ol.style.Stroke({
+        	        color: [239, 20, 20, opacity],
+		        	width: 2
+		      	})
+      		})
+    	}));
+	});
+
+	return styles;
+};
+
+
+OLMM.prototype.styleGoodProjFunction = function(feature, resolution) {
 
 	if (feature.visible) opacity = 1;
 	else opacity = 0.4;
@@ -36,21 +108,6 @@ OLMM.prototype.styleProjFunction = function(feature, resolution) {
   	];
 
 	geometry.forEachSegment(function(start, end) {
-    	/*var dx = end[0] - start[0];
-    	var dy = end[1] - start[1];
-    	var rotation = Math.atan2(dy, dx);
-    	// arrows
-    	styles.push(new ol.style.Style({
-			geometry: new ol.geom.Point(end),
-      		image: new ol.style.Icon({
-        		src: 'arrow.png',
-        		anchor: [0.75, 0.5],
-        		rotateWithView: false,
-        		rotation: -rotation,
-        		opacity: opacity
-      		})
-    	})); */
-
     	styles.push(new ol.style.Style({
 			geometry: new ol.geom.Point(end),
       		image: new ol.style.Circle({

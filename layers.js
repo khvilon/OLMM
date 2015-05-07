@@ -1,22 +1,32 @@
 OLMM.prototype.createLayers = function () {
+    this.graphSource = new ol.source.Vector();
+    this.graphLayer = new ol.layer.Vector({
+        source: this.graphSource,
+        style: this.styleGraphFunction });
+
 	this.pntsSource = new ol.source.Vector();
     this.pntsLayer = new ol.layer.Vector({
     	source: this.pntsSource,
 	  	style: this.stylePntFunction });
 
-	this.projSource = new ol.source.Vector();
-    this.projLayer = new ol.layer.Vector({
-    	source: this.projSource,
-	    style: this.styleProjFunction });
+	this.mmProjSource = new ol.source.Vector();
+    this.mmProjLayer = new ol.layer.Vector({
+    	source: this.mmProjSource,
+	    style: this.styleMmProjFunction });
+
+	this.goodProjSource = new ol.source.Vector();
+    this.goodProjLayer = new ol.layer.Vector({
+    	source: this.goodProjSource,
+	    style: this.styleGoodProjFunction });
 
 	this.lastProjSource = new ol.source.Vector();
     this.lastProjLayer = new ol.layer.Vector({
         source: this.lastProjSource,
         style: this.styleLastProjFunction });
 
-	this.pointsProjSource = new ol.source.Vector();
-    this.pointsProjLayer = new ol.layer.Vector({
-        source: this.pointsProjSource,
+	this.allProjSource = new ol.source.Vector();
+    this.allProjLayer = new ol.layer.Vector({
+        source: this.allProjSource,
         style: this.styleLastProjFunction });
 }
 
