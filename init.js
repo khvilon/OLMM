@@ -34,13 +34,10 @@ OLMM.prototype.createMap = function (divName) {
 OLMM.prototype.add_graph = function (data) {
     var features = [];
     for (var i = 0; i < data.length; i++) {
-        var id = data[i].id;
-        var road_id = data[i].road_id;
-        var coords_0 = this.transform([data[i].lon0, data[i].lat0]);
-        var coords_1 = this.transform([data[i].lon1, data[i].lat1]);
-        var feature = new ol.Feature({geometry: new ol.geom.LineString([
-                    coords_0, coords_1]),
-                                       road_id: road_id});
+        var id = data[i][0];
+        var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
+        var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
+        var feature = new ol.Feature({geometry: new ol.geom.LineString([coords_0, coords_1])});
         feature.setId(id);
         //var lableFeature = new ol.Feature.Vector(feature.getGeometry().getCentroid(true));
 
@@ -55,8 +52,6 @@ OLMM.prototype.add_graph = function (data) {
 
         //features.push(lableFature);
         features.push(feature);
-        console.log(feature.getGeometry())
-
 
     }
     this.graphSource.addFeatures(features);
@@ -115,9 +110,21 @@ OLMM.prototype.draw_points = function (data) {
     }
 
     //centering map to view all points
-//TODO get coords, get query ro backend
     var extent = this.pntsSource.getExtent();
     this.map.getView().fitExtent(extent, this.map.getSize());
+
+    var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+    console.log(coords);
+    var url = "mapm_tests/get_graph"
+    $.ajax({ url: url, data: {min_lon : coords[0],
+                              min_lat: coords[1],
+                              max_lon: coords[2],
+                              max_lat: coords[3]},
+            success: function( data ) {
+                var arcs = JSON.parse(data);
+                this.add_graph(arcs);
+            },
+            dataType: 'json'});
 }
 
 

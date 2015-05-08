@@ -1,7 +1,7 @@
 OLMM.prototype.styleGraphFunction = function(feature, resolution)
 {
 	opacity = 0.9;
-    width = 10;
+    width = 1;
   	var geometry = feature.getGeometry();
   	var styles = [
     	// linestring
