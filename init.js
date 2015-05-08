@@ -37,20 +37,11 @@ OLMM.prototype.add_graph = function (data) {
         var id = data[i][0];
         var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
         var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-        var feature = new ol.Feature({geometry: new ol.geom.LineString([coords_0, coords_1])});
+        var labelCoords = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
+        var lineString = new ol.geom.LineString([coords_0, coords_1]);
+        var feature = new ol.Feature({geometry: lineString,
+                                      name: id});
         feature.setId(id);
-        //var lableFeature = new ol.Feature.Vector(feature.getGeometry().getCentroid(true));
-
-        //var length = Math.round(feature.getGeometry().getLength());
-        //lableFeature.style = {
-        //        fontFamily: "arial, monospace",
-        //        fontWeight: "bold",
-        //        fontColor: "black",
-        //        label : length +"m",
-        //        labelAlign: "tr"//set to top right
-        //};
-
-        //features.push(lableFature);
         features.push(feature);
 
     }
@@ -79,6 +70,7 @@ OLMM.prototype.createProjFeature = function(pnt, proj, num) {
 
 //adding points and main projections features to map hidden
 OLMM.prototype.draw_points = function (data) {
+    var self = this;
     var features = [];
     var good_projs = [];
     var mm_projs = [];
@@ -114,15 +106,16 @@ OLMM.prototype.draw_points = function (data) {
     this.map.getView().fitExtent(extent, this.map.getSize());
 
     var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
-    console.log(coords);
-    var url = "mapm_tests/get_graph"
-    $.ajax({ url: url, data: {min_lon : coords[0],
-                              min_lat: coords[1],
-                              max_lon: coords[2],
-                              max_lat: coords[3]},
+    //var url = "mapm_tests/get_graph"
+    var url = "http://10.0.12.228:5000/mapm_tests/get_graph"
+    $.ajax({ url: url, data: {min_lon : coords[0] - 0.001,
+                              min_lat: coords[1] - 0.001,
+                              max_lon: coords[2] + 0.001,
+                              max_lat: coords[3] + 0.001},
             success: function( data ) {
-                var arcs = JSON.parse(data);
-                this.add_graph(arcs);
+                var arcs = JSON.stringify(data);
+                arcs = JSON.parse(arcs);
+                self.add_graph(arcs);
             },
             dataType: 'json'});
 }
