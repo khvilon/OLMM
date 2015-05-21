@@ -9,6 +9,15 @@ OLMM.prototype.createLayers = function () {
     	source: this.pntsSource,
 	  	style: this.stylePntFunction });
 
+    this.geoJSONSource = new ol.source.GeoJSON({
+        'projection': 'EPSG:4326'
+
+    });
+    this.geoJSONLayer = new ol.layer.Vector({
+        source: this.geoJSONSource,
+        style: this.stylePntFunction
+    });
+
 	this.mmProjSource = new ol.source.Vector();
     this.mmProjLayer = new ol.layer.Vector({
     	source: this.mmProjSource,
@@ -63,45 +72,46 @@ styleCache = {};
 OLMM.prototype.createVectorClusterLayer = function (source, style) {
     return new ol.layer.Vector({
         source: source,
-        style: function (feature, resolution) {
-        var styleCache = {};
-        var size = feature.get('features').length;
-        var style = styleCache[size];
-        if (!style) {
-            style = [new ol.style.Style({
-                //image: new ol.style.Circle({
-                //    radius: 10,
-                //    stroke: new ol.style.Stroke({
-                //        color: '#fff'
-                //    }),
-                //    fill: new ol.style.Fill({
-                //        color: '#3399CC'
-                //    })
-                //}),
-                image: new ol.style.Icon({
-                    src: 'http://icons.iconarchive.com/icons/artua/mac/16/Setting-icon.png',
-                    size: [16, 16],
-                    offset: [0, 0],
-                    opacity: 1.0,
-                    rotation: 0.0,
-                    scale: 1.0,
-                    rotateWithView: true
-                }),
-                text: new ol.style.Text({
-                    text: size.toString(),
-                    fill: new ol.style.Fill({
-                        color: '#fff'
-                    })
-                })
-            })];
-            styleCache[size] = style;
-        }
-        return style;
-    }
+        style: style
+    //    style: function (feature, resolution) {
+    //    var styleCache = {};
+    //    var size = feature.get('features').length;
+    //    var style = styleCache[size];
+    //    if (!style) {
+    //        style = [new ol.style.Style({
+    //            //image: new ol.style.Circle({
+    //            //    radius: 10,
+    //            //    stroke: new ol.style.Stroke({
+    //            //        color: '#fff'
+    //            //    }),
+    //            //    fill: new ol.style.Fill({
+    //            //        color: '#3399CC'
+    //            //    })
+    //            //}),
+    //            image: new ol.style.Icon({
+    //                src: 'http://icons.iconarchive.com/icons/artua/mac/16/Setting-icon.png',
+    //                size: [16, 16],
+    //                offset: [0, 0],
+    //                opacity: 1.0,
+    //                rotation: 0.0,
+    //                scale: 1.0,
+    //                rotateWithView: true
+    //            }),
+    //            text: new ol.style.Text({
+    //                text: size.toString(),
+    //                fill: new ol.style.Fill({
+    //                    color: '#fff'
+    //                })
+    //            })
+    //        })];
+    //        styleCache[size] = style;
+    //    }
+    //    return style;
+    //}
     })
 };
 
-OLMM.prototype.addPntSelect = function (handleFunction) {
+OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFunction) {
     this.map.on('singleclick', function(evt){
         var feature = this.forEachFeatureAtPixel(evt.pixel,
             function(feature, layer) {
@@ -110,7 +120,9 @@ OLMM.prototype.addPntSelect = function (handleFunction) {
         if (feature && feature.get('name') == 'Point') {
             var id = feature.getId();
             console.log(feature.get('name'), id);
-            handleFunction(id);
+            handleFeatureFunction(id);
+        } else {
+            handleMapClickFunction(id)
         }
     });
 };
