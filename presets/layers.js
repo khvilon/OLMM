@@ -12,7 +12,7 @@ OLMM.prototype.createLayers = function () {
     this.geoJSONSource = new ol.source.GeoJSON();
     this.geoJSONLayer = new ol.layer.Vector({
         source: this.geoJSONSource,
-        style: this.styleGraphFunction
+        style: this.stylePntFunction
     });
 
 	this.mmProjSource = new ol.source.Vector();
