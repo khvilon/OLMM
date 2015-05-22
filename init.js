@@ -136,7 +136,7 @@ OLMM.prototype.draw_points = function (data) {
 
 
 OLMM.prototype.show_points = function (last_data) {
-    this.lastProjSource.clear()
+    this.lastProjSource.clear();
     var maxInd = last_data.point_num;
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
         var feature = this.pntsSource.getFeatureById(i);
@@ -170,6 +170,14 @@ OLMM.prototype.show_points = function (last_data) {
             });
 
             if (line_feature) {
+                line_feature.setStyle(
+                    new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: [255, 204, 51, opacity],
+                            width: 3
+                        })
+                    })
+                );
                 line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
                 this.lastProjSource.addFeature(line_feature);
                 line_feature.visible = true;

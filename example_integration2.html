@@ -35,23 +35,48 @@
     var olmm = new OLMM();
     olmm.init('map', sel, sel);
 
+    drawPoints = function(coords, source){
+
+        var features = [];
+
+        for (i = 0; i < coords.length; ++i) {
+            var point = new ol.geom.Point(coords[i]);
+
+            var feature = new ol.Feature(point);
+
+            features.push(feature);
+        }
+
+        source.addFeatures(features);
+    };
+
     function fitToExtent (source) {
-        extent = sourceы.getExtent();
+        var extent = source.getExtent();
         olmm.map.getView().fitExtent(extent, olmm.map.getSize());
     }
 
-    var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
-    var url = "http://10.0.12.221:3667/mm_gaps/1.json";
+    //var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+    var url = "http://10.0.12.221:3666/mm_gaps/3.json";
     $.ajax({
-        url: url, data: {min_lon : coords[0] - 0.003,
-                         min_lat: coords[1] - 0.003,
-                         max_lon: coords[2] + 0.003,
-                         max_lat: coords[3] + 0.003},
+        url: url,
         success: function( data ) {
             var arcs = JSON.stringify(data);
             arcs = JSON.parse(arcs);
+
+            var line_before_geojson = arcs['line_before'];
+            var line_after_geojson = arcs['line_after'];
+
+            var good_proj_features = olmm.readGeoJSON(line_before_geojson);
+            var mm_proj_features = olmm.readGeoJSON((line_after_geojson));
+
+            console.log(good_proj_features);
+            console.log(mm_proj_features);
+
+            olmm.goodProjSource.addFeatures(good_proj_features);
+            olmm.mmProjSource.addFeatures(mm_proj_features);
+
             //olmm.add_graph(arcs);
-            olmm.draw_points(arcs);
+            drawPoints(arcs, olmm.styleMmProjFunction);
         },
         dataType: 'json'});
 
