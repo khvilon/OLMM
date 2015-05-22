@@ -1,3 +1,7 @@
+OLMM.prototype.getStyleForGeoJSON = function(feature, resolution) {
+
+};
+
 OLMM.prototype.styleGraphFunction = function(feature, resolution) {
     var width, opacity;
 

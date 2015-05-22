@@ -48,12 +48,12 @@ OLMM.prototype.createMap = function (divName) {
             this.allProjLayer,
             this.mmProjLayer,
             this.goodProjLayer,
-            this.pntsLayer
+            this.pntsLayer,
+            this.geoJSONLayer
         ]),
         view: new ol.View({
-            projection: 'EPSG:3857',
             center: [0, 0],
-            zoom: 3
+            zoom: 10
           })
       });
 };
@@ -107,17 +107,17 @@ OLMM.prototype.draw_points = function (data) {
     var mm_projs = [];
 
     //points and main projections features creation
-    for(var i = 0; i < data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
         data[i].coords = this.transform([data[i].lon, data[i].lat]);
 
         features.push(this.createPntFeature(data[i], i));
 
-        if(data[i].good_proj) {
+        if (data[i].good_proj) {
             if (Object.keys(data[i].good_proj).length >= 2) {
                 good_projs.push(this.createProjFeature(data[i], data[i].good_proj, i))
             }
         }
-        if(data[i].mm_proj) {
+        if (data[i].mm_proj) {
             if (Object.keys(data[i].mm_proj).length >= 2) {
                 mm_projs.push(this.createProjFeature(data[i], data[i].mm_proj, i))
             }
@@ -125,30 +125,14 @@ OLMM.prototype.draw_points = function (data) {
     }
     //adding features to map
     this.pntsSource.addFeatures(features);
+
     if (good_projs.length > 0) {
         this.goodProjSource.addFeatures(good_projs);
     }
     if (mm_projs.length > 0) {
         this.mmProjSource.addFeatures(mm_projs);
     }
-
-    //centering map to view all points
-    var extent = this.geoJSONSource.getExtent();
-    this.map.getView().fitExtent(extent, this.map.getSize());
-
-    var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
-    var url = "http://10.0.12.221:3667/mm_gaps/1.json";
-    $.ajax({ url: url, data: {min_lon : coords[0] - 0.001,
-                              min_lat: coords[1] - 0.001,
-                              max_lon: coords[2] + 0.001,
-                              max_lat: coords[3] + 0.001},
-            success: function( data ) {
-                var arcs = JSON.stringify(data);
-                arcs = JSON.parse(arcs);
-                self.add_graph(arcs);
-            },
-            dataType: 'json'});
-}
+};
 
 
 OLMM.prototype.show_points = function (last_data) {

@@ -9,13 +9,10 @@ OLMM.prototype.createLayers = function () {
     	source: this.pntsSource,
 	  	style: this.stylePntFunction });
 
-    this.geoJSONSource = new ol.source.GeoJSON({
-        'projection': 'EPSG:4326'
-
-    });
+    this.geoJSONSource = new ol.source.GeoJSON();
     this.geoJSONLayer = new ol.layer.Vector({
         source: this.geoJSONSource,
-        style: this.stylePntFunction
+        style: this.styleGraphFunction
     });
 
 	this.mmProjSource = new ol.source.Vector();
@@ -117,6 +114,7 @@ OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFun
             function(feature, layer) {
                 return feature;
             });
+        console.log(feature.getGeometry().getCoordinates());
         if (feature && feature.get('name') == 'Point') {
             var id = feature.getId();
             console.log(feature.get('name'), id);
