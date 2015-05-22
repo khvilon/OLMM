@@ -1,12 +1,10 @@
-OLMM.prototype.readGeoJSON = function(geojson){
+OLMM.prototype.readGeoJSON = function(geojson, id){
 
     console.log(geojson);
 
     var features, line_before, line_after, format;
 
-    format = new ol.format.GeoJSON({
-
-    });
+    format = new ol.format.GeoJSON();
 
     features = format.readFeatures(geojson);
 
@@ -17,7 +15,15 @@ OLMM.prototype.readGeoJSON = function(geojson){
 
         console.log(coords);
 
-        feature.setGeometry(new ol.geom.Point(coords))
+        var geometry_type = feature.getGeometry().getType();
+
+        if (geometry_type == 'Point'){
+            feature.setGeometry(new ol.geom.Point(coords))
+        } else if (geometry_type == 'LineString'){
+            feature.setGeometry(new ol.geom.LineString(coords));
+            feature.setId('way-'+id)
+        }
+
     }
 
     //features += format.readFeatures(line_after);

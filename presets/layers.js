@@ -1,4 +1,10 @@
 OLMM.prototype.createLayers = function () {
+    this.pointsSelectSource = new ol.source.Vector();
+    this.pointsSelectLayer = new ol.layer.Vector({
+        source: this.pointsSelectSource,
+        style: this.stylePointSelectFunction
+    });
+
     this.graphSource = new ol.source.Vector();
     this.graphLayer = new ol.layer.Vector({
         source: this.graphSource,
@@ -34,18 +40,6 @@ OLMM.prototype.createLayers = function () {
     this.allProjLayer = new ol.layer.Vector({
         source: this.allProjSource,
         style: this.styleLastProjFunction });
-};
-
-OLMM.prototype.createLayer = function(line_color, line_width){
-    var style, source, layer;
-
-    source = new ol.source.Vector();
-    layer = new ol.layer.Vector({
-        source: source,
-        style: style
-    });
-
-    return [source, layer]
 };
 
 OLMM.prototype.createCustomLineStyle = function(line_color, line_width){

@@ -24,6 +24,7 @@
 </head>
 <body>
 <div id="map" class="map"></div>
+<button class="hover" data-id="1" style="position: fixed;">Hello world</button>
 <script type="text/javascript">
     sel = function (id) {
         console.log(id);
@@ -65,15 +66,20 @@
 
             var line_before_geojson = arcs['line_before'];
             var line_after_geojson = arcs['line_after'];
+            var ways_geojson = arcs['ways'][0]['line'];
+            var ways2_geojson = arcs['ways'][1]['line'];
 
             var good_proj_features = olmm.readGeoJSON(line_before_geojson);
-            var mm_proj_features = olmm.readGeoJSON((line_after_geojson));
-
-            console.log(good_proj_features);
-            console.log(mm_proj_features);
+            var mm_proj_features = olmm.readGeoJSON(line_after_geojson);
+            var ways_features = olmm.readGeoJSON(ways_geojson, '1');
+            var ways_features2 = olmm.readGeoJSON(ways2_geojson, '2');
 
             olmm.pntsSource.addFeatures(good_proj_features);
             olmm.pntsSource.addFeatures(mm_proj_features);
+            olmm.graphSource.addFeatures(ways_features);
+            olmm.graphSource.addFeatures(ways_features2);
+
+            fitToExtent(olmm.pntsSource);
 
             //olmm.add_graph(arcs);
 //            drawPoints(arcs, olmm.styleMmProjFunction);
@@ -81,7 +87,20 @@
         dataType: 'json'});
 
 
-    fitToExtent(olmm.geoJSONSource);
+    $('.hover').on('onmouseover', function(){
+        var feature = olmm.pntsLayer.getFeatureById($(this).data('feature-id'));
+
+        var select = olmm.select;
+        var features = select.getFeatures();
+        features.push(feature);
+        feature.getStyle()
+    });
+
+    $('.hover').on('onmouseout', function(){
+        olmm.select.getFeatures().clean();
+    })
+
+
 
 </script>
 </body>
