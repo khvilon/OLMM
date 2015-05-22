@@ -11,7 +11,13 @@ OLMM.prototype.readGeoJSON = function(geojson, id){
     for (var i = 0; i < features.length; i++) {
         var feature = features[i];
 
-        var coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:4326', 'EPSG:3857');
+        var coords = feature.getGeometry().getCoordinates();
+        if (coords[0].length > 0)
+        {
+            for(var i = 0; i < coords.length;i++)
+                coords[i] = ol.proj.transform(coords[i], 'EPSG:4326', 'EPSG:3857'); 
+        }
+        else coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:4326', 'EPSG:3857');
 
         console.log(coords);
 
