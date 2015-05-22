@@ -72,11 +72,11 @@
             console.log(good_proj_features);
             console.log(mm_proj_features);
 
-            olmm.goodProjSource.addFeatures(good_proj_features);
-            olmm.mmProjSource.addFeatures(mm_proj_features);
+            olmm.pntsSource.addFeatures(good_proj_features);
+            olmm.pntsSource.addFeatures(mm_proj_features);
 
             //olmm.add_graph(arcs);
-            drawPoints(arcs, olmm.styleMmProjFunction);
+//            drawPoints(arcs, olmm.styleMmProjFunction);
         },
         dataType: 'json'});
 
