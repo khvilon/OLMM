@@ -3,7 +3,7 @@ OLMM.prototype.getStyleForGeoJSON = function (feature, resolution) {
 };
 
 OLMM.prototype.styleGraphFunction = function (feature, resolution) {
-    var width, opacity;
+    var width, opacity, color;
 
     // TODO шмат кода, сделать алгоритм для плавного изменения зума?
     if (resolution < parseFloat(0.003)) {
@@ -25,13 +25,18 @@ OLMM.prototype.styleGraphFunction = function (feature, resolution) {
     }
 
     opacity = 0.9;
+    color = feature.getProperties()['color'] || 'black';
+
     var geometry = feature.getGeometry();
     var styles = [
         // linestring
         new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: [0, 0, 0, opacity],
-                width: width
+                color: [color, opacity],
+                width: width / 2
+            }),
+            fill: new ol.style.Fill({
+                color: color
             })
         })
     ];
@@ -42,8 +47,11 @@ OLMM.prototype.styleGraphFunction = function (feature, resolution) {
             image: new ol.style.Circle({
                 radius: 4,
                 stroke: new ol.style.Stroke({
-                    color: [0, 0, 0, opacity],
+                    color: [color, opacity],
                     width: width / 2
+                }),
+                fill: new ol.style.Fill({
+                    color: color
                 })
             })
         }));
@@ -52,14 +60,18 @@ OLMM.prototype.styleGraphFunction = function (feature, resolution) {
             image: new ol.style.Circle({
                 radius: 4,
                 stroke: new ol.style.Stroke({
-                    color: [0, 0, 0, opacity],
+                    color: [color, opacity],
                     width: width / 2
+                }),
+                fill: new ol.style.Fill({
+                    color: color
                 })
             })
         }));
+
         styles.push(new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'black',
+                color: color,
                 width: 1
             }),
             text: createTextStyle(feature, resolution)
