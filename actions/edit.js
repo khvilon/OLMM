@@ -13,7 +13,6 @@ OLMM.prototype.enableEditMode = function() {
         this.map.addInteraction(modify);
         this.interactions = [modify];
     }
-
 };
 
 OLMM.prototype.disableEditMode = function() {

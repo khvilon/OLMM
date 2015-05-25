@@ -3,7 +3,7 @@ OLMM.prototype.createLayers = function () {
     this.pointsSelectLayer = new ol.layer.Vector({
         source: this.pointsSelectSource,
         style: this.stylePointSelectFunction
-    });
+    }); // TODO REMOVE
 
     this.graphSource = new ol.source.Vector();
     this.graphLayer = new ol.layer.Vector({
@@ -108,8 +108,8 @@ OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFun
             function(feature, layer) {
                 return feature;
             });
-        console.log(feature.getGeometry().getCoordinates());
         if (feature && feature.get('name') == 'Point') {
+            console.log(feature.getGeometry().getCoordinates());
             var id = feature.getId();
             console.log(feature.get('name'), id);
             handleFeatureFunction(id);

@@ -106,7 +106,9 @@ OLMM.prototype.add_graph = function (data) {
 
     }
 
-    this.graphSource.addFeatures(features);
+    if (features) {
+        this.graphSource.addFeatures(features);
+    }
 };
 
 
@@ -269,8 +271,14 @@ OLMM.prototype.addLayerToMap = function(layer){
     this.map.addLayer(layer);
 };
 
+OLMM.prototype.fitToExtent = function (source) {
+    var extent = source.getExtent();
+    olmm.map.getView().fitExtent(extent, this.map.getSize());
+};
+
 OLMM.prototype.init = function (divName, selectPntFunction, mapClickFunction) {
     this.createLayers();
     this.createMap(divName);
     this.addPntSelect(selectPntFunction, mapClickFunction);
 };
+
