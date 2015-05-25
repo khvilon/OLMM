@@ -23,8 +23,8 @@
     <title>integration example</title>
 </head>
 <body>
+<button class="hover" data-feature-id="way-1" style="position: fixed; z-index: 10000;">Hello world</button>
 <div id="map" class="map"></div>
-<button class="hover" data-id="1" style="position: fixed;">Hello world</button>
 <script type="text/javascript">
     sel = function (id) {
         console.log(id);
@@ -36,28 +36,14 @@
     var olmm = new OLMM();
     olmm.init('map', sel, sel);
 
-    drawPoints = function(coords, source){
-
-        var features = [];
-
-        for (i = 0; i < coords.length; ++i) {
-            var point = new ol.geom.Point(coords[i]);
-
-            var feature = new ol.Feature(point);
-
-            features.push(feature);
-        }
-
-        source.addFeatures(features);
-    };
-
     function fitToExtent (source) {
         var extent = source.getExtent();
         olmm.map.getView().fitExtent(extent, olmm.map.getSize());
     }
 
+
     //var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
-    var url = "http://10.0.12.221:3666/mm_gaps/3.json";
+    var url = "http://10.0.12.221:3666/mm_gaps/8.json";
     $.ajax({
         url: url,
         success: function( data ) {
@@ -81,26 +67,32 @@
 
             fitToExtent(olmm.pntsSource);
 
-            //olmm.add_graph(arcs);
-//            drawPoints(arcs, olmm.styleMmProjFunction);
+            olmm.add_graph(arcs);
+            olmm.draw_points(arcs);
         },
         dataType: 'json'});
 
 
-    $('.hover').on('onmouseover', function(){
-        var feature = olmm.pntsLayer.getFeatureById($(this).data('feature-id'));
+    $('.hover').mouseenter(function(){
+        var feature = olmm.graphSource.getFeatureById($(this).data('feature-id'));
 
-        var select = olmm.select;
-        var features = select.getFeatures();
+        olmm.inter = new ol.interaction.Select();
+
+        olmm.map.addInteraction(olmm.inter);
+
+        var features = olmm.inter.getFeatures();
+
         features.push(feature);
-        feature.getStyle()
+
     });
 
-    $('.hover').on('onmouseout', function(){
-        olmm.select.getFeatures().clean();
+    $('.hover').mouseout(function(){
+        var features = olmm.inter.getFeatures();
+
+        for (var i = 0; i < features.getLength(); i++) {
+            features.pop()
+        }
     })
-
-
 
 </script>
 </body>

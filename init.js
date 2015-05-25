@@ -39,6 +39,24 @@ OLMM.prototype.getMainLayers = function(){
     }
 };
 
+OLMM.prototype.getLayers = function (){
+    var values = [];
+
+    for (layer_name in this.layers){
+        values.push(this.layers[layer_name]);
+    }
+
+    return values
+};
+
+OLMM.prototype.getLayer = function(layer_name){
+    return this.layers[layer_name];
+};
+
+OLMM.prototype.addLayer = function (name, layer){
+    this.layers[name] = layer;
+};
+
 OLMM.prototype.createMap = function (divName) {
     this.map = new ol.Map({
         target: divName,
@@ -56,29 +74,42 @@ OLMM.prototype.createMap = function (divName) {
             zoom: 10
           })
       });
+
+    var select = new ol.interaction.Select({
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                  color: '#000000'
+                })
+            })
+          });
+
+
+    this.map.addInteraction(select);
+
 };
 
 OLMM.prototype.add_graph = function (data) {
     var features;
-    //for (var i = 0; i < data.length; i++) {
-    //    var id = data[i][0];
-    //    var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
-    //    var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-    //    var labelCoords = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-    //    var lineString = new ol.geom.LineString([coords_0, coords_1]);
-    //    var feature = new ol.Feature({
-    //        geometry: lineString,
-    //        name: id,
-    //        id: id
-    //    });
-    //    features.push(feature);
-    //
-    //}
 
-    features = this.readGeoJSON(data);
-    console.log(features);
-    this.geoJSONSource.addFeatures(features);
+    for (var i = 0; i < data.length; i++) {
+        var id = data[i][0];
+        var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
+        var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
+        var labelCoords = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
+        var lineString = new ol.geom.LineString([coords_0, coords_1]);
+        var feature = new ol.Feature({
+            geometry: lineString,
+            name: id,
+            id: id
+        });
+        features.push(feature);
+
+    }
+
+    this.graphSource.addFeatures(features);
 };
+
+
 
 OLMM.prototype.transform = function (data) {
     return ol.proj.transform(data, 'EPSG:4326', 'EPSG:3857');};
@@ -133,7 +164,6 @@ OLMM.prototype.draw_points = function (data) {
         this.mmProjSource.addFeatures(mm_projs);
     }
 };
-
 
 OLMM.prototype.show_points = function (last_data) {
     this.lastProjSource.clear();
@@ -235,7 +265,7 @@ OLMM.prototype.set_good_arc = function (data) {
     this.goodProjSource.addFeature(new_feature);
 };
 
-OLMM.prototype.addLayer = function(layer){
+OLMM.prototype.addLayerToMap = function(layer){
     this.map.addLayer(layer);
 };
 

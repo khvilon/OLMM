@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="OpenLayers/css/ol.css" type="text/css">
+    <script src="OpenLayers/build/ol.js" type="text/javascript"></script>
+    <script src="init.js" type="text/javascript"></script>
+    <script src="actions/edit.js" type="text/javascript"></script>
+    <script src="presets/styles.js" type="text/javascript"></script>
+    <script src="presets/layers.js" type="text/javascript"></script>
+    <script src="presets/sources.js" type="text/javascript"></script>
+    <script src="utils/line.js" type="text/javascript"></script>
+    <script src="utils/wkt.js" type="text/javascript"></script>
+    <script src="utils/geojson.js" type="text/javascript"></script>
+    <title>mm test integration example</title>
+</head>
+<body>
+<div id="map" class="map" style="height: 100%; width: 100%;"></div>
+<script type="text/javascript">
+    sel = function (id) {
+        console.log(id);
+    };
+
+    var olmm = new OLMM();
+    olmm.init('map', sel, sel);
+
+    function fitToExtent (source) {
+        olmm.map.getView().fitExtent(source.getExtent(), olmm.map.getSize());
+    }
+
+    var coords = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+
+    var url = "http://10.0.12.221:3667/mm_gaps/1.json";
+    $.ajax({
+        url: url, data: {min_lon : coords[0] - 0.003,
+                         min_lat: coords[1] - 0.003,
+                         max_lon: coords[2] + 0.003,
+                         max_lat: coords[3] + 0.003},
+        success: function( data ) {
+            var arcs = JSON.stringify(data);
+            arcs = JSON.parse(arcs);
+            olmm.add_graph(arcs);
+            olmm.draw_points(arcs);
+        },
+        dataType: 'json'});
+
+
+    fitToExtent(olmm.geoJSONSource);
+
+</script>
+</body>
+</html>
