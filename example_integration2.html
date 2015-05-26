@@ -5,14 +5,16 @@
     <link rel="stylesheet" href="OpenLayers/css/ol.css" type="text/css">
     <script src="OpenLayers/build/ol.js" type="text/javascript"></script>
     <script src="init.js" type="text/javascript"></script>
-    <script src="actions/edit.js" type="text/javascript"></script>
-    <script src="presets/styles.js" type="text/javascript"></script>
+    <script src="apps/core.js" type="text/javascript"></script>
     <script src="presets/layers.js" type="text/javascript"></script>
     <script src="presets/sources.js" type="text/javascript"></script>
     <script src="utils/line.js" type="text/javascript"></script>
     <script src="utils/wkt.js" type="text/javascript"></script>
     <script src="utils/geojson.js" type="text/javascript"></script>
     <script src="actions/select.js" type="text/javascript"></script>
+    <script src="plugins/correction.js" type="text/javascript"></script>
+
+    <!--<script data-main="main_require" src="require.js"></script>-->
 
     <style>
         .map {
@@ -41,30 +43,27 @@
             var arcs = JSON.stringify(data);
             arcs = JSON.parse(arcs);
 
-            var line_before_geojson = arcs['line_before'];
-            var line_after_geojson = arcs['line_after'];
+            var line_before_geojson = arcs['points_before'];
+            var line_after_geojson = arcs['points_after'];
             var ways_geojson = arcs['ways'][0]['line'];
             var ways2_geojson = arcs['ways'][1]['line'];
 
-            var good_proj_features = olmm.readGeoJSON(line_before_geojson);
-            var mm_proj_features = olmm.readGeoJSON(line_after_geojson);
-            var ways_features = olmm.readGeoJSON(ways_geojson, '1');
-            var ways_features2 = olmm.readGeoJSON(ways2_geojson, '2');
+            var line_before_features = olmm.readGeoJSON(line_before_geojson);
+            var line_after_features = olmm.readGeoJSON(line_after_geojson);
+            var way1_features = olmm.readGeoJSON(ways_geojson, '1');
+            var way2_features = olmm.readGeoJSON(ways2_geojson, '2');
 
-            olmm.pntsSource.addFeatures(good_proj_features);
-            olmm.pntsSource.addFeatures(mm_proj_features);
-            olmm.graphSource.addFeatures(ways_features);
-            olmm.graphSource.addFeatures(ways_features2);
+            olmm.createVectorLayer('points_before', line_before_features, olmm.stylePntFunction);
+            olmm.createVectorLayer('points_after', line_after_features, olmm.stylePntFunction);
+            olmm.createVectorLayer('lines_1', way1_features, olmm.styleGraphFunction);
+            olmm.createVectorLayer('lines_2', way2_features, olmm.styleGraphFunction);
 
-            olmm.fitToExtent(olmm.graphSource);
+            olmm.fitToExtent(olmm.getSourceByName('lines_1'));
 
-            olmm.add_graph(arcs);
+            olmm.addSelectOnHoverEvent('.hover', olmm.graphSource);
+            olmm.addUnselectOnHoverEvent('.hover');
         },
         dataType: 'json'});
-
-    olmm.addSelectOnHoverEvent('.hover', olmm.graphSource);
-    olmm.addUnselectOnHoverEvent('.hover');
-
 </script>
 </body>
 </html>

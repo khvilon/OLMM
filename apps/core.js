@@ -1,7 +1,36 @@
-OLMM.prototype.moveFeaturePointOnSelectLayer = function (feature_id) {
-    this.pointsSelectSource = new ol.source.Vector();
-    this.pointsSelectLayer = new ol.layer.Vector({
-        source: this.pointsSelectSource,
-        style: this.stylePointSelectFunction
+OLMM.prototype.initDefaults = function() {
+    this.layers = {};
+    this.sources = {};
+};
+
+OLMM.prototype.getLayerByName = function(name) {
+    return this.layers[name];
+};
+
+OLMM.prototype.getSourceByName = function(name) {
+    return this.sources[name];
+};
+
+OLMM.prototype.addSource = function(name, source) {
+    this.sources[name] = source
+};
+
+OLMM.prototype.addLayer = function(name, layer) {
+    this.layers[name] = layer
+};
+
+OLMM.prototype.createVectorLayer = function(name, features, style) {
+    var source = new ol.source.Vector();
+
+    if (features && features.length > 0) {
+        source.addFeatures(features)
+    }
+
+    var layer = new ol.layer.Vector({
+        source: source,
+        style: this.styleGraphFunction
     });
+
+    this.addSource(name, source);
+    this.addLayer(name, layer);
 };

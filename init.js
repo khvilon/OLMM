@@ -71,7 +71,7 @@ OLMM.prototype.createMap = function (divName) {
         ]),
         view: new ol.View({
             center: [0, 0],
-            zoom: 10
+            zoom: 1
           })
       });
 
@@ -82,7 +82,6 @@ OLMM.prototype.createMap = function (divName) {
                 })
             })
           });
-
 
     this.map.addInteraction(select);
 
@@ -277,6 +276,7 @@ OLMM.prototype.fitToExtent = function (source) {
 };
 
 OLMM.prototype.init = function (divName, selectPntFunction, mapClickFunction) {
+    this.initDefaults();
     this.createLayers();
     this.createMap(divName);
     this.addPntSelect(selectPntFunction, mapClickFunction);
