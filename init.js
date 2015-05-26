@@ -14,8 +14,9 @@ function OLMM() {}
 
 window.olmm_server_config = {
     'preload': 3,
-    'wms_server': '', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
-    'tiled': true
+    'wms_server': 'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
+    'tiled': true,
+    'wms_layers': 'roads'
 };
 
 OLMM.prototype.getMainLayers = function(){
@@ -23,12 +24,15 @@ OLMM.prototype.getMainLayers = function(){
     if (config['wms_server']) {
         return [
             new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'sat'})
+                preload: 4,
+                source: new ol.source.OSM()
             }),
-            new ol.layer.Image({
-                url: config['wms_server'],
-                params: {'LAYERS': 'topp:states', 'TILED': config['tiled']},
-                serverType: 'geoserver'
+            new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: config['wms_server'],
+                    params: {'LAYERS': config['wms_layers'], 'TILED': true},
+                    serverType: 'geoserver'
+                })
             })
         ]
     } else {
@@ -205,7 +209,7 @@ OLMM.prototype.show_points = function (last_data) {
                     new ol.style.Style({
                         stroke: new ol.style.Stroke({
                             color: [255, 204, 51, opacity],
-                            width: 3
+                            width: 5
                         })
                     })
                 );

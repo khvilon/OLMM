@@ -39,6 +39,7 @@
     var url = "http://10.0.12.221:3666/mm_gaps/8.json";
     $.ajax({
         url: url,
+        dataType: 'json',
         success: function( data ) {
             var arcs = JSON.stringify(data);
             arcs = JSON.parse(arcs);
@@ -60,12 +61,10 @@
 
             olmm.fitToExtent(olmm.graphSource);
 
-            olmm.add_graph(arcs);
-        },
-        dataType: 'json'});
-
-    olmm.addSelectOnHoverEvent('.hover', olmm.graphSource);
-    olmm.addUnselectOnHoverEvent('.hover');
+            olmm.addSelectOnHoverEvent('.hover', olmm.graphSource);
+            olmm.addUnselectOnHoverEvent('.hover');
+        }
+    });
 
 </script>
 </body>
