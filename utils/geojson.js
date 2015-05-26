@@ -34,8 +34,17 @@ OLMM.prototype.readGeoJSON = function(geojson, id){
                     color: feature_properties['color'],
                     opacity: 1
                 })
-            });
-            feature.setStyle(style);
+            })
+        } else {
+            style = new ol.style.Style();
+        }
+
+        feature.setStyle(style)
+
+        if (geometry_type == 'Point'){
+            feature.setGeometry(new ol.geom.Point(coords))
+        } else if (geometry_type == 'LineString'){
+            feature.setGeometry(new ol.geom.LineString(coords));
         }
 
         if (id) {
