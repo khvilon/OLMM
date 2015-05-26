@@ -65,6 +65,7 @@ OLMM.prototype.createMap = function (divName) {
     this.map = new ol.Map({
         target: divName,
         layers: this.getMainLayers().concat([
+            this.lineLayer,
             this.graphLayer,
             this.lastProjLayer,
             this.allProjLayer,
@@ -168,6 +169,8 @@ OLMM.prototype.draw_points = function (data) {
     if (mm_projs.length > 0) {
         this.mmProjSource.addFeatures(mm_projs);
     }
+
+    this.transformPointsToLine(features, this.lineSource)
 };
 
 OLMM.prototype.show_points = function (last_data) {

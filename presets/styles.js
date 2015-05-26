@@ -274,6 +274,13 @@ OLMM.prototype.getIconClusterStyle = function (feature, resolution) {
     return style;
 };
 
+OLMM.prototype.styleLineFunction = function(feature, resolution) {
+    return [new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'orange'
+        })
+    })]
+};
 
 function radians(n) {
     return n * (Math.PI / 180);

@@ -5,6 +5,11 @@ OLMM.prototype.createLayers = function () {
         style: this.stylePointSelectFunction
     }); // TODO REMOVE
 
+    this.lineSource = new ol.source.Vector();
+    this.lineLayer = new ol.layer.Vector({
+        source: this.lineSource,
+        style: this.styleLineFunction });
+
     this.graphSource = new ol.source.Vector();
     this.graphLayer = new ol.layer.Vector({
         source: this.graphSource,
