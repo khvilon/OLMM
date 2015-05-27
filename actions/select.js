@@ -1,6 +1,6 @@
-OLMM.prototype.addSelectOnHoverEvent = function(selector, source) {
+OLMM.prototype.addSelectOnHoverEvent = function(selector, sources) {
     $(selector).mouseenter(function (event) {
-        olmm.selectOnHover(event.target, source);
+        olmm.selectOnHover(event.target, sources);
     });
 };
 
@@ -11,8 +11,21 @@ OLMM.prototype.addUnselectOnHoverEvent = function(selector) {
 };
 
 
-OLMM.prototype.selectOnHover = function(event_target, source) {
-    var feature = source.getFeatureById($(event_target).data('feature-id'));
+OLMM.prototype.selectOnHover = function(event_target, sources) {
+    var source;
+    var break_loop = false;
+    var feature = '';
+    var feature_id = $(event_target).data('feature-id');
+
+    for (var i = 0; i < sources.length && !break_loop; i++) {
+        source = sources[i];
+
+        feature = source.getFeatureById(feature_id);
+
+        if (feature) {
+            break_loop = true
+        }
+    }
 
     this.hoverInteraction = new ol.interaction.Select();
 

@@ -173,7 +173,7 @@ OLMM.prototype.draw_points = function (data) {
     this.transformPointsToLine(features, this.lineSource)
 };
 
-OLMM.prototype.show_points = function (last_data) {
+OLMM.prototype.show_points = function (last_data, current_projection) {
     this.lastProjSource.clear();
     var maxInd = last_data.point_num;
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
@@ -207,12 +207,12 @@ OLMM.prototype.show_points = function (last_data) {
                     pointCoords,projCoords])
             });
 
-            if (line_feature) {
+            if (current_projection == i) {
                 line_feature.setStyle(
                     new ol.style.Style({
                         stroke: new ol.style.Stroke({
-                            color: [255, 204, 51, opacity],
-                            width: 5
+                            color: [255, 204, 51, 1],
+                            width: 6
                         })
                     })
                 );
