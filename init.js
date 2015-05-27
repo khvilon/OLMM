@@ -14,7 +14,7 @@ function OLMM() {}
 
 window.olmm_server_config = {
     'preload': 3,
-    'wms_server':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
+    //'wms_server':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
     'tiled': true,
     'wms_layers': 'roads'
 };

@@ -36,7 +36,7 @@
     var olmm = new OLMM();
     olmm.init('map', sel, sel);
 
-    var url = "http://10.0.12.221:3666/mm_gaps/15.json";
+    var url = "http://10.0.12.221:3666/mm_gaps/9.json";
     $.ajax({
         url: url,
         dataType: 'json',
@@ -44,8 +44,8 @@
             var arcs = JSON.stringify(data);
             arcs = JSON.parse(arcs);
 
-            var line_before_geojson = arcs['line_before'];
-            var line_after_geojson = arcs['line_after'];
+            var line_before_geojson = arcs['points_before'];
+            var line_after_geojson = arcs['points_after'];
             var ways_geojson = arcs['ways'][0]['line'];
             var ways2_geojson = arcs['ways'][1]['line'];
 
