@@ -27,8 +27,6 @@ OLMM.prototype.styleGraphFunction = function (feature, resolution) {
     opacity = 0.9;
     color = feature.getProperties()['color'] || 'black';
 
-    console.log(color);
-
     var geometry = feature.getGeometry();
     var styles = [
         // linestring
