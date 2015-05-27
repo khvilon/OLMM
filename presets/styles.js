@@ -275,11 +275,38 @@ OLMM.prototype.getIconClusterStyle = function (feature, resolution) {
 };
 
 OLMM.prototype.styleLineFunction = function(feature, resolution) {
-    return [new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: 'orange'
+
+    var geometry = feature.getGeometry();
+
+    var styles = [
+        new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 6
+            })
         })
-    })]
+    ];
+
+    geometry.forEachSegment(function (start, end) {
+        styles.push(new ol.style.Style({
+            geometry: new ol.geom.Point(end),
+            image: new ol.style.Icon({
+                src: 'pnt.png',
+                rotateWithView: false,
+                rotation: feature.getProperties()['azimuth']
+            })
+        }));
+        styles.push(new ol.style.Style({
+            geometry: new ol.geom.Point(start),
+            image: new ol.style.Icon({
+                src: 'pnt.png',
+                rotateWithView: false,
+                rotation: feature.getProperties()['azimuth']
+            })
+        }));
+    });
+
+    return styles
 };
 
 function radians(n) {

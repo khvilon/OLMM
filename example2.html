@@ -13,6 +13,7 @@
     <script src="utils/wkt.js" type="text/javascript"></script>
     <script src="utils/geojson.js" type="text/javascript"></script>
     <script src="actions/select.js" type="text/javascript"></script>
+    <script src="utils/transform.js" type="text/javascript"></script>
 
     <!--<script data-main="main_require" src="require.js"></script>-->
 
@@ -36,7 +37,7 @@
     var olmm = new OLMM();
     olmm.init('map', sel, sel);
 
-    var url = "http://10.0.12.221:3666/mm_gaps/9.json";
+    var url = "http://10.0.12.221:3666/mm_gaps/15.json";
     $.ajax({
         url: url,
         dataType: 'json',
@@ -49,13 +50,11 @@
             var ways_geojson = arcs['ways'][0]['line'];
             var ways2_geojson = arcs['ways'][1]['line'];
 
-            var good_proj_features = olmm.readGeoJSON(line_before_geojson);
-            var mm_proj_features = olmm.readGeoJSON(line_after_geojson);
+            var points_before_features = olmm.readGeoJSON(line_before_geojson);
+            var points_after_features = olmm.readGeoJSON(line_after_geojson);
             var ways_features = olmm.readGeoJSON(ways_geojson, '1');
             var ways_features2 = olmm.readGeoJSON(ways2_geojson, '2');
 
-            olmm.pntsSource.addFeatures(good_proj_features);
-            olmm.pntsSource.addFeatures(mm_proj_features);
             olmm.graphSource.addFeatures(ways_features);
             olmm.graphSource.addFeatures(ways_features2);
 
@@ -63,6 +62,9 @@
 
             olmm.addSelectOnHoverEvent('.hover', [olmm.graphSource]);
             olmm.addUnselectOnHoverEvent('.hover');
+
+            olmm.transformPointsToLine(points_before_features, olmm.lineSource);
+            olmm.transformPointsToLine(points_after_features, olmm.lineSource);
         }
     });
 

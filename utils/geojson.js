@@ -31,11 +31,13 @@ OLMM.prototype.readGeoJSON = function(geojson, id){
             style = new ol.style.Style({
                 fill: new ol.style.Fill({
                     color: feature_properties['color'],
-                    opacity: 1
+                    opacity: 1,
+                    width: 6
                 }),
                 stroke: new ol.style.Stroke({
                     color: feature_properties['color'],
-                    opacity: 1
+                    opacity: 1,
+                    width: 6
                 })
             });
             feature.setStyle(style);
