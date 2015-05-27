@@ -1,5 +1,5 @@
-OLMM.prototype. readGeoJSON = function(geojson, id){
-    var features, line_before, line_after, format, i, style, feature_properties;
+OLMM.prototype.readGeoJSON = function(geojson, id){
+    var features, coords, geometry_type, format, i, style, feature_properties;
 
     format = new ol.format.GeoJSON();
 
@@ -9,16 +9,18 @@ OLMM.prototype. readGeoJSON = function(geojson, id){
         var feature = features[i];
 
         feature_properties = feature.getProperties();
+        geometry_type = feature.getGeometry().getType();
+        coords = feature.getGeometry().getCoordinates();
 
-        var coords = feature.getGeometry().getCoordinates();
-        if (coords[0].length > 0)
-        {
-            for(i = 0; i < coords.length;i++)
-                coords[i] = ol.proj.transform(coords[i], 'EPSG:4326', 'EPSG:3857'); 
+        if (geometry_type == 'LineString') {
+            if (coords[0].length > 0) {
+                for(i = 0; i < coords.length;i++) {
+                    coords[i] = ol.proj.transform(coords[i], 'EPSG:4326', 'EPSG:3857');
+                }
+            }
+        } else if (geometry_type == 'Point') {
+            coords = ol.proj.transform(coords, 'EPSG:4326', 'EPSG:3857');
         }
-        else coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:4326', 'EPSG:3857');
-
-        var geometry_type = feature.getGeometry().getType();
 
         if (feature_properties['color']) {
             style = new ol.style.Style({
@@ -30,9 +32,8 @@ OLMM.prototype. readGeoJSON = function(geojson, id){
                     color: feature_properties['color'],
                     opacity: 1
                 })
-            })
-        } else {
-            style = new ol.style.Style();
+            });
+            feature.setStyle(style);
         }
 
 
@@ -40,6 +41,9 @@ OLMM.prototype. readGeoJSON = function(geojson, id){
             feature.setGeometry(new ol.geom.Point(coords))
         } else if (geometry_type == 'LineString'){
             feature.setGeometry(new ol.geom.LineString(coords));
+        }
+
+        if (id) {
             feature.setId('way-'+id)
         }
     }

@@ -215,7 +215,10 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
     var lastPoint = this.pntsSource.getFeatureById(maxInd);
     var pointCoords = lastPoint.getGeometry().getCoordinates();
     if (last_data.proj) {
-        for (var i = 0; i < last_data.proj.length; i++) {
+
+        var projections_length = last_data.proj.length;
+
+        for (var i = 0; i < projections_length; i++) {
             var projCoords = this.transform(
                     [last_data.proj[i].lon, last_data.proj[i].lat]);
             var line_feature = new ol.Feature({
@@ -223,11 +226,11 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
                     pointCoords,projCoords])
             });
 
-            if (current_projection == i) {
+            if (projections_length > 1 && current_projection == i) {
                 line_feature.setStyle(
                     new ol.style.Style({
                         stroke: new ol.style.Stroke({
-                            color: [255, 204, 51, 1],
+                            color: [150, 0, 255, 1],
                             width: 6
                         })
                     })
