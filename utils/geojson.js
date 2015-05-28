@@ -1,4 +1,4 @@
-OLMM.prototype.readGeoJSON = function(geojson, id){
+OLMM.prototype.readGeoJSON = function(geojson, way_number){
     var features, coords, geometry_type, format, i, style, feature_properties, j;
 
     format = new ol.format.GeoJSON();
@@ -43,8 +43,8 @@ OLMM.prototype.readGeoJSON = function(geojson, id){
             feature.setStyle(style);
         }
 
-        if (id) {
-            feature.setId('way-'+id)
+        if (way_number) {
+            feature.setProperties({way_number: way_number})
         }
 
         rewrite_features.push(feature);

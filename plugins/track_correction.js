@@ -33,5 +33,4 @@ OLMM.prototype.createRequiredLayers = function(){
 
     this.map.addLayer(this.simpleRoadLayer);
     this.map.addLayer(this.federalHighWayLayer);
-
 };
