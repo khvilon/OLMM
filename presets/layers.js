@@ -1,7 +1,23 @@
 OLMM.prototype.createLayers = function () {
+    this.pointsSelectSource = new ol.source.Vector();
+    this.pointsSelectLayer = new ol.layer.Vector({
+        source: this.pointsSelectSource,
+        style: this.stylePointSelectFunction
+    }); // TODO REMOVE
+
+    this.lineSource = new ol.source.Vector();
+    this.lineLayer = new ol.layer.Vector({
+        source: this.lineSource,
+        style: this.styleLineFunction });
+
     this.graphSource = new ol.source.Vector();
     this.graphLayer = new ol.layer.Vector({
         source: this.graphSource,
+        style: this.styleGraphFunction });
+
+    this.graphSource2 = new ol.source.Vector();
+    this.graphLayer2 = new ol.layer.Vector({
+        source: this.graphSource2,
         style: this.styleGraphFunction });
 
 	this.pntsSource = new ol.source.Vector();
@@ -44,6 +60,7 @@ OLMM.prototype.createCustomLineStyle = function(line_color, line_width){
         })
     })
 };
+
 
 styleCache = {};
 

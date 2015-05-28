@@ -1,20 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="OpenLayers/css/ol.css" type="text/css">
+    <script src="jquery-1.10.2.js"></script>
     <script src="OpenLayers/build/ol.js" type="text/javascript"></script>
     <script src="init.js" type="text/javascript"></script>
     <script src="apps/core.js" type="text/javascript"></script>
+    <script src="actions/edit.js" type="text/javascript"></script>
+    <script src="presets/styles.js" type="text/javascript"></script>
     <script src="presets/layers.js" type="text/javascript"></script>
     <script src="presets/sources.js" type="text/javascript"></script>
     <script src="utils/line.js" type="text/javascript"></script>
     <script src="utils/wkt.js" type="text/javascript"></script>
     <script src="utils/geojson.js" type="text/javascript"></script>
     <script src="actions/select.js" type="text/javascript"></script>
-    <script src="plugins/correction.js" type="text/javascript"></script>
-
-    <!--<script data-main="main_require" src="require.js"></script>-->
+    <script src="utils/transform.js" type="text/javascript"></script>
+    <script src="plugins/track_correction.js" type="text/javascript"></script>
 
     <!--<script data-main="main_require" src="require.js"></script>-->
 
@@ -28,7 +29,7 @@
     <title>integration example</title>
 </head>
 <body>
-<button class="hover" data-feature-id="way-1" style="position: fixed; z-index: 10000;">Hello world</button>
+<button class="hover" data-layer-name="ways_1" style="position: fixed; z-index: 10000;">Hello world</button>
 <div id="map" class="map"></div>
 <script type="text/javascript">
     sel = function (id) {
@@ -41,6 +42,7 @@
     var url = "http://10.0.12.221:3666/mm_gaps/8.json";
     $.ajax({
         url: url,
+        dataType: 'json',
         success: function( data ) {
             var arcs = JSON.stringify(data);
             arcs = JSON.parse(arcs);
@@ -50,22 +52,25 @@
             var ways_geojson = arcs['ways'][0]['line'];
             var ways2_geojson = arcs['ways'][1]['line'];
 
-            var line_before_features = olmm.readGeoJSON(line_before_geojson);
-            var line_after_features = olmm.readGeoJSON(line_after_geojson);
-            var way1_features = olmm.readGeoJSON(ways_geojson, '1');
-            var way2_features = olmm.readGeoJSON(ways2_geojson, '2');
+            var points_before_features = olmm.readGeoJSON(line_before_geojson);
+            var points_after_features = olmm.readGeoJSON(line_after_geojson);
+            var ways_features = olmm.readGeoJSON(ways_geojson, olmm.geoJSONEachfeatureFunction, {way_number: '1'});
+            var ways_features2 = olmm.readGeoJSON(ways2_geojson, olmm.geoJSONEachfeatureFunction, {way_number: '2'});
 
-            olmm.createVectorLayer('points_before', line_before_features, olmm.stylePntFunction);
-            olmm.createVectorLayer('points_after', line_after_features, olmm.stylePntFunction);
-            olmm.createVectorLayer('lines_1', way1_features, olmm.styleGraphFunction);
-            olmm.createVectorLayer('lines_2', way2_features, olmm.styleGraphFunction);
+            olmm.createVectorLayer('ways_1', ways_features, olmm.styleGraphFunction);
+            olmm.createVectorLayer('ways_2', ways_features2, olmm.styleGraphFunction);
 
-            olmm.fitToExtent(olmm.getSourceByName('lines_1'));
+            olmm.fitToExtent(olmm.getSourceByName('ways_1'));
 
-            olmm.addSelectOnHoverEvent('.hover', olmm.graphSource);
+            olmm.initLayersForHoverEvent([olmm.getLayerByName('ways_1'), olmm.getLayerByName('ways_2')]);
+            olmm.addSelectOnHoverEvent('.hover');
             olmm.addUnselectOnHoverEvent('.hover');
-        },
-        dataType: 'json'});
+
+            olmm.transformPointsToLine(points_before_features, olmm.lineSource);
+            olmm.transformPointsToLine(points_after_features, olmm.lineSource);
+        }
+    });
+
 </script>
 </body>
 </html>

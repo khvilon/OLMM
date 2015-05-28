@@ -16,7 +16,8 @@ OLMM.prototype.addSource = function(name, source) {
 };
 
 OLMM.prototype.addLayer = function(name, layer) {
-    this.layers[name] = layer
+    this.layers[name] = layer;
+    this.map.addLayer(layer);
 };
 
 OLMM.prototype.createVectorLayer = function(name, features, style) {
@@ -28,7 +29,7 @@ OLMM.prototype.createVectorLayer = function(name, features, style) {
 
     var layer = new ol.layer.Vector({
         source: source,
-        style: this.styleGraphFunction
+        style: style
     });
 
     this.addSource(name, source);

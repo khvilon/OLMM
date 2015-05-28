@@ -14,29 +14,37 @@ function OLMM() {}
 
 window.olmm_server_config = {
     'preload': 3,
-    'wms_server': '', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
-    'tiled': true
+    //'wms_server':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
+    'tiled': true,
+    'wms_layers': 'roads'
 };
 
 OLMM.prototype.getMainLayers = function(){
     var config = window.olmm_server_config;
+
+    var osm_layer = new ol.layer.Tile({
+        preload: config['preload'] || 3,
+        source: new ol.source.OSM()
+    });
+    osm_layer.setProperties({layer_type: 'osm_layer'});
+    this.osm_layer = osm_layer;
+
+    var layers = [osm_layer];
+
     if (config['wms_server']) {
-        return [
-            new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'sat'})
-            }),
-            new ol.layer.Image({
+        var wms_layer = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
                 url: config['wms_server'],
-                params: {'LAYERS': 'topp:states', 'TILED': config['tiled']},
+                params: {'LAYERS': config['wms_layers'], 'TILED': true},
                 serverType: 'geoserver'
             })
-        ]
-    } else {
-        return [new ol.layer.Tile({
-            preload: config['preload'] || 4,
-            source: new ol.source.OSM()
-        })]
+        });
+        wms_layer.setProperties({layer_type: 'wms_layer'});
+        layers.push(wms_layer);
+        this.wms_layer = wms_layer;
     }
+
+    return layers;
 };
 
 OLMM.prototype.getLayers = function (){
@@ -58,10 +66,13 @@ OLMM.prototype.addLayer = function (name, layer){
 };
 
 OLMM.prototype.createMap = function (divName) {
+
     this.map = new ol.Map({
         target: divName,
         layers: this.getMainLayers().concat([
+            this.lineLayer,
             this.graphLayer,
+            this.graphLayer2,
             this.lastProjLayer,
             this.allProjLayer,
             this.mmProjLayer,
@@ -164,9 +175,22 @@ OLMM.prototype.draw_points = function (data) {
     if (mm_projs.length > 0) {
         this.mmProjSource.addFeatures(mm_projs);
     }
+
+    this.transformPointsToLine(features, this.lineSource);
+    this.fitToExtent(this.lineSource);
 };
 
-OLMM.prototype.show_points = function (last_data) {
+OLMM.prototype.setLayerVisible = function (layer_name, visible) {
+    var layers = this.map.getLayers().a;
+
+    if (layer_name == 'osm') {
+        this.osm_layer.setVisible(visible)
+    } else if (layer_name == 'wms') {
+        this.wms_layer.setVisible(visible)
+    }
+};
+
+OLMM.prototype.show_points = function (last_data, current_projection) {
     this.lastProjSource.clear();
     var maxInd = last_data.point_num;
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
@@ -192,7 +216,10 @@ OLMM.prototype.show_points = function (last_data) {
     var lastPoint = this.pntsSource.getFeatureById(maxInd);
     var pointCoords = lastPoint.getGeometry().getCoordinates();
     if (last_data.proj) {
-        for (var i = 0; i < last_data.proj.length; i++) {
+
+        var projections_length = last_data.proj.length;
+
+        for (var i = 0; i < projections_length; i++) {
             var projCoords = this.transform(
                     [last_data.proj[i].lon, last_data.proj[i].lat]);
             var line_feature = new ol.Feature({
@@ -200,12 +227,12 @@ OLMM.prototype.show_points = function (last_data) {
                     pointCoords,projCoords])
             });
 
-            if (line_feature) {
+            if (projections_length > 1 && current_projection == i) {
                 line_feature.setStyle(
                     new ol.style.Style({
                         stroke: new ol.style.Stroke({
-                            color: [255, 204, 51, opacity],
-                            width: 3
+                            color: [150, 0, 255, 1],
+                            width: 6
                         })
                     })
                 );
@@ -228,7 +255,8 @@ OLMM.prototype.show_point_info = function (data) {
     for (var i = 0; i < projs.length; i++) {
         var projCoords = this.transform(
                 [projs[i].lon, projs[i].lat]);
-        var line_feature = new ol.Feature({
+        var line_feature = new ol.Feature
+        ({
                 geometry: new ol.geom.LineString([
                 pointCoords,projCoords])
         });
@@ -276,7 +304,7 @@ OLMM.prototype.fitToExtent = function (source) {
 };
 
 OLMM.prototype.init = function (divName, selectPntFunction, mapClickFunction) {
-    this.initDefaults();
+    olmm.initDefaults();
     this.createLayers();
     this.createMap(divName);
     this.addPntSelect(selectPntFunction, mapClickFunction);
