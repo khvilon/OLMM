@@ -1,4 +1,4 @@
-OLMM.prototype.readGeoJSON = function(geojson, way_number){
+OLMM.prototype.readGeoJSON = function(geojson, each_feature_function, addition_params){
     var features, coords, geometry_type, format, i, style, feature_properties, j;
 
     format = new ol.format.GeoJSON();
@@ -9,7 +9,6 @@ OLMM.prototype.readGeoJSON = function(geojson, way_number){
     for (i = 0; i < features.length; i++) {
         var feature = features[i];
 
-        feature_properties = feature.getProperties();
         geometry_type = feature.getGeometry().getType();
         coords = feature.getGeometry().getCoordinates();
 
@@ -27,24 +26,9 @@ OLMM.prototype.readGeoJSON = function(geojson, way_number){
             feature.setGeometry(new ol.geom.LineString(coords));
 
         }
-        if (feature_properties['color']) {
-            style = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: feature_properties['color'],
-                    opacity: 1,
-                    width: 6
-                }),
-                stroke: new ol.style.Stroke({
-                    color: feature_properties['color'],
-                    opacity: 1,
-                    width: 6
-                })
-            });
-            feature.setStyle(style);
-        }
 
-        if (way_number) {
-            feature.setProperties({way_number: way_number})
+        if (each_feature_function) {
+            feature = each_feature_function(feature, addition_params)
         }
 
         rewrite_features.push(feature);
