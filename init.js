@@ -72,6 +72,7 @@ OLMM.prototype.createMap = function (divName) {
         layers: this.getMainLayers().concat([
             this.lineLayer,
             this.graphLayer,
+            this.graphLayer2,
             this.lastProjLayer,
             this.allProjLayer,
             this.mmProjLayer,

@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="OpenLayers/css/ol.css" type="text/css">
+    <script src="jquery-1.10.2.js"></script>
     <script src="OpenLayers/build/ol.js" type="text/javascript"></script>
     <script src="init.js" type="text/javascript"></script>
+    <script src="apps/core.js" type="text/javascript"></script>
     <script src="actions/edit.js" type="text/javascript"></script>
     <script src="presets/styles.js" type="text/javascript"></script>
     <script src="presets/layers.js" type="text/javascript"></script>
@@ -38,7 +39,7 @@
     var olmm = new OLMM();
     olmm.init('map', sel, sel);
 
-    var url = "http://10.0.12.221:3666/mm_gaps/15.json";
+    var url = "http://10.0.12.221:3666/mm_gaps/12.json";
     $.ajax({
         url: url,
         dataType: 'json',
@@ -51,17 +52,20 @@
             var ways_geojson = arcs['ways'][0]['line'];
             var ways2_geojson = arcs['ways'][1]['line'];
 
+            olmm.initDefaults();
+
             var points_before_features = olmm.readGeoJSON(line_before_geojson);
             var points_after_features = olmm.readGeoJSON(line_after_geojson);
             var ways_features = olmm.readGeoJSON(ways_geojson, olmm.geoJSONEachfeatureFunction, {way_number: '1'});
             var ways_features2 = olmm.readGeoJSON(ways2_geojson, olmm.geoJSONEachfeatureFunction, {way_number: '2'});
 
-            olmm.graphSource.addFeatures(ways_features);
-            olmm.graphSource.addFeatures(ways_features2);
+            olmm.createVectorLayer('ways_1', ways_features, olmm.styleGraphFunction);
+            olmm.createVectorLayer('ways_2', ways_features2, olmm.styleGraphFunction);
 
-            olmm.fitToExtent(olmm.graphSource);
+            olmm.fitToExtent(olmm.getSourceByName('ways_1'));
 
-            olmm.addSelectOnHoverEvent('.hover', [olmm.graphSource]);
+            olmm.initLayersForHoverEvent([olmm.getLayerByName('ways_1'), olmm.getLayerByName('ways_2')]);
+            olmm.addSelectOnHoverEvent('.hover');
             olmm.addUnselectOnHoverEvent('.hover');
 
             olmm.transformPointsToLine(points_before_features, olmm.lineSource);

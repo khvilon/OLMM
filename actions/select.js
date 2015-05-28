@@ -1,54 +1,38 @@
-OLMM.prototype.addSelectOnHoverEvent = function(selector, sources) {
+OLMM.prototype.initLayersForHoverEvent = function(layers) {
+    this.layers_for_hover_event = layers;
+};
+
+OLMM.prototype.addSelectOnHoverEvent = function(selector, layers) {
+    var olmm = this;
     $(selector).mouseenter(function (event) {
-        olmm.selectOnHover(event.target, sources);
+        olmm.selectOnHover(event.target);
     });
 };
 
 OLMM.prototype.addUnselectOnHoverEvent = function(selector) {
+    var olmm = this;
     $(selector).mouseout(function(event){
         olmm.unselectOnHover(event.target);
     })
 };
 
-
-OLMM.prototype.selectOnHover = function(event_target, sources) {
+OLMM.prototype.selectOnHover = function(event_target) {
     var source;
-    var break_loop = false;
     var features_to_select = [];
     var way_id = $(event_target).data('way-id');
+    var layers = this.layers_for_hover_event;
 
-    for (var i = 0; i < sources.length && !break_loop; i++) {
-        source = sources[i];
-
-        var features = source.getFeatures();
-
-        for (var j = 0; j < features.length; j++) {
-
-            var feature_properties = features[j].getProperties();
-
-            if (feature_properties['way_number'] == way_id) {
-                features_to_select.push(features[j])
-            }
-        }
+    for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i];
+        layer.setOpacity(0.2)
     }
-
-    this.hoverInteraction = new ol.interaction.Select();
-
-    this.map.addInteraction(this.hoverInteraction);
-
-    var features = this.hoverInteraction.getFeatures();
-
-    features.push(features_to_select[6]);
-
-    //for (var k = 0; k < features_to_select.length; k++){
-    //    features.push(features_to_select[i])
-    //}
 };
 
-OLMM.prototype.unselectOnHover = function(event_target) {
-    var features = this.hoverInteraction.getFeatures();
+OLMM.prototype.unselectOnHover = function() {
+    var layers = this.layers_for_hover_event;
 
-    for (var i = 0; i < features.getLength(); i++) {
-        features.pop()
+    for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i];
+        layer.setOpacity(1)
     }
 };

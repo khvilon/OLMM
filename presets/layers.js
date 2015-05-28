@@ -15,6 +15,11 @@ OLMM.prototype.createLayers = function () {
         source: this.graphSource,
         style: this.styleGraphFunction });
 
+    this.graphSource2 = new ol.source.Vector();
+    this.graphLayer2 = new ol.layer.Vector({
+        source: this.graphSource2,
+        style: this.styleGraphFunction });
+
 	this.pntsSource = new ol.source.Vector();
     this.pntsLayer = new ol.layer.Vector({
     	source: this.pntsSource,
@@ -56,12 +61,6 @@ OLMM.prototype.createCustomLineStyle = function(line_color, line_width){
     })
 };
 
-OLMM.prototype.createVectorLayer = function(source, style){
-    return new ol.layer.Vector({
-        source: source,
-        style: style
-    })
-};
 
 styleCache = {};
 
