@@ -4,7 +4,7 @@ OLMM.prototype.initLayersForHoverEvent = function(layers) {
 
     for (i = 0; i < layers.length; i++) {
         layer = layers[i];
-        layer.setOpacity(0.7);
+        layer.setOpacity(0.3);
         this.layers_for_hover_event.push(layer);
     }
 };
@@ -31,6 +31,6 @@ OLMM.prototype.selectOnHover = function(event_target) {
 
 OLMM.prototype.unselectOnHover = function() {
     for (var i = 0; i < this.layers_for_hover_event.length; i++) {
-        this.layers_for_hover_event[i].setOpacity(0.7)
+        this.layers_for_hover_event[i].setOpacity(0.3)
     }
 };
