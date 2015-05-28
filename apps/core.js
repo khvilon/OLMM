@@ -34,4 +34,6 @@ OLMM.prototype.createVectorLayer = function(name, features, style) {
 
     this.addSource(name, source);
     this.addLayer(name, layer);
+
+    return layer;
 };

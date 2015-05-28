@@ -1,4 +1,5 @@
 OLMM.prototype.transformPointsToLine = function(features, line_source){
+
     var line_coords = [];
 
     for (var i = 0; i < features.length; i++){
@@ -15,7 +16,10 @@ OLMM.prototype.transformPointsToLine = function(features, line_source){
         feature.setProperties({azimuth: azimuth});
     }
 
-    line_source.addFeature(feature);
+    if (line_source) {
+        line_source.addFeature(feature);
+    }
+    return feature
 };
 
 OLMM.prototype.transformCoordsToLine = function(coords, line_source){
