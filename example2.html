@@ -29,7 +29,7 @@
     <title>integration example</title>
 </head>
 <body>
-<button class="hover" data-way-id="1" style="position: fixed; z-index: 10000;">Hello world</button>
+<button class="hover" data-layer-name="ways_1" style="position: fixed; z-index: 10000;">Hello world</button>
 <div id="map" class="map"></div>
 <script type="text/javascript">
     sel = function (id) {
@@ -51,8 +51,6 @@
             var line_after_geojson = arcs['points_after'];
             var ways_geojson = arcs['ways'][0]['line'];
             var ways2_geojson = arcs['ways'][1]['line'];
-
-            olmm.initDefaults();
 
             var points_before_features = olmm.readGeoJSON(line_before_geojson);
             var points_after_features = olmm.readGeoJSON(line_after_geojson);

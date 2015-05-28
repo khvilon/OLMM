@@ -304,6 +304,7 @@ OLMM.prototype.fitToExtent = function (source) {
 };
 
 OLMM.prototype.init = function (divName, selectPntFunction, mapClickFunction) {
+    olmm.initDefaults();
     this.createLayers();
     this.createMap(divName);
     this.addPntSelect(selectPntFunction, mapClickFunction);
