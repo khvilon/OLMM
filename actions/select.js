@@ -1,5 +1,12 @@
 OLMM.prototype.initLayersForHoverEvent = function(layers) {
-    this.layers_for_hover_event = layers;
+    var layer, i;
+    this.layers_for_hover_event = [];
+
+    for (i = 0; i < layers.length; i++) {
+        layer = layers[i];
+        layer.setOpacity(0.7);
+        this.layers_for_hover_event.push(layer);
+    }
 };
 
 OLMM.prototype.addSelectOnHoverEvent = function(selector, layers) {
@@ -17,16 +24,13 @@ OLMM.prototype.addUnselectOnHoverEvent = function(selector) {
 };
 
 OLMM.prototype.selectOnHover = function(event_target) {
-    var source;
-    var features_to_select = [];
+    console.log(this.layers_for_hover_event);
     var layer_name = $(event_target).data('layer-name');
-    var layers = this.layers_for_hover_event;
-
-    this.getLayerByName(layer_name).setOpacity(0.1);
+    this.getLayerByName(layer_name).setOpacity(1);
 };
 
 OLMM.prototype.unselectOnHover = function() {
-    for (layer_name in this.layers) {
-        this.getLayerByName(layer_name).setOpacity(1)
+    for (var i = 0; i < this.layers_for_hover_event.length; i++) {
+        this.layers_for_hover_event[i].setOpacity(0.7)
     }
 };
