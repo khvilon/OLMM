@@ -210,8 +210,9 @@ OLMM.prototype.draw_tdr_geometry = function(json_data) {
     var features = [];
 
     for (var i = 0; i < json_data.length; i++) {
-        var coords = this.transform([json_data[i][0], json_data[i][1]]);
-        var feature = new ol.Feature(new ol.geom.LineString(coords));
+        var coords1 = this.transform([json_data[i][0]]);
+        var coords2 = this.transform([json_data[i][1]]);
+        var feature = new ol.Feature(new ol.geom.LineString([coords1, coords2]));
         features.push(feature);
     }
 
