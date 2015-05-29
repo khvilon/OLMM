@@ -4,9 +4,8 @@
     <script src="../jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="../OpenLayers/css/ol.css" type="text/css">
     <script src="../OpenLayers/build/ol.js" type="text/javascript"></script>
-    <script src="../init.js" type="text/javascript"></script>
-    <script src="../actions/edit.js" type="text/javascript"></script>
     <script src="../apps/core.js" type="text/javascript"></script>
+    <script src="../actions/edit.js" type="text/javascript"></script>
     <script src="../presets/styles.js" type="text/javascript"></script>
     <script src="../presets/layers.js" type="text/javascript"></script>
     <script src="../presets/sources.js" type="text/javascript"></script>
@@ -14,6 +13,7 @@
     <script src="../utils/wkt.js" type="text/javascript"></script>
     <script src="../utils/geojson.js" type="text/javascript"></script>
     <script src="../utils/points.js" type="text/javascript"></script>
+    <script src="../utils/fit.js" type="text/javascript"></script>
     <script src="../utils/transform.js" type="text/javascript"></script>
     <script src="../plugins/mmtest.js" type="text/javascript"></script>
     <title>mm test tdr example</title>
@@ -52,10 +52,6 @@
     ];
     var json_line = [
         [
-            37.533267,
-            55.746131
-        ],
-        [
             37.540348,
             55.736032
         ],
@@ -66,7 +62,7 @@
     ];
 
     olmm.draw_tdr_points(json);
-    olmm.draw_tdr_lines(json_line);
+    //olmm.draw_tdr_lines(json_line);
 
 </script>
 </body>

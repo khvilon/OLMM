@@ -190,29 +190,101 @@ OLMM.prototype.set_good_arc = function (data) {
 };
 
 OLMM.prototype.styleTDRPoint = function(feature, resolution) {
-    return new ol.style.Style({
-        image: new ol.style.Icon({
-            src: 'pnt.png'
+    return [
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 18,
+                fill: new ol.style.Fill({color: 'red'})
+            })
+        }),
+
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({color: 'white'})
+            })
         })
-    });
+    ]
 };
 
 OLMM.prototype.draw_tdr_points = function(json_data) {
-    var points_features = olmm.points_features_from_coords(json_data);
+    var points_features = this.points_features_from_coords(json_data);
 
-    var points_layer = olmm.createVectorLayer('points', points_features, olmm.styleTDRPoint);
+    var points_layer = this.createVectorLayer('points', points_features, this.styleTDRPoint);
 
-    olmm.fitToExtent(olmm.getSourceByName('points'))
+    this.fitToExtent(this.getSourceByName('points'))
 };
 
 OLMM.prototype.draw_tdr_lines = function(json_data) {
-    olmm.getSourceByName('lines').clear();
+    var lines_source = this.getSourceByName('lines');
 
-    var points_features_to_line = olmm.points_features_from_coords(json_data);
+    if (lines_source) {
+        lines_source.clear();
+    }
 
-    var line_feature = olmm.transformPointsToLine(points_features_to_line);
+    var points_features_to_line = this.points_features_from_coords(json_data);
 
-    var line_layer = olmm.createVectorLayer('lines', [line_feature], olmm.styleGraphFunction);
+    var line_feature = this.transformPointsToLine(points_features_to_line);
 
-    olmm.fitToExtent(olmm.getSourceByName('lines'))
+    var line_layer = this.createVectorLayer('lines', [line_feature], this.styleGraphFunction);
+
+    this.fitToExtent(this.getSourceByName('lines'))
+};
+
+OLMM.prototype.styleGraphFunction = function (feature, resolution) {
+    var width, opacity, color;
+
+    width = 4;
+    opacity = 1;
+    color = 'black'
+
+    var geometry = feature.getGeometry();
+    var styles = [
+        new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: color,
+                width: width
+            }),
+            fill: new ol.style.Fill({
+                color: color
+            })
+        })
+    ];
+
+    geometry.forEachSegment(function (start, end) {
+        styles.push(new ol.style.Style({
+            geometry: new ol.geom.Point(end),
+            image: new ol.style.Circle({
+                radius: 4,
+                stroke: new ol.style.Stroke({
+                    color: [color, opacity],
+                    width: width
+                }),
+                fill: new ol.style.Fill({
+                    color: color
+                })
+            })
+        }));
+        styles.push(new ol.style.Style({
+            geometry: new ol.geom.Point(start),
+            image: new ol.style.Circle({
+                radius: 4,
+                stroke: new ol.style.Stroke({
+                    color: [color, opacity],
+                    width: width
+                }),
+                fill: new ol.style.Fill({
+                    color: color
+                })
+            })
+        }));
+
+        styles.push(new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: color,
+                width: 1
+            })
+        }));
+    });
+    return styles;
 };
