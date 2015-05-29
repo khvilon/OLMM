@@ -131,10 +131,10 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
                         })
                     })
                 );
-                line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
-                this.lastProjSource.addFeature(line_feature);
-                line_feature.visible = true;
-                line_feature.changed();
+            line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
+            this.lastProjSource.addFeature(line_feature);
+            line_feature.visible = true;
+            line_feature.changed();
             }
         }
     }

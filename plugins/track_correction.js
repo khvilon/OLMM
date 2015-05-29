@@ -90,4 +90,4 @@ OLMM.prototype.trackCorrectionMainFunction = function(ajax_data) {
 
     olmm.transformPointsToLine(points_before_features, olmm.lineSource);
     olmm.transformPointsToLine(points_after_features, olmm.lineSource);
-}
+};
