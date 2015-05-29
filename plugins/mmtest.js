@@ -188,14 +188,14 @@ OLMM.prototype.styleTDRPoint = function(feature, resolution) {
         new ol.style.Style({
             image: new ol.style.Circle({
                 radius: 18,
-                fill: new ol.style.Fill({color: 'red'})
+                fill: new ol.style.Fill({color: 'green'})
             })
         }),
 
         new ol.style.Style({
             image: new ol.style.Circle({
                 radius: 6,
-                fill: new ol.style.Fill({color: 'white'})
+                fill: new ol.style.Fill({color: 'green'})
             })
         })
     ]
