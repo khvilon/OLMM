@@ -211,17 +211,16 @@ OLMM.prototype.draw_tdr_geometry = function(json_data) {
 
     for (var i = 0; i < json_data.length; i++) {
         var coords = this.transform([json_data[i][0], json_data[i][1]]);
-        var feature = new ol.Feature({geometry: new ol.geom.LineString(coords)});
+        var feature = new ol.Feature(new ol.geom.LineString(coords));
         features.push(feature);
     }
 
-    var tdr_geometry = this.getSourceByName('tdr_geometry');
-    if (!tdr_geometry){
-        tdr_geometry = this.createVectorLayer(tdr_geometry, features, this.styleTDRGeometryFunction);
+    var tdr_geometry_source = this.getSourceByName('tdr_geometry');
+    if (!tdr_geometry_source){
+        this.createVectorLayer('tdr_geometry', features, this.styleTDRGeometryFunction);
     } else {
-        var source = this.getSourceByName('tdr_geometry');
-        source.clear();
-        source.addFeatures(features);
+        tdr_geometry_source.clear();
+        tdr_geometry_source.addFeatures(features);
     }
 
 };

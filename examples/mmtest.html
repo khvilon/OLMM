@@ -36,6 +36,13 @@
             var json_string = JSON.stringify(data);
             var json = JSON.parse(json_string);
             olmm.draw_tdr_lines(json['tdrs'], 'tdr_points');
+            olmm.draw_tdr_geometry([[
+            37.537601,
+            55.737893
+            ],[
+            37.533867,
+            55.743667
+          ]])
         }
     });
 
