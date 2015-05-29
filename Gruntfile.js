@@ -1,10 +1,5 @@
 /**
- *
- * Сборка ARM Test MM
  * Файл конфигурации сборки Grunt
- * SASS > CSS
- * Сборка JS
- * настройки file-watchers
  */
 module.exports = function(grunt) {
     'use strict';
