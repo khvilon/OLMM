@@ -202,11 +202,23 @@ OLMM.prototype.styleTDRPoint = function(feature, resolution) {
 };
 
 OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
-    var points_features = this.points_features_from_coords(json_data);
+    var points_features = this.readGeoJSON(json_data);
 
-    var points_layer = this.createVectorLayer(layer_name, points_features, this.styleTDRPoint);
+    var filtered_features = [];
+    for (var i = 0; i < points_features.length; i++) {
+        var feature = points_features[i];
+        if (feature.getProperties()['is_federal'] == 1){ // TODO warning
+            filtered_features.push(feature);
+        }
+    }
 
-    this.fitToExtent(this.getSourceByName(layer_name))
+    console.log(filtered_features.length);
+
+    var points_layer = this.createVectorLayer(layer_name, filtered_features, this.styleTDRPoint);
+
+    if (filtered_features.length){
+        this.fitToExtent(this.getSourceByName(layer_name))
+    }
 };
 
 OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {

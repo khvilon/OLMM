@@ -28,41 +28,18 @@
     var olmm = new OLMM();
     olmm.init('map', sel, sel);
 
-    var json = [
-        [
-            37.537601,
-            55.737893
-        ],
-        [
-            37.533867,
-            55.743667
-        ],
-        [
-            37.533267,
-            55.746131
-        ],
-        [
-            37.540348,
-            55.736032
-        ],
-        [
-            37.537601,
-            55.737893
-        ]
-    ];
-    var json_line = [
-        [
-            37.540348,
-            55.736032
-        ],
-        [
-            37.537601,
-            55.737893
-        ]
-    ];
+    var url = "../test.json";
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function( data ) {
+            var json_string = JSON.stringify(data);
+            var json = JSON.parse(json_string);
+            olmm.draw_tdr_points(json['tdrs'], 'tdr_points');
+        }
+    });
 
-    olmm.draw_tdr_points(json, 'tdr_points');
-    olmm.draw_tdr_lines(json_line, 'tdr_lines');
+    //olmm.draw_tdr_lines(json_line, 'tdr_lines');
 
 </script>
 </body>
