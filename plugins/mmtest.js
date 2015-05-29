@@ -200,7 +200,7 @@ OLMM.prototype.styleTDRPoint = function(feature, resolution) {
     ]
 };
 
-OLMM.prototype.draw_tdr_geometry = function(json_data) {
+OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
 
     if (!json_data){
         return
@@ -293,9 +293,10 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
 OLMM.prototype.styleTDRLineStringFunction = function(feature, resolution) {
     var width, opacity, color;
 
-    width = 6;
+    width = 3;
     opacity = 1;
-    color = 'red';
+    color = 'blue';
+    if(feature.getProperties().is_federal) color = 'red';
 
     return [
         new ol.style.Style({
@@ -315,8 +316,8 @@ OLMM.prototype.styleTDRGeometryFunction = function(feature, resolution) {
     var width, opacity, color;
 
     width = 7;
-    opacity = 1;
-    color = 'green';
+    opacity = 0.3;
+    color = 'red';
 
     return [
         new ol.style.Style({
