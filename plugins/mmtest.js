@@ -250,15 +250,14 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
     this.fitToExtent(this.getSourceByName(layer_name))
 };
 
-OLMM.prototype.styleGraphFunction = function (feature, resolution) {
+OLMM.prototype.styleTDRLineStringFunction = function (feature, resolution) {
     var width, opacity, color;
 
-    width = 4;
+    width = 6;
     opacity = 1;
-    color = 'black';
+    color = 'red';
 
-    var geometry = feature.getGeometry();
-    var styles = [
+    return [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: color,
@@ -269,41 +268,4 @@ OLMM.prototype.styleGraphFunction = function (feature, resolution) {
             })
         })
     ];
-
-    geometry.forEachSegment(function (start, end) {
-        styles.push(new ol.style.Style({
-            geometry: new ol.geom.Point(end),
-            image: new ol.style.Circle({
-                radius: 4,
-                stroke: new ol.style.Stroke({
-                    color: [color, opacity],
-                    width: width
-                }),
-                fill: new ol.style.Fill({
-                    color: color
-                })
-            })
-        }));
-        styles.push(new ol.style.Style({
-            geometry: new ol.geom.Point(start),
-            image: new ol.style.Circle({
-                radius: 4,
-                stroke: new ol.style.Stroke({
-                    color: [color, opacity],
-                    width: width
-                }),
-                fill: new ol.style.Fill({
-                    color: color
-                })
-            })
-        }));
-
-        styles.push(new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: color,
-                width: 1
-            })
-        }));
-    });
-    return styles;
 };
