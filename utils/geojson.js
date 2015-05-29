@@ -3,8 +3,6 @@ OLMM.prototype.readGeoJSON = function(geojson, each_feature_function, addition_p
 
     format = new ol.format.GeoJSON();
 
-    console.log(geojson);
-
     features = format.readFeatures(geojson);
 
     var rewrite_features = [];
@@ -32,6 +30,9 @@ OLMM.prototype.readGeoJSON = function(geojson, each_feature_function, addition_p
         if (each_feature_function) {
             feature = each_feature_function(feature, addition_params || {})
         }
+
+        rewrite_features.push(feature);
+
     }
     return rewrite_features;
 };

@@ -35,7 +35,7 @@
         success: function( data ) {
             var json_string = JSON.stringify(data);
             var json = JSON.parse(json_string);
-            olmm.draw_tdr_points(json['tdrs'], 'tdr_points');
+            olmm.draw_tdr_lines(json['tdrs'], 'tdr_points');
         }
     });
 

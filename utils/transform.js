@@ -15,13 +15,15 @@ OLMM.prototype.transformPointsToLine = function(features, line_source){
         geometry: new ol.geom.LineString(line_coords)
     });
 
-    var azimuth = old_feature.getProperties()['azimuth'];
-    if (azimuth){
-        feature.setProperties({azimuth: azimuth});
-    }
+    if (old_feature) {
+        var azimuth = old_feature.getProperties()['azimuth'];
+        if (azimuth){
+            feature.setProperties({azimuth: azimuth});
+        }
 
-    if (line_source) {
-        line_source.addFeature(feature);
+        if (line_source) {
+            line_source.addFeature(feature);
+        }
     }
     return feature
 };

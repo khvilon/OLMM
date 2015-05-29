@@ -202,11 +202,21 @@ OLMM.prototype.styleTDRPoint = function(feature, resolution) {
 };
 
 OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
+
+    if (!json_data){
+        return
+    }
+
+    console.log(json_data);
+
     var points_features = this.readGeoJSON(json_data);
 
     var filtered_features = [];
     for (var i = 0; i < points_features.length; i++) {
         var feature = points_features[i];
+
+        console.log(feature.getProperties());
+
         if (feature.getProperties()['is_federal'] == 1){ // TODO warning
             filtered_features.push(feature);
         }
@@ -222,17 +232,20 @@ OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
 };
 
 OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
+
+    if (!json_data){
+        return
+    }
+
     var lines_source = this.getSourceByName('lines');
 
     if (lines_source) {
         lines_source.clear();
     }
 
-    var points_features_to_line = this.points_features_from_coords(json_data);
+    var points_features_to_line = this.readGeoJSON(json_data);
 
-    var line_feature = this.transformPointsToLine(points_features_to_line);
-
-    var line_layer = this.createVectorLayer(layer_name, [line_feature], this.styleGraphFunction);
+    var line_layer = this.createVectorLayer(layer_name, points_features_to_line, this.styleGraphFunction);
 
     this.fitToExtent(this.getSourceByName(layer_name))
 };
