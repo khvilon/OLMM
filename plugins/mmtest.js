@@ -71,8 +71,7 @@ OLMM.prototype.draw_points = function (data) {
         this.mmProjSource.addFeatures(mm_projs);
     }
 
-    this.transformPointsToLine(features, this.lineSource);
-    this.fitToExtent(this.lineSource);
+ //   this.transformPointsToLine(features, this.lineSource);   this.fitToExtent(this.lineSource);
 };
 
 OLMM.prototype.setLayerVisible = function(layer_name, visible) {
@@ -207,7 +206,7 @@ OLMM.prototype.draw_tdr_geometry = function(json_data) {
         return
     }
 
-    var features = [];
+  /*  var features = [];
 
     for (var i = 0; i < json_data.length; i++) {
 
@@ -232,7 +231,15 @@ OLMM.prototype.draw_tdr_geometry = function(json_data) {
         tdr_geometry_source.clear();
         tdr_geometry_source.addFeatures(features);
     }
-    this.fitToExtent(tdr_geometry_source);
+    this.fitToExtent(tdr_geometry_source);*/
+
+
+
+    var points_features_to_line = this.readGeoJSON(json_data);
+
+    var geom_layer = this.createVectorLayer(layer_name, points_features_to_line, this.styleTDRGeometryFunction);
+
+    this.fitToExtent(this.getSourceByName(layer_name))
 
 };
 
