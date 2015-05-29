@@ -75,14 +75,8 @@ OLMM.prototype.draw_points = function (data) {
     this.fitToExtent(this.lineSource);
 };
 
-OLMM.prototype.setLayerVisible = function (layer_name, visible) {
-    var layers = this.map.getLayers().a;
-
-    if (layer_name == 'osm') {
-        this.osm_layer.setVisible(visible)
-    } else if (layer_name == 'wms') {
-        this.wms_layer.setVisible(visible)
-    }
+OLMM.prototype.setLayerVisible = function(layer_name, visible) {
+    this.getLayerByName(layer_name).setVisible(visible);
 };
 
 OLMM.prototype.show_points = function (last_data, current_projection) {
@@ -207,15 +201,15 @@ OLMM.prototype.styleTDRPoint = function(feature, resolution) {
     ]
 };
 
-OLMM.prototype.draw_tdr_points = function(json_data) {
+OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
     var points_features = this.points_features_from_coords(json_data);
 
-    var points_layer = this.createVectorLayer('points', points_features, this.styleTDRPoint);
+    var points_layer = this.createVectorLayer(layer_name, points_features, this.styleTDRPoint);
 
-    this.fitToExtent(this.getSourceByName('points'))
+    this.fitToExtent(this.getSourceByName(layer_name))
 };
 
-OLMM.prototype.draw_tdr_lines = function(json_data) {
+OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
     var lines_source = this.getSourceByName('lines');
 
     if (lines_source) {
@@ -226,9 +220,9 @@ OLMM.prototype.draw_tdr_lines = function(json_data) {
 
     var line_feature = this.transformPointsToLine(points_features_to_line);
 
-    var line_layer = this.createVectorLayer('lines', [line_feature], this.styleGraphFunction);
+    var line_layer = this.createVectorLayer(layer_name, [line_feature], this.styleGraphFunction);
 
-    this.fitToExtent(this.getSourceByName('lines'))
+    this.fitToExtent(this.getSourceByName(layer_name))
 };
 
 OLMM.prototype.styleGraphFunction = function (feature, resolution) {
@@ -236,7 +230,7 @@ OLMM.prototype.styleGraphFunction = function (feature, resolution) {
 
     width = 4;
     opacity = 1;
-    color = 'black'
+    color = 'black';
 
     var geometry = feature.getGeometry();
     var styles = [

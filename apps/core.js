@@ -15,7 +15,7 @@ OLMM.prototype.getMainLayers = function(){
         source: new ol.source.OSM()
     });
     osm_layer.setProperties({layer_type: 'osm_layer'});
-    this.osm_layer = osm_layer;
+    this.addLayer('osm', osm_layer, true);
 
     var layers = [osm_layer];
 
@@ -29,7 +29,7 @@ OLMM.prototype.getMainLayers = function(){
         });
         wms_layer.setProperties({layer_type: 'wms_layer'});
         layers.push(wms_layer);
-        this.wms_layer = wms_layer;
+        this.addLayer('wms', wms_layer, true)
     }
 
     return layers;
@@ -77,9 +77,11 @@ OLMM.prototype.addSource = function(name, source) {
     this.sources[name] = source
 };
 
-OLMM.prototype.addLayer = function(name, layer) {
+OLMM.prototype.addLayer = function(name, layer, not_add_to_map) {
     this.layers[name] = layer;
-    this.map.addLayer(layer);
+    if (!not_add_to_map) {
+        this.map.addLayer(layer);
+    }
 };
 
 OLMM.prototype.createVectorLayer = function(name, features, style) {
