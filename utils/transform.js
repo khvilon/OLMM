@@ -1,3 +1,7 @@
+OLMM.prototype.transform = function (data) {
+    return ol.proj.transform(data, 'EPSG:4326', 'EPSG:3857');
+};
+
 OLMM.prototype.transformPointsToLine = function(features, line_source){
 
     var line_coords = [];

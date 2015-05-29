@@ -190,7 +190,6 @@ OLMM.prototype.set_good_arc = function (data) {
 };
 
 OLMM.prototype.styleTDRPoint = function(feature, resolution) {
-    var olmm = this;
     return new ol.style.Style({
         image: new ol.style.Icon({
             src: 'pnt.png'
@@ -207,6 +206,8 @@ OLMM.prototype.draw_tdr_points = function(json_data) {
 };
 
 OLMM.prototype.draw_tdr_lines = function(json_data) {
+    olmm.getSourceByName('lines').clear();
+
     var points_features_to_line = olmm.points_features_from_coords(json_data);
 
     var line_feature = olmm.transformPointsToLine(points_features_to_line);

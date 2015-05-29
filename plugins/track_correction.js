@@ -64,3 +64,30 @@ OLMM.prototype.geoJSONEachfeatureFunction = function(feature, additional_params)
     return feature;
 
 };
+
+OLMM.prototype.trackCorrectionMainFunction = function(ajax_data) {
+    var json_string = JSON.stringify(ajax_data);
+    var json = JSON.parse(json_string);
+
+    var line_before_geojson = json['points_before'];
+    var line_after_geojson = json['points_after'];
+    var ways_geojson = json['ways'][0]['line'];
+    var ways2_geojson = json['ways'][1]['line'];
+
+    var points_before_features = olmm.readGeoJSON(line_before_geojson);
+    var points_after_features = olmm.readGeoJSON(line_after_geojson);
+    var ways_features = olmm.readGeoJSON(ways_geojson, olmm.geoJSONEachfeatureFunction, {way_number: '1'});
+    var ways_features2 = olmm.readGeoJSON(ways2_geojson, olmm.geoJSONEachfeatureFunction, {way_number: '2'});
+
+    olmm.createVectorLayer('ways_1', ways_features, olmm.styleGraphFunction);
+    olmm.createVectorLayer('ways_2', ways_features2, olmm.styleGraphFunction);
+
+    olmm.fitToExtent(olmm.getSourceByName('ways_1'));
+
+    olmm.initLayersForHoverEvent([olmm.getLayerByName('ways_1'), olmm.getLayerByName('ways_2')]);
+    olmm.addSelectOnHoverEvent('.hover');
+    olmm.addUnselectOnHoverEvent('.hover');
+
+    olmm.transformPointsToLine(points_before_features, olmm.lineSource);
+    olmm.transformPointsToLine(points_after_features, olmm.lineSource);
+}
