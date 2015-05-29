@@ -214,7 +214,7 @@ OLMM.prototype.draw_tdr_geometry = function(json_data) {
         var coords = json_data[i];
         var new_coords = [];
 
-        if (coords.length > 1){
+        if (coords[0].length > 1){
             for (j = 0; j < coords.length; j++) {
                 new_coords[j] = ol.proj.transform(coords[j], 'EPSG:4326', 'EPSG:3857');
             }
