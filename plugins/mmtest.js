@@ -210,20 +210,28 @@ OLMM.prototype.draw_tdr_geometry = function(json_data) {
     var features = [];
 
     for (var i = 0; i < json_data.length; i++) {
-        var coords1 = this.transform([json_data[i][0]]);
-        var coords2 = this.transform([json_data[i][1]]);
-        var feature = new ol.Feature(new ol.geom.LineString([coords1, coords2]));
+
+        var coords = json_data[i];
+        var new_coords = [];
+
+        if (coords.length > 1){
+            for (j = 0; j < coords.length; j++) {
+                new_coords[j] = ol.proj.transform(coords[j], 'EPSG:4326', 'EPSG:3857');
+            }
+        } else {
+            new_coords = ol.proj.transform(coords[j], 'EPSG:4326', 'EPSG:3857');
+        }
+        var feature = new ol.Feature(new ol.geom.LineString(coords));
         features.push(feature);
     }
 
     var tdr_geometry_source = this.getSourceByName('tdr_geometry');
     if (!tdr_geometry_source){
-        this.createVectorLayer('tdr_geometry', features, this.styleTDRGeometryFunction);
+        tdr_geometry_source = this.createVectorLayer('tdr_geometry', features, this.styleTDRGeometryFunction).getSource();
     } else {
         tdr_geometry_source.clear();
         tdr_geometry_source.addFeatures(features);
     }
-
     this.fitToExtent(tdr_geometry_source);
 
 };
