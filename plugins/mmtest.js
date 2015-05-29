@@ -201,13 +201,36 @@ OLMM.prototype.styleTDRPoint = function(feature, resolution) {
     ]
 };
 
-OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
+OLMM.prototype.draw_tdr_geometry = function(json_data) {
 
     if (!json_data){
         return
     }
 
-    console.log(json_data);
+    var features = [];
+
+    for (var i = 0; i < json_data.length; i++) {
+        var coords = this.transform([json_data[i][0], json_data[i][1]]);
+        var feature = new ol.Feature({geometry: new ol.geom.LineString(coords)});
+        features.push(feature);
+    }
+
+    var tdr_geometry = this.getSourceByName('tdr_geometry');
+    if (!tdr_geometry){
+        tdr_geometry = this.createVectorLayer(tdr_geometry, features, this.styleTDRGeometryFunction);
+    } else {
+        var source = this.getSourceByName('tdr_geometry');
+        source.clear();
+        source.addFeatures(features);
+    }
+
+};
+
+OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
+
+    if (!json_data){
+        return
+    }
 
     var points_features = this.readGeoJSON(json_data);
 
@@ -245,17 +268,38 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
 
     var points_features_to_line = this.readGeoJSON(json_data);
 
-    var line_layer = this.createVectorLayer(layer_name, points_features_to_line, this.styleGraphFunction);
+    var line_layer = this.createVectorLayer(layer_name, points_features_to_line, this.styleTDRLineStringFunction);
 
     this.fitToExtent(this.getSourceByName(layer_name))
 };
 
-OLMM.prototype.styleTDRLineStringFunction = function (feature, resolution) {
+OLMM.prototype.styleTDRLineStringFunction = function(feature, resolution) {
     var width, opacity, color;
 
     width = 6;
     opacity = 1;
     color = 'red';
+
+    return [
+        new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: color,
+                width: width
+            }),
+            fill: new ol.style.Fill({
+                color: color
+            })
+        })
+    ];
+};
+
+OLMM.prototype.styleTDRGeometryFunction = function(feature, resolution) {
+
+    var width, opacity, color;
+
+    width = 7;
+    opacity = 1;
+    color = 'green';
 
     return [
         new ol.style.Style({
