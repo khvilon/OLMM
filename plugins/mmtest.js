@@ -1,25 +1,21 @@
-OLMM.prototype.add_graph = function (data) {
-    var features;
+OLMM.prototype.wms_server = 
+{
+    'preload': 3,
+    'host':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
+    'tiled': true,
+    'layers': 'roads'
+}
 
-    for (var i = 0; i < data.length; i++) {
-        var id = data[i][0];
-        var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
-        var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-        var labelCoords = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-        var lineString = new ol.geom.LineString([coords_0, coords_1]);
-        var feature = new ol.Feature({
-            geometry: lineString,
-            name: id,
-            id: id
-        });
-        features.push(feature);
-
-    }
-
-    if (features) {
-        this.graphSource.addFeatures(features);
-    }
+OLMM.prototype.createMMTestLayers = function()
+{
+    this.addLayer('osm', this.createOSMLayer(this.createOSMLayer()));
+    this.addLayer('roads', this.createWMSLayer(this.wms_server['host'], this.wms_server['layers']));
+    this.addLayer('tdr_lines', this.createVectorLayer(this.styleTDRLine));
+    this.addLayer('tdr_points', this.createVectorLayer(this.styleTDRPoints));
+    this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));   
 };
+
+
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
     var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords),
@@ -73,12 +69,11 @@ OLMM.prototype.draw_points = function (data) {
 
  //   this.transformPointsToLine(features, this.lineSource);   this.fitToExtent(this.lineSource);
 };
+ 
 
-OLMM.prototype.setLayerVisible = function(layer_name, visible) {
-    this.getLayerByName(layer_name).setVisible(visible);
-};
 
-OLMM.prototype.show_points = function (last_data, current_projection) {
+OLMM.prototype.show_points = function (last_data, current_projection)
+{
     this.lastProjSource.clear();
     var maxInd = last_data.point_num;
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
@@ -182,23 +177,7 @@ OLMM.prototype.set_good_arc = function (data) {
     this.goodProjSource.addFeature(new_feature);
 };
 
-OLMM.prototype.styleTDRPoint = function(feature, resolution) {
-    return [
-        new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 18,
-                fill: new ol.style.Fill({color: 'green'})
-            })
-        }),
 
-        new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 6,
-                fill: new ol.style.Fill({color: 'green'})
-            })
-        })
-    ]
-};
 
 OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
 
@@ -243,8 +222,8 @@ OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
 
 };
 
-OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
-
+OLMM.prototype.draw_tdr_points = function(json_data, layer_name)
+{
     if (!json_data){
         return
     }
@@ -261,6 +240,9 @@ OLMM.prototype.draw_tdr_points = function(json_data, layer_name) {
             filtered_features.push(feature);
         }
     }
+
+
+    //TODO here you have to draw first and last point of each feature! 
 
     console.log(filtered_features.length);
 
@@ -290,7 +272,26 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
     this.fitToExtent(this.getSourceByName(layer_name))
 };
 
-OLMM.prototype.styleTDRLineStringFunction = function(feature, resolution) {
+
+OLMM.prototype.styleTDRPoint = function(feature, resolution) {
+    return [
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 18,
+                fill: new ol.style.Fill({color: 'green'})
+            })
+        }),
+
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({color: 'green'})
+            })
+        })
+    ]
+};
+
+OLMM.prototype.styleTDRLine = function(feature, resolution) {
     var width, opacity, color;
 
     width = 3;
@@ -311,7 +312,7 @@ OLMM.prototype.styleTDRLineStringFunction = function(feature, resolution) {
     ];
 };
 
-OLMM.prototype.styleTDRGeometryFunction = function(feature, resolution) {
+OLMM.prototype.styleTDRGeometry = function(feature, resolution) {
 
     var width, opacity, color;
 
@@ -331,3 +332,30 @@ OLMM.prototype.styleTDRGeometryFunction = function(feature, resolution) {
         })
     ];
 };
+
+
+
+/*
+OLMM.prototype.add_graph = function (data)
+{
+    var features;
+
+    for (var i = 0; i < data.length; i++) {
+        var id = data[i][0];
+        var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
+        var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
+        var labelCoords = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
+        var lineString = new ol.geom.LineString([coords_0, coords_1]);
+        var feature = new ol.Feature({
+            geometry: lineString,
+            name: id,
+            id: id
+        });
+        features.push(feature);
+
+    }
+
+    if (features) {
+        this.graphSource.addFeatures(features);
+    }
+};*/

@@ -4,52 +4,62 @@ OLMM.prototype.createLayers = function () {
         source: this.pointsSelectSource,
         style: this.stylePointSelectFunction
     }); // TODO REMOVE
+    this.addLayer('this.pointsSelectLayer', this.pointsSelectLayer);
 
     this.lineSource = new ol.source.Vector();
     this.lineLayer = new ol.layer.Vector({
         source: this.lineSource,
         style: this.styleLineFunction });
+    this.addLayer('this.lineLayer', this.lineLayer);
 
     this.graphSource = new ol.source.Vector();
     this.graphLayer = new ol.layer.Vector({
         source: this.graphSource,
         style: this.styleGraphFunction });
+    this.addLayer('this.graphLayer', this.graphLayer);
 
     this.graphSource2 = new ol.source.Vector();
     this.graphLayer2 = new ol.layer.Vector({
         source: this.graphSource2,
         style: this.styleGraphFunction });
+    this.addLayer('this.graphLayer2', this.graphLayer2);
 
 	this.pntsSource = new ol.source.Vector();
     this.pntsLayer = new ol.layer.Vector({
     	source: this.pntsSource,
 	  	style: this.stylePntFunction });
+    this.addLayer('this.pntsLayer', this.pntsLayer);
 
     this.geoJSONSource = new ol.source.GeoJSON();
     this.geoJSONLayer = new ol.layer.Vector({
         source: this.geoJSONSource,
         style: this.stylePntFunction
     });
+    this.addLayer('this.geoJSONLayer', this.geoJSONLayer);
 
 	this.mmProjSource = new ol.source.Vector();
     this.mmProjLayer = new ol.layer.Vector({
     	source: this.mmProjSource,
 	    style: this.styleMmProjFunction });
+    this.addLayer('this.mmProjLayer', this.mmProjLayer);
 
 	this.goodProjSource = new ol.source.Vector();
     this.goodProjLayer = new ol.layer.Vector({
     	source: this.goodProjSource,
 	    style: this.styleGoodProjFunction });
+    this.addLayer('pthis.goodProjLayer', this.goodProjLayer);
 
 	this.lastProjSource = new ol.source.Vector();
     this.lastProjLayer = new ol.layer.Vector({
         source: this.lastProjSource,
         style: this.styleLastProjFunction });
+    this.addLayer('this.lastProjLayer', this.lastProjLayer);
 
 	this.allProjSource = new ol.source.Vector();
     this.allProjLayer = new ol.layer.Vector({
         source: this.allProjSource,
         style: this.styleLastProjFunction });
+    this.addLayer('this.allProjLayer', this.allProjLayer);
 };
 
 OLMM.prototype.createCustomLineStyle = function(line_color, line_width){
@@ -123,44 +133,8 @@ OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFun
     });
 };
 
-OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style){
-
-    //layer_style = {
-    //    image: new ol.style.Circle({
-    //        src: 'data/icon.png',
-    //        size: [32, 32],
-    //        offset: [0, 0],
-    //        opacity: 1.0,
-    //        rotation: 0.0,
-    //        scale: 1.0,
-    //        rotateWithView: true
-    //    }),
-    //    text: new ol.style.Text({
-    //        text: "16",
-    //        fill: new ol.style.Fill({
-    //            color: '#fff'
-    //        })
-    //    })
-    //};
-
-    // layer_style = {
-    //     image: new ol.style.Circle({
-    //         radius: 10,
-    //         stroke: n ol.style.Stroke({
-    //             color: '#fff'
-    //         }),
-    //         fill: new ol.style.Fill({
-    //             color: '#3399CC'
-    //         })
-    //     }),
-    //     text: new ol.style.Text({
-    //         text: "16",
-    //         fill: new ol.style.Fill({
-    //             color: '#fff'
-    //         })
-    //     })
-    // };
-
+OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style)
+{
     var point, feature, icon_style, i, source;
     var features = [];
 
@@ -185,3 +159,50 @@ OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style){
     return layer;
 };
 
+
+OLMM.prototype.createOSMLayer = function()
+{
+    var osm_layer = new ol.layer.Tile(
+    {
+        preload: 3,
+        source: new ol.source.OSM()
+    });
+    osm_layer.setProperties({layer_type: 'osm_layer'});
+    return osm_layer;
+}
+
+
+OLMM.prototype.createWMSLayer= function(server, layers)
+{
+    var source = new ol.source.TileWMS(
+    {
+        url: server,
+        params: {'LAYERS': layers, 'TILED': true},
+        serverType: 'geoserver'
+    });
+
+    var wms_layer = new ol.layer.Tile({source: source});
+    wms_layer.setProperties({layer_type: 'wms_layer'});
+
+    return wms_layer;
+}
+
+
+OLMM.prototype.createVectorLayer = function(style, features)
+{
+    var source = new ol.source.Vector();
+
+    if (features && features.length > 0) {
+        source.addFeatures(features)
+    }
+
+    var layer = new ol.layer.Vector({
+        source: source,
+        style: style
+    });
+
+    //this.addSource(name, source);
+    //this.addLayer(name, layer);
+
+    return layer;
+};

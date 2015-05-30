@@ -1,5 +1,19 @@
-OLMM.prototype.transform = function (data) {
-    return ol.proj.transform(data, 'EPSG:4326', 'EPSG:3857');
+OLMM.prototype.transform = function (data)
+{
+    var coords;
+    if (data[0].length > 1)
+    {
+        coords = [];
+        for (j = 0; j < data.length; j++)
+        {
+                coords[j] = ol.proj.transform(coords[j], 'EPSG:4326', 'EPSG:3857');
+        }
+
+    }
+    else {coords = ol.proj.transform(data, 'EPSG:4326', 'EPSG:3857') }
+
+
+    return coords;
 };
 
 OLMM.prototype.transformPointsToLine = function(features, line_source){

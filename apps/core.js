@@ -1,63 +1,43 @@
-function OLMM() {}
+function OLMM()
+{
+    this.layers = {};
+    this.sources = {};
+    this.firstLayers = [];
+}
 
-window.olmm_server_config = {
-    'preload': 3,
-    //'wms_server':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
-    'tiled': true,
-    'wms_layers': 'roads'
-};
 
-OLMM.prototype.getMainLayers = function(){
-    var config = window.olmm_server_config;
 
-    var osm_layer = new ol.layer.Tile({
-        preload: config['preload'] || 3,
-        source: new ol.source.OSM()
-    });
-    osm_layer.setProperties({layer_type: 'osm_layer'});
-    this.addLayer('osm', osm_layer, true);
-
-    var layers = [osm_layer];
-
-    if (config['wms_server']) {
-        var wms_layer = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: config['wms_server'],
-                params: {'LAYERS': config['wms_layers'], 'TILED': true},
-                serverType: 'geoserver'
-            })
-        });
-        wms_layer.setProperties({layer_type: 'wms_layer'});
-        layers.push(wms_layer);
-        this.addLayer('wms', wms_layer, true)
-    }
-
-    return layers;
-};
-
-OLMM.prototype.createMap = function (divName) {
-    this.map = new ol.Map({
+OLMM.prototype.createMap = function (divName)
+{
+    this.map = new ol.Map(
+    {
         target: divName,
-        layers: this.getMainLayers().concat([
-            this.lineLayer,
-            this.graphLayer,
-            this.graphLayer2,
-            this.lastProjLayer,
-            this.allProjLayer,
-            this.mmProjLayer,
-            this.goodProjLayer,
-            this.pntsLayer,
-            this.geoJSONLayer
-        ])
-      });
-
+        layers: this.firstLayers,
+        view: new ol.View({
+            center: [0, 0],
+           zoom: 10
+          })
+    });
 };
+
+//this.getMainLayers().concat([
+//            this.lineLayer,
+ //           this.graphLayer,
+//            this.graphLayer2,
+//            this.lastProjLayer,
+//            this.allProjLayer,
+//            this.mmProjLayer,
+ //           this.goodProjLayer,
+//            this.pntsLayer,
+//            this.geoJSONLayer
 
 OLMM.prototype.init = function (divName, selectPntFunction, mapClickFunction) {
-    this.initDefaults();
+//    this.initDefaults();
     this.createLayers();
     this.createMap(divName);
-    this.addPntSelect(selectPntFunction, mapClickFunction);
+    //this.addPntSelect(selectPntFunction, mapClickFunction);
+
+    //this.createLayers();
 };
 
 OLMM.prototype.initDefaults = function() {
@@ -79,25 +59,16 @@ OLMM.prototype.addSource = function(name, source) {
 
 OLMM.prototype.addLayer = function(name, layer, not_add_to_map) {
     this.layers[name] = layer;
-    if (!not_add_to_map) {
+    //if (!not_add_to_map) 
+    if(this.map)
+    {
         this.map.addLayer(layer);
     }
+    else this.firstLayers.push(layer);
 };
 
-OLMM.prototype.createVectorLayer = function(name, features, style) {
-    var source = new ol.source.Vector();
-
-    if (features && features.length > 0) {
-        source.addFeatures(features)
-    }
-
-    var layer = new ol.layer.Vector({
-        source: source,
-        style: style
-    });
-
-    this.addSource(name, source);
-    this.addLayer(name, layer);
-
-    return layer;
+OLMM.prototype.setLayerVisible = function(layer_name, visible) {
+    this.getLayerByName(layer_name).setVisible(visible);
 };
+
+
