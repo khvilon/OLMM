@@ -259,7 +259,7 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
         return
     }
 
-    var lines_source = this.getSourceByName('lines');
+    var lines_source = this.getSourceByName(layer_name);
 
     if (lines_source) {
         lines_source.clear();

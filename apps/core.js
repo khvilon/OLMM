@@ -59,6 +59,7 @@ OLMM.prototype.addSource = function(name, source) {
 
 OLMM.prototype.addLayer = function(name, layer, not_add_to_map) {
     this.layers[name] = layer;
+    this.addSource(name, layer.getSource()); 
     //if (!not_add_to_map) 
     if(this.map)
     {
