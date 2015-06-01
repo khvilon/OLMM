@@ -35,9 +35,9 @@
     };
 
     var olmm = new OLMM();
-    olmm.init('map', sel, sel);
+    olmm.init('map');
 
-    var url = "test.json";
+    var url = "../test.json";
     $.ajax({
         url: url,
         dataType: 'json',
@@ -45,7 +45,6 @@
             olmm.mmtestNextGenMainFunction(data);
         }
     });
-
 </script>
 </body>
 </html>

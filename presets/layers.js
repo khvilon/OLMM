@@ -192,10 +192,8 @@ OLMM.prototype.createVectorLayer = function(style, features)
         source.addFeatures(features)
     }
 
-    var layer = new ol.layer.Vector({
+    return new ol.layer.Vector({
         source: source,
         style: style
     });
-
-    return layer;
 };
