@@ -1,13 +1,11 @@
-OLMM.prototype.wms_server = 
-{
+OLMM.prototype.wms_server = {
     'preload': 3,
     'host':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
     'tiled': true,
     'layers': 'roads'
-}
+};
 
-OLMM.prototype.createMMTestLayers = function()
-{
+OLMM.prototype.createMMTestLayers = function(){
     this.addLayer('osm', this.createOSMLayer(this.createOSMLayer()));
     this.addLayer('roads', this.createWMSLayer(this.wms_server['host'], this.wms_server['layers']));
     this.addLayer('tdr_lines', this.createVectorLayer(this.styleTDRLine));
@@ -18,8 +16,10 @@ OLMM.prototype.createMMTestLayers = function()
 
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
-    var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords),
-                                 name: 'Point'});
+    var feature = new ol.Feature({
+        geometry: new ol.geom.Point(pnt.coords),
+        name: 'Point'
+    });
     feature.rot = pnt.rot;
     feature.setId(num);
     return feature;
