@@ -1,5 +1,6 @@
 OLMM.prototype.transform = function (data)
 {
+    if(!data) return;
     var coords;
     if (data[0].length > 1)
     {

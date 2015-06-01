@@ -62,7 +62,8 @@ OLMM.prototype.draw_points = function (data) {
         this.mmProjSource.addFeatures(mm_projs);
     }
 
- //   this.transformPointsToLine(features, this.lineSource);   this.fitToExtent(this.lineSource);
+ //   this.transformPointsToLine(features, this.lineSource);  
+    this.fitToExtent(this.pntsSource);
 };
  
 
@@ -172,8 +173,22 @@ OLMM.prototype.set_good_arc = function (data) {
     this.goodProjSource.addFeature(new_feature);
 };
 
+OLMM.prototype.draw_tdr_lines = function(json_data, layer_name)
+{
+    if (!json_data) return;
 
+    var tdrLineFeatures = this.readGeoJSON(json_data);
 
+<<<<<<< HEAD
+    this.getSourceByName(layer_name).addFeatures(tdrLineFeatures);
+};
+
+OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name)
+{
+    if (!json_data) return;
+
+    var source = this.getSourceByName(layer_name);
+=======
 OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
 
     if (!json_data){
@@ -181,86 +196,57 @@ OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
     }
 
     var points_features_to_line = this.readGeoJSON(json_data);
+>>>>>>> origin/master
 
-    var geom_layer = this.createVectorLayer(layer_name, points_features_to_line, this.styleTDRGeometryFunction);
+    if (source) source.clear();
+    
+    var tdrGeometryFeatures = this.readGeoJSON(json_data);
 
-    this.fitToExtent(this.getSourceByName(layer_name))
+    source.addFeatures(tdrGeometryFeatures);
 
+    //this.fitToExtent(source);
 };
 
-OLMM.prototype.draw_tdr_points = function(json_data, layer_name)
+OLMM.prototype.draw_tdr_points = function(coords, layer_name)
 {
-    if (!json_data){
-        return
-    }
+    if (!coords) return;
 
-    var points_features = this.readGeoJSON(json_data);
-
-    var filtered_features = [];
-    for (var i = 0; i < points_features.length; i++) {
-        var feature = points_features[i];
-
-        console.log(feature.getProperties());
-
-        if (feature.getProperties()['is_federal'] == 1){ // TODO warning
-            filtered_features.push(feature);
+ /*   var features = [];
+    for(var i = 0; i < coords.length; i++)
+    {
+        for(var j = 0; j < coords.length; j++)
+        {
+            features.push(new ol.Feature({geometry: new ol.geom.Point(this.transform(coords[i][j])), name: 'pnt'}));
         }
     }
 
+    this.getSourceByName(layer_name).addFeatures(features);*/
 
-    //TODO here you have to draw first and last point of each feature! 
-
-    console.log(filtered_features.length);
-
-    var points_layer = this.createVectorLayer(layer_name, filtered_features, this.styleTDRPoint);
-
-    if (filtered_features.length){
-        this.fitToExtent(this.getSourceByName(layer_name))
-    }
-};
-
-OLMM.prototype.draw_tdr_lines = function(json_data, layer_name) {
-
-    if (!json_data){
-        return
-    }
-
-    var lines_source = this.getSourceByName(layer_name);
-
-    if (lines_source) {
-        lines_source.clear();
-    }
-
-    var points_features_to_line = this.readGeoJSON(json_data);
-
-    var line_layer = this.createVectorLayer(layer_name, points_features_to_line, this.styleTDRLineStringFunction);
-
-    this.fitToExtent(this.getSourceByName(layer_name))
 };
 
 
-OLMM.prototype.styleTDRPoint = function(feature, resolution) {
-    return [
-        new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 18,
-                fill: new ol.style.Fill({color: 'green'})
-            })
-        }),
 
+
+OLMM.prototype.styleTDRPoints = function(feature, resolution)
+{
+    var color = 'red';
+    return
+    [
         new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 6,
-                fill: new ol.style.Fill({color: 'green'})
-            })
+          image: new ol.style.Circle({
+            radius: 15,
+            fill: new ol.style.Fill({color: 'red'}),
+            stroke: new ol.style.Stroke({color: 'red', width: 15})
+          })
         })
     ]
 };
 
-OLMM.prototype.styleTDRLine = function(feature, resolution) {
+OLMM.prototype.styleTDRLine = function(feature, resolution)
+{
     var width, opacity, color;
 
-    width = 3;
+    width = 6;
     opacity = 1;
     color = 'blue';
     if(feature.getProperties().is_federal) color = 'red';
@@ -282,18 +268,18 @@ OLMM.prototype.styleTDRGeometry = function(feature, resolution) {
 
     var width, opacity, color;
 
-    width = 7;
-    opacity = 0.3;
-    color = 'red';
+    width = 14;
+    opacity = 0.4;
+    color = [255, 255,0, 0.6];
 
     return [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: color,
-                width: width
+                width: width,
             }),
             fill: new ol.style.Fill({
-                color: color
+                color: color,
             })
         })
     ];

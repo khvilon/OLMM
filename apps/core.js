@@ -15,10 +15,6 @@ OLMM.prototype.createMap = function (divName) {
             zoom: 10
         })
     });
-
-    for (var i; i < this.firstLayers.length; i++) {
-        this.addLayer('initial_layer_'+i, this.firstLayers[i])
-    }
 };
 
 OLMM.prototype.init = function (divName) {
