@@ -5,15 +5,13 @@ OLMM.prototype.wms_server = {
     'layers': 'roads'
 };
 
-OLMM.prototype.createMMTestLayers = function(){
+OLMM.prototype.createMMTestLayers = function() {
     this.addLayer('osm', this.createOSMLayer(this.createOSMLayer()));
     this.addLayer('roads', this.createWMSLayer(this.wms_server['host'], this.wms_server['layers']));
     this.addLayer('tdr_lines', this.createVectorLayer(this.styleTDRLine));
     this.addLayer('tdr_points', this.createVectorLayer(this.styleTDRPoints));
     this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));   
 };
-
-
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
     var feature = new ol.Feature({
@@ -35,7 +33,6 @@ OLMM.prototype.createProjFeature = function(pnt, proj, num) {
 
 //adding points and main projections features to map hidden
 OLMM.prototype.draw_points = function (data) {
-    var self = this;
     var features = [];
     var good_projs = [];
     var mm_projs = [];
@@ -72,8 +69,7 @@ OLMM.prototype.draw_points = function (data) {
  
 
 
-OLMM.prototype.show_points = function (last_data, current_projection)
-{
+OLMM.prototype.show_points = function (last_data, current_projection) {
     this.lastProjSource.clear();
     var maxInd = last_data.point_num;
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
@@ -184,35 +180,6 @@ OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
     if (!json_data){
         return
     }
-
-  /*  var features = [];
-
-    for (var i = 0; i < json_data.length; i++) {
-
-        var coords = json_data[i];
-        var new_coords = [];
-
-        if (coords[0].length > 1){
-            for (j = 0; j < coords.length; j++) {
-                new_coords[j] = ol.proj.transform(coords[j], 'EPSG:4326', 'EPSG:3857');
-            }
-        } else {
-            new_coords = ol.proj.transform(coords, 'EPSG:4326', 'EPSG:3857');
-        }
-        var feature = new ol.Feature(new ol.geom.LineString(coords));
-        features.push(feature);
-    }
-
-    var tdr_geometry_source = this.getSourceByName('tdr_geometry');
-    if (!tdr_geometry_source){
-        tdr_geometry_source = this.createVectorLayer('tdr_geometry', features, this.styleTDRGeometryFunction).getSource();
-    } else {
-        tdr_geometry_source.clear();
-        tdr_geometry_source.addFeatures(features);
-    }
-    this.fitToExtent(tdr_geometry_source);*/
-
-
 
     var points_features_to_line = this.readGeoJSON(json_data);
 

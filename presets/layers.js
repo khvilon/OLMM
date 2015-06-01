@@ -133,8 +133,7 @@ OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFun
     });
 };
 
-OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style)
-{
+OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style){
     var point, feature, icon_style, i, source;
     var features = [];
 
@@ -197,9 +196,6 @@ OLMM.prototype.createVectorLayer = function(style, features)
         source: source,
         style: style
     });
-
-    //this.addSource(name, source);
-    //this.addLayer(name, layer);
 
     return layer;
 };

@@ -1,10 +1,11 @@
-function OLMM(){
+function OLMM() {
     this.layers = {};
     this.sources = {};
     this.firstLayers = [];
+    this.interactions = {};
 }
 
-OLMM.prototype.createMap = function (divName){
+OLMM.prototype.createMap = function (divName) {
     this.map = new ol.Map(
     {
         target: divName,
@@ -22,12 +23,20 @@ OLMM.prototype.init = function (divName, selectPntFunction, mapClickFunction) {
     this.addPntSelect(selectPntFunction, mapClickFunction);
 };
 
+OLMM.prototype.getInteractionsByName = function(name) {
+    return this.interactions[name];
+};
+
 OLMM.prototype.getLayerByName = function(name) {
     return this.layers[name];
 };
 
 OLMM.prototype.getSourceByName = function(name) {
     return this.sources[name];
+};
+
+OLMM.prototype.addInteraction = function(name, interaction) {
+    this.interactions[name] = interaction
 };
 
 OLMM.prototype.addSource = function(name, source) {
@@ -37,8 +46,7 @@ OLMM.prototype.addSource = function(name, source) {
 OLMM.prototype.addLayer = function(name, layer) {
     this.layers[name] = layer;
     this.addSource(name, layer.getSource()); 
-    if(this.map)
-    {
+    if(this.map) {
         this.map.addLayer(layer);
     }
     else this.firstLayers.push(layer);
