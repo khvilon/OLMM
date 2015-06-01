@@ -91,16 +91,11 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
             good_proj.visible = i <= maxInd;
             good_proj.changed();
         }
-        var mm_proj = this.goodProjSource.getFeatureById(i);
+        var mm_proj = this.mmProjSource.getFeatureById(i);
         if(mm_proj) {
             mm_proj.visible = i <= maxInd;
             mm_proj.changed();
         }
-    }
-    var good_arc_proj = this.goodProjSource.getFeatureById(maxInd);
-    if(good_arc_proj) {
-        good_arc_proj.visible = true;
-        good_arc_proj.changed();
     }
     var lastPoint = this.pntsSource.getFeatureById(maxInd);
     var pointCoords = lastPoint.getGeometry().getCoordinates();
