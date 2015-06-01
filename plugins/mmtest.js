@@ -10,7 +10,8 @@ OLMM.prototype.createMMTestLayers = function() {
     this.addLayer('roads', this.createWMSLayer(this.wms_server['host'], this.wms_server['layers']));
     this.addLayer('tdr_lines', this.createVectorLayer(this.styleTDRLine));
     this.addLayer('tdr_points', this.createVectorLayer(this.styleTDRPoints));
-    this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));   
+    this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));
+    this.createLayers();
 };
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
