@@ -7,9 +7,9 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         uglify: {
-            oolm: {
+            mmtest: {
                 files: {
-                    'build/olmm.min.js' : 'build/olmm.js'
+                    'build/mmtest/olmm.min.js' : 'build/mmtest/olmm.js'
                 }
             }
         },
@@ -19,23 +19,28 @@ module.exports = function(grunt) {
         },
 
         concat: {
-            js: {
+            // Для примера mmtest.html
+            mmtest: {
                 src: [
                     'OpenLayers/build/ol.js',
                     'apps/core.js',
                     'actions/edit.js',
-                    'actions/select.js',
+
                     'presets/styles.js',
                     'presets/layers.js',
                     'presets/sources.js',
+
                     'utils/line.js',
-                    'utils/fit.js',
                     'utils/wkt.js',
                     'utils/geojson.js',
+
+                    'utils/points.js',
+                    'utils/fit.js',
+
                     'utils/transform.js',
-                    'plugins/mmtest_ng.js'
+                    'plugins/mmtest.js'
                 ],
-                dest: 'build/olmm.js'
+                dest: 'build/mmtest/olmm.js'
             }
         },
     });
@@ -45,11 +50,19 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    // Register tasks here.
+    // Сборка для всех тестов
     grunt.registerTask('default',
         [
             'clean',
             'concat',
             'uglify'
+        ]);
+
+    // Сборка теста mmtest.html
+    // Запуск: `grunt mmtest`
+    grunt.registerTask('mmtest', [
+            'clean',
+            'concat:mmtest',
+            'uglify:mmtest'
         ]);
 };

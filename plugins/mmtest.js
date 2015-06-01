@@ -1,13 +1,11 @@
-OLMM.prototype.wms_server = 
-{
+OLMM.prototype.wms_server = {
     'preload': 3,
     'host':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
     'tiled': true,
     'layers': 'roads'
-}
+};
 
-OLMM.prototype.createMMTestLayers = function()
-{
+OLMM.prototype.createMMTestLayers = function() {
     this.addLayer('osm', this.createOSMLayer(this.createOSMLayer()));
     this.addLayer('roads', this.createWMSLayer(this.wms_server['host'], this.wms_server['layers']));
     this.addLayer('tdr_lines', this.createVectorLayer(this.styleTDRLine));
@@ -15,11 +13,11 @@ OLMM.prototype.createMMTestLayers = function()
     this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));   
 };
 
-
-
 OLMM.prototype.createPntFeature = function(pnt, num) {
-    var feature = new ol.Feature({geometry: new ol.geom.Point(pnt.coords),
-                                 name: 'Point'});
+    var feature = new ol.Feature({
+        geometry: new ol.geom.Point(pnt.coords),
+        name: 'Point'
+    });
     feature.rot = pnt.rot;
     feature.setId(num);
     return feature;
@@ -35,7 +33,6 @@ OLMM.prototype.createProjFeature = function(pnt, proj, num) {
 
 //adding points and main projections features to map hidden
 OLMM.prototype.draw_points = function (data) {
-    var self = this;
     var features = [];
     var good_projs = [];
     var mm_projs = [];
@@ -46,15 +43,13 @@ OLMM.prototype.draw_points = function (data) {
 
         features.push(this.createPntFeature(data[i], i));
 
-        if (data[i].good_proj) {
-            if (Object.keys(data[i].good_proj).length >= 2) {
-                good_projs.push(this.createProjFeature(data[i], data[i].good_proj, i))
-            }
-        }
-        if (data[i].mm_proj) {
-            if (Object.keys(data[i].mm_proj).length >= 2) {
-                mm_projs.push(this.createProjFeature(data[i], data[i].mm_proj, i))
-            }
+        var good_projections = data[i].good_proj;
+        var mm_projections = data[i].mm_proj;
+
+        if (good_projections && Object.keys(good_projections).length >= 2) {
+            good_projs.push(this.createProjFeature(data[i], good_projections, i))
+        } else if (mm_projections && Object.keys(mm_projections).length >= 2) {
+            mm_projs.push(this.createProjFeature(data[i], mm_projections, i))
         }
     }
     //adding features to map
@@ -73,8 +68,7 @@ OLMM.prototype.draw_points = function (data) {
  
 
 
-OLMM.prototype.show_points = function (last_data, current_projection)
-{
+OLMM.prototype.show_points = function (last_data, current_projection) {
     this.lastProjSource.clear();
     var maxInd = last_data.point_num;
     for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
@@ -131,11 +125,12 @@ OLMM.prototype.show_points = function (last_data, current_projection)
 
 OLMM.prototype.show_point_info = function (data) {
     var pointId = data.point_num;
+    var projs = data.proj;
+
     var point = this.pntsSource.getFeatureById(pointId);
     point.visible = true;
     point.changed();
     var pointCoords = point.getGeometry().getCoordinates();
-    var projs = data.proj;
     for (var i = 0; i < projs.length; i++) {
         var projCoords = this.transform(
                 [projs[i].lon, projs[i].lat]);
@@ -184,6 +179,7 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name)
 
     var tdrLineFeatures = this.readGeoJSON(json_data);
 
+<<<<<<< HEAD
     this.getSourceByName(layer_name).addFeatures(tdrLineFeatures);
 };
 
@@ -192,6 +188,15 @@ OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name)
     if (!json_data) return;
 
     var source = this.getSourceByName(layer_name);
+=======
+OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
+
+    if (!json_data){
+        return
+    }
+
+    var points_features_to_line = this.readGeoJSON(json_data);
+>>>>>>> origin/master
 
     if (source) source.clear();
     

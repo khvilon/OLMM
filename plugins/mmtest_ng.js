@@ -4,7 +4,7 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
 
     var features = olmm.readGeoJSON(geojson);
 
-    olmm.createVectorLayer('lines', features, olmm.styleGraphFunction);
+    this.addLayer('main', olmm.createVectorLayer(features, olmm.styleGraphFunction));
 
     olmm.fitToExtent(olmm.getSourceByName('lines'));
 };

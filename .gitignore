@@ -46,3 +46,7 @@ Temporary Items
 .idea
 
 node_modules
+
+# gruntfile build folder
+build
+

@@ -133,8 +133,7 @@ OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFun
     });
 };
 
-OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style)
-{
+OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style){
     var point, feature, icon_style, i, source;
     var features = [];
 
@@ -160,22 +159,19 @@ OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style)
 };
 
 
-OLMM.prototype.createOSMLayer = function()
-{
-    var osm_layer = new ol.layer.Tile(
-    {
+OLMM.prototype.createOSMLayer = function(){
+    var osm_layer = new ol.layer.Tile({
         preload: 3,
         source: new ol.source.OSM()
     });
     osm_layer.setProperties({layer_type: 'osm_layer'});
     return osm_layer;
-}
+};
 
 
 OLMM.prototype.createWMSLayer= function(server, layers)
 {
-    var source = new ol.source.TileWMS(
-    {
+    var source = new ol.source.TileWMS({
         url: server,
         params: {'LAYERS': layers, 'TILED': true},
         serverType: 'geoserver'
@@ -185,7 +181,7 @@ OLMM.prototype.createWMSLayer= function(server, layers)
     wms_layer.setProperties({layer_type: 'wms_layer'});
 
     return wms_layer;
-}
+};
 
 
 OLMM.prototype.createVectorLayer = function(style, features)
@@ -200,9 +196,6 @@ OLMM.prototype.createVectorLayer = function(style, features)
         source: source,
         style: style
     });
-
-    //this.addSource(name, source);
-    //this.addLayer(name, layer);
 
     return layer;
 };
