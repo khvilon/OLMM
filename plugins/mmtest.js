@@ -179,7 +179,6 @@ OLMM.prototype.draw_tdr_lines = function(json_data, layer_name)
 
     var tdrLineFeatures = this.readGeoJSON(json_data);
 
-<<<<<<< HEAD
     this.getSourceByName(layer_name).addFeatures(tdrLineFeatures);
 };
 
@@ -188,15 +187,6 @@ OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name)
     if (!json_data) return;
 
     var source = this.getSourceByName(layer_name);
-=======
-OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name) {
-
-    if (!json_data){
-        return
-    }
-
-    var points_features_to_line = this.readGeoJSON(json_data);
->>>>>>> origin/master
 
     if (source) source.clear();
     
