@@ -32,7 +32,7 @@
 <div id="map" class="map"></div>
 <script type="text/javascript">
     sel = function (event, id) {
-        console.log(event, id);
+        console.log(id);
     };
 
     var olmm = new OLMM();
@@ -44,7 +44,7 @@
         dataType: 'json',
         success: function( data ) {
             olmm.mmtestNextGenMainFunction(data);
-            olmm.addFeatureClickFunction(sel);
+            olmm.addFeatureClickFunction(sel, 'main2');
         }
     });
 </script>

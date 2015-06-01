@@ -14,6 +14,7 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
         var feature = this.forEachFeatureAtPixel(event.pixel,
             function (feature, layer) {
                 if (layer_obj) {
+
                     if (layer == layer_obj) {
                         return feature;
                     }
@@ -22,6 +23,7 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
                 }
             });
         if (feature) {
+            console.log(feature.getId());
             handleFeatureClickFunction(event, feature.getId());
         }
     });
