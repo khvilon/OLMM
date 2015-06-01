@@ -195,7 +195,7 @@ OLMM.prototype.draw_tdr_geometry = function(json_data, layer_name)
 
     source.addFeatures(tdrGeometryFeatures);
 
-    //this.fitToExtent(source);
+    this.fitToExtent(source);
 };
 
 OLMM.prototype.draw_tdr_points = function(coords, layer_name)
