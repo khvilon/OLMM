@@ -12,14 +12,16 @@ OLMM.prototype.createMMTestLayers = function() {
     this.addLayer('tdr_points', this.createVectorLayer(this.styleTDRPoints));
     this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));
 
-    this.addLayer('points', this.createVectorLayer(this.stylePntFunction));
-    this.addLayer('lines', this.createVectorLayer(this.styleLineFunction));
-    this.addLayer('graph', this.createVectorLayer(this.styleGraphFunction));
+    this.createLayers();
 
-    this.addLayer('mm_proj', this.createVectorLayer(this.styleMmProjFunction));
-    this.addLayer('good_proj', this.createVectorLayer(this.styleGoodProjFunction));
-    this.addLayer('last_proj', this.createVectorLayer(this.styleLastProjFunction));
-    this.addLayer('all_proj', this.createVectorLayer(this.styleLastProjFunction));
+    //this.addLayer('points', this.createVectorLayer(this.stylePntFunction));
+    //this.addLayer('lines', this.createVectorLayer(this.styleLineFunction));
+    //this.addLayer('graph', this.createVectorLayer(this.styleGraphFunction));
+    //
+    //this.addLayer('mm_proj', this.createVectorLayer(this.styleMmProjFunction));
+    //this.addLayer('good_proj', this.createVectorLayer(this.styleGoodProjFunction));
+    //this.addLayer('last_proj', this.createVectorLayer(this.styleLastProjFunction));
+    //this.addLayer('all_proj', this.createVectorLayer(this.styleLastProjFunction));
 };
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
