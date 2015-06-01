@@ -43,15 +43,13 @@ OLMM.prototype.draw_points = function (data) {
 
         features.push(this.createPntFeature(data[i], i));
 
-        if (data[i].good_proj) {
-            if (Object.keys(data[i].good_proj).length >= 2) {
-                good_projs.push(this.createProjFeature(data[i], data[i].good_proj, i))
-            }
-        }
-        if (data[i].mm_proj) {
-            if (Object.keys(data[i].mm_proj).length >= 2) {
-                mm_projs.push(this.createProjFeature(data[i], data[i].mm_proj, i))
-            }
+        var good_projections = data[i].good_proj;
+        var mm_projections = data[i].mm_proj;
+
+        if (good_projections && Object.keys(good_projections).length >= 2) {
+            good_projs.push(this.createProjFeature(data[i], good_projections, i))
+        } else if (mm_projections && Object.keys(mm_projections).length >= 2) {
+            mm_projs.push(this.createProjFeature(data[i], mm_projections, i))
         }
     }
     //adding features to map
@@ -126,11 +124,12 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
 
 OLMM.prototype.show_point_info = function (data) {
     var pointId = data.point_num;
+    var projs = data.proj;
+
     var point = this.pntsSource.getFeatureById(pointId);
     point.visible = true;
     point.changed();
     var pointCoords = point.getGeometry().getCoordinates();
-    var projs = data.proj;
     for (var i = 0; i < projs.length; i++) {
         var projCoords = this.transform(
                 [projs[i].lon, projs[i].lat]);
