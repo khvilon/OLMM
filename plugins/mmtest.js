@@ -131,7 +131,7 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
 
 OLMM.prototype.show_point_info = function (data) {
     var pointId = data.point_num;
-    var projs = data.proj;
+    var projs = data.proj || 0;
 
     var point = this.pntsSource.getFeatureById(pointId);
     point.visible = true;
