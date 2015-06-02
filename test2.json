@@ -1,0 +1,26 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [37.1, 55.4]},
+            "properties": {
+                "id": "value0",
+                "projections": [
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": [[102.0, 0.5], [100, 0.5]]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [37.0, 55.5]},
+            "properties": {"id": "value0"}
+        }
+    ]
+}

@@ -6,9 +6,31 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
 
     var features = olmm.readGeoJSON(geojson);
 
-    this.addLayer('main', olmm.createVectorLayer(olmm.styleGraphFunction, features));
-    this.addLayer('main2', olmm.createVectorLayer(olmm.styleGraphFunction, features));
-    this.addLayer('main3', olmm.createVectorLayer(olmm.styleGraphFunction, features));
+    var line_layer = olmm.createVectorLayer(
+        new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 5
+                }),
+                fill: new ol.style.Fill({
+                    color: 'red'
+                })
+        })
+    );
+    this.addLayer('lines', line_layer);
+
+    this.addLayer('main', olmm.createVectorLayer(
+
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 4,
+                color: 'red'
+            })
+        })
+
+        , features));
+
+    olmm.transformPointsToLine(features, line_layer.getSource());
 
     olmm.fitToExtent(olmm.getSourceByName('main'));
 };

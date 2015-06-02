@@ -1,5 +1,5 @@
 OLMM.prototype.readGeoJSON = function(geojson, each_feature_function, addition_params) {
-    var features, coords, geometry_type, format, i, style, feature_properties, j;
+    var features, new_feature, coords, geometry_type, format, i, style, feature_properties, j;
 
     if (!addition_params) {
         addition_params = {}
