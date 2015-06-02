@@ -13,8 +13,15 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
 
         new ol.style.Style({
             image: new ol.style.Circle({
-                radius: 4,
-                color: 'red'
+                radius: 5,
+                fill: new ol.style.Fill({
+                    color: 'black',
+                    opacity: 1
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'black',
+                    opacity: 1
+                })
             })
         })
 
