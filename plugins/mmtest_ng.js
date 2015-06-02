@@ -4,12 +4,12 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
     var json_string = JSON.stringify(ajax_data);
     var geojson = JSON.parse(json_string);
 
-    var features = olmm.readGeoJSON(geojson);
+    var features = this.readGeoJSON(geojson);
 
-    var line_layer = olmm.createVectorLayer(olmm.styleGraphFunction);
+    var line_layer = this.createVectorLayer(this.styleGraphFunction);
     this.addLayer('lines', line_layer);
 
-    this.addLayer('main', olmm.createVectorLayer(
+    this.addLayer('main', this.createVectorLayer(
 
         new ol.style.Style({
             image: new ol.style.Circle({
@@ -20,7 +20,7 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
 
         , features));
 
-    olmm.transformPointsToLine(features, line_layer.getSource());
+    this.transformPointsToLine(features, line_layer.getSource());
 
-    olmm.fitToExtent(olmm.getSourceByName('lines'));
+    this.fitToExtent(this.getSourceByName('lines'));
 };
