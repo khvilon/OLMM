@@ -12,16 +12,14 @@ OLMM.prototype.createMMTestLayers = function() {
     this.addLayer('tdr_points', this.createVectorLayer(this.styleTDRPoints));
     this.addLayer('tdr_geometry', this.createVectorLayer(this.styleTDRGeometry));
 
-    this.createLayers();
+    this.addLayer('points', this.createVectorLayer(this.stylePntFunction));
+    this.addLayer('lines', this.createVectorLayer(this.styleLineFunction));
+    this.addLayer('graph', this.createVectorLayer(this.styleGraphFunction));
 
-    //this.addLayer('points', this.createVectorLayer(this.stylePntFunction));
-    //this.addLayer('lines', this.createVectorLayer(this.styleLineFunction));
-    //this.addLayer('graph', this.createVectorLayer(this.styleGraphFunction));
-    //
-    //this.addLayer('mm_proj', this.createVectorLayer(this.styleMmProjFunction));
-    //this.addLayer('good_proj', this.createVectorLayer(this.styleGoodProjFunction));
-    //this.addLayer('last_proj', this.createVectorLayer(this.styleLastProjFunction));
-    //this.addLayer('all_proj', this.createVectorLayer(this.styleLastProjFunction));
+    this.addLayer('mm_proj', this.createVectorLayer(this.styleMmProjFunction));
+    this.addLayer('good_proj', this.createVectorLayer(this.styleGoodProjFunction));
+    this.addLayer('last_proj', this.createVectorLayer(this.styleLastProjFunction));
+    this.addLayer('all_proj', this.createVectorLayer(this.styleLastProjFunction));
 };
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
@@ -47,6 +45,9 @@ OLMM.prototype.draw_points = function (data) {
     var features = [];
     var good_projs = [];
     var mm_projs = [];
+    var point_source = this.getSourceByName('points');
+    var good_proj_source = this.getSourceByName('good_proj');
+    var mm_proj_source = this.getSourceByName('mm_proj');
 
     //points and main projections features creation
     for (var i = 0; i < data.length; i++) {
@@ -64,40 +65,46 @@ OLMM.prototype.draw_points = function (data) {
         }
     }
     //adding features to map
-    this.pntsSource.addFeatures(features);
+    point_source.addFeatures(features);
 
     if (good_projs.length > 0) {
-        this.goodProjSource.addFeatures(good_projs);
+        good_proj_source.addFeatures(good_projs);
     }
     if (mm_projs.length > 0) {
-        this.mmProjSource.addFeatures(mm_projs);
+        mm_proj_source.addFeatures(mm_projs);
     }
 
- //   this.transformPointsToLine(features, this.lineSource);  
-    this.fitToExtent(this.pntsSource);
+    this.fitToExtent(point_source);
 };
  
 
 
 OLMM.prototype.show_points = function (last_data, current_projection) {
-    this.lastProjSource.clear();
+    var point_source = this.getSourceByName('points');
+    var good_proj_source = this.getSourceByName('good_proj');
+    var mm_proj_source = this.getSourceByName('mm_proj');
+    var last_proj_source = this.getSourceByName('last_proj');
+    var all_proj_source = this.getSourceByName('all_proj');
+
+    last_proj_source.clear();
+
     var maxInd = last_data.point_num;
-    for(var i = 0; i < this.pntsSource.getFeatures().length; i++) {
-        var feature = this.pntsSource.getFeatureById(i);
+    for(var i = 0; i < point_source.getFeatures().length; i++) {
+        var feature = point_source.getFeatureById(i);
         feature.visible = i <= maxInd;
         feature.changed();
-        var good_proj = this.goodProjSource.getFeatureById(i);
+        var good_proj = good_proj_source.getFeatureById(i);
         if(good_proj) {
             good_proj.visible = i <= maxInd;
             good_proj.changed();
         }
-        var mm_proj = this.mmProjSource.getFeatureById(i);
+        var mm_proj = mm_proj_source.getFeatureById(i);
         if(mm_proj) {
             mm_proj.visible = i <= maxInd;
             mm_proj.changed();
         }
     }
-    var lastPoint = this.pntsSource.getFeatureById(maxInd);
+    var lastPoint = point_source.getFeatureById(maxInd);
     var pointCoords = lastPoint.getGeometry().getCoordinates();
     if (last_data.proj) {
 
@@ -121,7 +128,7 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
                     })
                 );
             line_feature.setId(maxInd.toString() + '_' + last_data.proj[i].arc_id);
-            this.lastProjSource.addFeature(line_feature);
+            last_proj_source.addFeature(line_feature);
             line_feature.visible = true;
             line_feature.changed();
             }
@@ -130,39 +137,53 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
 };
 
 OLMM.prototype.show_point_info = function (data) {
+    var point_source = this.getSourceByName('points');
+    var all_proj_source = this.getSourceByName('all_proj');
+
     var pointId = data.point_num;
     var projs = data.proj || 0;
 
-    var point = this.pntsSource.getFeatureById(pointId);
+    var point = point_source.getFeatureById(pointId);
     point.visible = true;
     point.changed();
     var pointCoords = point.getGeometry().getCoordinates();
-    for (var i = 0; i < projs.length; i++) {
-        var projCoords = this.transform(
-                [projs[i].lon, projs[i].lat]);
-        var line_feature = new ol.Feature
-        ({
-                geometry: new ol.geom.LineString([
-                pointCoords,projCoords])
-        });
 
-        line_feature.setId(pointId.toString() + '_' + projs[i].arc_id);
-        this.allProjSource.addFeature(line_feature);
-        if (line_feature) {
-            line_feature.visible = true;
-            line_feature.changed();
+
+    if (projs.length > 0) {
+        for (var i = 0; i < projs.length; i++) {
+            var projCoords = this.transform(
+                    [projs[i].lon, projs[i].lat]);
+            var line_feature = new ol.Feature
+            ({
+                    geometry: new ol.geom.LineString([
+                    pointCoords,projCoords])
+            });
+
+            line_feature.setId(pointId.toString() + '_' + projs[i].arc_id);
+            all_proj_source.addFeature(line_feature);
+            if (line_feature) {
+                line_feature.visible = true;
+                line_feature.changed();
+            }
         }
     }
 };
 
 OLMM.prototype.delete_projs = function () {
-    this.allProjSource.clear();
+    var all_proj_source = this.getSourceByName('all_proj');
+    all_proj_source.clear();
 };
 
 OLMM.prototype.set_good_arc = function (data) {
+    var point_source = this.getSourceByName('points');
+    var good_proj_source = this.getSourceByName('good_proj');
+    var mm_proj_source = this.getSourceByName('mm_proj');
+    var last_proj_source = this.getSourceByName('last_proj');
+    var all_proj_source = this.getSourceByName('all_proj');
+
     var pointId = data.point_num;
     var proj = data.proj;
-    var point = this.pntsSource.getFeatureById(pointId);
+    var point = point_source.getFeatureById(pointId);
     var pointCoords = point.getGeometry().getCoordinates();
     var projCoords = this.transform([proj.lon, proj.lat]);
     var new_feature = new ol.Feature({
@@ -172,11 +193,11 @@ OLMM.prototype.set_good_arc = function (data) {
     new_feature.visible = true;
     new_feature.changed();
     new_feature.setId(pointId);
-    var old_feature = this.goodProjSource.getFeatureById(pointId);
+    var old_feature = good_proj_source.getFeatureById(pointId);
     if (old_feature) {
-        this.goodProjSource.removeFeature(old_feature);
+        good_proj_source.removeFeature(old_feature);
     }
-    this.goodProjSource.addFeature(new_feature);
+    good_proj_source.addFeature(new_feature);
 };
 
 OLMM.prototype.draw_tdr_lines = function(json_data, layer_name)
@@ -221,18 +242,15 @@ OLMM.prototype.draw_tdr_points = function(coords, layer_name)
 };
 
 
-
-
 OLMM.prototype.styleTDRPoints = function(feature, resolution)
 {
     var color = 'red';
-    return
-    [
+    return [
         new ol.style.Style({
           image: new ol.style.Circle({
             radius: 15,
-            fill: new ol.style.Fill({color: 'red'}),
-            stroke: new ol.style.Stroke({color: 'red', width: 15})
+            fill: new ol.style.Fill({color: color}),
+            stroke: new ol.style.Stroke({color: color, width: 15})
           })
         })
     ]
@@ -272,38 +290,11 @@ OLMM.prototype.styleTDRGeometry = function(feature, resolution) {
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: color,
-                width: width,
+                width: width
             }),
             fill: new ol.style.Fill({
-                color: color,
+                color: color
             })
         })
     ];
 };
-
-
-
-/*
-OLMM.prototype.add_graph = function (data)
-{
-    var features;
-
-    for (var i = 0; i < data.length; i++) {
-        var id = data[i][0];
-        var coords_0 = this.transform([parseFloat(data[i][2]), parseFloat(data[i][1])]);
-        var coords_1 = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-        var labelCoords = this.transform([parseFloat(data[i][4]), parseFloat(data[i][3])]);
-        var lineString = new ol.geom.LineString([coords_0, coords_1]);
-        var feature = new ol.Feature({
-            geometry: lineString,
-            name: id,
-            id: id
-        });
-        features.push(feature);
-
-    }
-
-    if (features) {
-        this.graphSource.addFeatures(features);
-    }
-};*/

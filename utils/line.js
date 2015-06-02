@@ -1,11 +1,9 @@
-OLMM.prototype.DrawLine = function(line_color, line_width, coord1, coord2, id){
+OLMM.prototype.DrawLine = function(line_color, line_width, lat, lon, id){
     var style, layer, source, feature, transformed_coords;
 
     style = this.createCustomLineStyle(line_color, line_width);
-    source = this.createVectorSource();
-    layer = this.createVectorLayer(source, style);
 
-    transformed_coords = this.transform([coord1, coord2]);
+    transformed_coords = this.transform([lat, lon]);
 
     feature = new ol.Feature({
         geometry: new ol.geom.LineString(transformed_coords),
@@ -13,5 +11,5 @@ OLMM.prototype.DrawLine = function(line_color, line_width, coord1, coord2, id){
     });
     feature.setId(id);
 
-    source.addFeature(feature);
+    layer = this.createVectorLayer(style, [feature]);
 };
