@@ -28,7 +28,6 @@
     <title>integration example</title>
 </head>
 <body>
-<button class="hover" data-layer-name="ways_1" style="position: fixed; z-index: 10000;">Hello world</button>
 <div id="map" class="map"></div>
 <script type="text/javascript">
     sel = function (event, id) {
@@ -44,7 +43,7 @@
         dataType: 'json',
         success: function( data ) {
             olmm.mmtestNextGenMainFunction(data);
-            olmm.addFeatureClickFunction(sel, 'main');
+            olmm.addFeatureClickFunction(sel, 'lines');
         }
     });
 </script>

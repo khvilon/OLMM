@@ -16,6 +16,7 @@ OLMM.prototype.readGeoJSON = function(geojson, each_feature_function, addition_p
 
         geometry_type = feature.getGeometry().getType();
         coords = feature.getGeometry().getCoordinates();
+        feature_properties = feature.getGeometry().getCoordinates();
 
         if (geometry_type == 'LineString') {
             for (j = 0; j < coords.length; j++) {
@@ -29,6 +30,10 @@ OLMM.prototype.readGeoJSON = function(geojson, each_feature_function, addition_p
             feature.setGeometry(new ol.geom.Point(coords))
         } else if (geometry_type == 'LineString') {
             feature.setGeometry(new ol.geom.LineString(coords));
+        }
+
+        if (feature_properties['id']) {
+            feature.setId(feature_properties['id'])
         }
 
         if (each_feature_function) {

@@ -6,17 +6,7 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
 
     var features = olmm.readGeoJSON(geojson);
 
-    var line_layer = olmm.createVectorLayer(
-        new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'red',
-                    width: 5
-                }),
-                fill: new ol.style.Fill({
-                    color: 'red'
-                })
-        })
-    );
+    var line_layer = olmm.createVectorLayer(olmm.styleGraphFunction);
     this.addLayer('lines', line_layer);
 
     this.addLayer('main', olmm.createVectorLayer(
@@ -32,5 +22,5 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
 
     olmm.transformPointsToLine(features, line_layer.getSource());
 
-    olmm.fitToExtent(olmm.getSourceByName('main'));
+    olmm.fitToExtent(olmm.getSourceByName('lines'));
 };
