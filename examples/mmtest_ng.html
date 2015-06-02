@@ -16,6 +16,7 @@
     <script src="../utils/geojson.js" type="text/javascript"></script>
     <script src="../utils/transform.js" type="text/javascript"></script>
     <script src="../actions/click.js" type="text/javascript"></script>
+    <script src="../actions/add.js" type="text/javascript"></script>
     <script src="../plugins/mmtest_ng.js" type="text/javascript"></script>
 
     <style>
@@ -36,14 +37,14 @@
 
     var olmm = new OLMM();
     olmm.init('map');
+    olmm.addFeatureClickFunction(sel, 'main');
 
     var url = "../test2.json";
     $.ajax({
         url: url,
         dataType: 'json',
-        success: function( data ) {
-            olmm.mmtestNextGenMainFunction(data);
-            olmm.addFeatureClickFunction(sel, 'main');
+        success: function(data) {
+            olmm.mmTestNextGenAddInitialFeatures(data, true);
         }
     });
 </script>

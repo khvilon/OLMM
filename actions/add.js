@@ -1,6 +1,6 @@
 OLMM.prototype.enableAddMode = function(feature_type) {
 
-    if (!(feature_type in ['Point', 'LineString', 'Polygon', 'Circle'])) {
+    if (['Point', 'LineString', 'Polygon', 'Circle'].indexOf(feature_type) == -1) {
         alert(feature_type+': not allowed');
         return;
     }
@@ -26,7 +26,8 @@ OLMM.prototype.enableAddMode = function(feature_type) {
 };
 
 OLMM.prototype.disableAddMode = function() {
-    this.interactions.each(function(){
-        this.setActive(false)
-    });
+
+    for (var i = 0; i < this.interactions.length; i++) {
+        this.interactions[i].setActive(false)
+    }
 };
