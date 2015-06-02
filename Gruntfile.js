@@ -11,11 +11,19 @@ module.exports = function(grunt) {
                 files: {
                     'build/mmtest/olmm.min.js' : 'build/mmtest/olmm.js'
                 }
+            },
+            mmtest_ng: {
+                files: {
+                    'build/mmtest_ng/olmm.min.js': 'build/mmtest_ng/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
         clean: {
-            build: ["build/olmm.js"]
+            build: [
+                'build/mmtest/olmm.js',
+                'build/mmtest_ng/olmm.js'
+            ]
         },
 
         concat: {
@@ -41,8 +49,30 @@ module.exports = function(grunt) {
                     'plugins/mmtest.js'
                 ],
                 dest: 'build/mmtest/olmm.js'
+            },
+
+            // для examples/mmtest_ng.html
+            mmtest_ng: {
+                src: [
+                    'jquery-1.10.2.js',
+                    'OpenLayers/build/ol.js',
+                    'apps/core.js',
+                    'actions/edit.js',
+                    'actions/select.js',
+                    'presets/styles.js',
+                    'presets/layers.js',
+                    'presets/sources.js',
+                    'utils/line.js',
+                    'utils/fit.js',
+                    'utils/wkt.js',
+                    'utils/geojson.js',
+                    'utils/transform.js',
+                    'actions/click.js',
+                    'plugins/mmtest_ng.js'
+                ],
+                dest: 'build/mmtest_ng/olmm.js'
             }
-        },
+        }
     });
 
     // Load plugins here.
@@ -65,4 +95,10 @@ module.exports = function(grunt) {
             'concat:mmtest',
             'uglify:mmtest'
         ]);
+
+    grunt.registerTask('mmtest_ng', [
+        'clean',
+        'concat:mmtest_ng',
+        'uglify:mmtest_ng'
+    ])
 };
