@@ -50,3 +50,5 @@ node_modules
 # gruntfile build folder
 build
 
+# test files
+test*.json
