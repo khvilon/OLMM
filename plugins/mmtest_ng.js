@@ -2,7 +2,7 @@ OLMM.prototype.mmtestNextGenMainFunction = function(ajax_data) {
     this.addLayer('osm', this.createOSMLayer(this.createOSMLayer()));
 
     var json_string = JSON.stringify(ajax_data);
-    var geojson = JSON.parse(json_string)['tdrs'];
+    var geojson = JSON.parse(json_string);
 
     var features = olmm.readGeoJSON(geojson);
 
