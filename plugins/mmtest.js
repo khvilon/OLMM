@@ -1,6 +1,6 @@
 OLMM.prototype.wms_server = {
     'preload': 3,
-    'host':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
+    //'host':'http://10.0.2.60/mapcache/', // http://10.0.2.60/mapcache/demo/wms or http://10.0.2.60/mapcache/demo/wmts
     'tiled': true,
     'layers': 'roads'
 };
@@ -20,6 +20,8 @@ OLMM.prototype.createMMTestLayers = function() {
     this.addLayer('good_proj', this.createVectorLayer(this.styleGoodProjFunction));
     this.addLayer('last_proj', this.createVectorLayer(this.styleLastProjFunction));
     this.addLayer('all_proj', this.createVectorLayer(this.styleLastProjFunction));
+
+    this.addLayer('current_point_projections', this.createVectorLayer(this.styleGraphFunction));
 };
 
 OLMM.prototype.createPntFeature = function(pnt, num) {
@@ -42,42 +44,59 @@ OLMM.prototype.createProjFeature = function(pnt, proj, num) {
 
 //adding points and main projections features to map hidden
 OLMM.prototype.draw_points = function (data) {
+    var projections, projection, projection_coords, point, point_coords, projection_feature, point_good_arc;
+
     var features = [];
-    var good_projs = [];
-    var mm_projs = [];
+    var projections_to_add = [];
+
     var point_source = this.getSourceByName('points');
+    var all_proj_source = this.getSourceByName('all_proj');
     var good_proj_source = this.getSourceByName('good_proj');
     var mm_proj_source = this.getSourceByName('mm_proj');
 
     //points and main projections features creation
     for (var i = 0; i < data.length; i++) {
-        data[i].coords = this.transform([data[i].lon, data[i].lat]);
+        var point_data = data[i];
 
-        features.push(this.createPntFeature(data[i], i));
+        point_coords = this.transform([point_data.point_data.location.lon, point_data.point_data.location.lat]);
+        projections = point_data.projections;
 
-        var good_projections = data[i].good_proj;
-        var mm_projections = data[i].mm_proj;
+        point_data.coords = point_coords;
 
-        if (good_projections && Object.keys(good_projections).length >= 2) {
-            good_projs.push(this.createProjFeature(data[i], good_projections, i))
-        } else if (mm_projections && Object.keys(mm_projections).length >= 2) {
-            mm_projs.push(this.createProjFeature(data[i], mm_projections, i))
+        point = this.createPntFeature(data[i], i);
+
+        point.setProperties({
+            "mm_arc": point_data.mm_arc,
+            "good_arc": point_data.good_arc,
+            "visible": false,
+            "state": ''
+        });
+
+        point_good_arc = point_data.good_arc;
+        features.push(point);
+
+        if (projections) {
+            point.setProperties({"projections": projections});
+            for (var j = 0; j < projections.length; j++) {
+                projection = projections[j];
+                projection_coords = this.transform([projection.lon, projection.lat]);
+                projection_feature = new ol.Feature({
+                    geometry: new ol.geom.LineString([point_coords, projection_coords])
+                });
+                projection_feature.setId(i);
+                projection_feature.state = 'good';
+                projections_to_add.push(projection_feature)
+            }
         }
     }
     //adding features to map
     point_source.addFeatures(features);
 
-    if (good_projs.length > 0) {
-        good_proj_source.addFeatures(good_projs);
-    }
-    if (mm_projs.length > 0) {
-        mm_proj_source.addFeatures(mm_projs);
-    }
+    all_proj_source.addFeatures(projections_to_add);
 
     this.fitToExtent(point_source);
 };
  
-
 
 OLMM.prototype.show_points = function (last_data, current_projection) {
     var point_source = this.getSourceByName('points');
@@ -136,36 +155,42 @@ OLMM.prototype.show_points = function (last_data, current_projection) {
     }
 };
 
-OLMM.prototype.show_point_info = function (data) {
+OLMM.prototype.show_point_info = function (pointId) {
+
+    var point_feature, point_coords, i;
     var point_source = this.getSourceByName('points');
     var all_proj_source = this.getSourceByName('all_proj');
+    var point_features = point_source.getFeatures();
 
-    var pointId = data.point_num;
-    var projs = data.proj || 0;
+    all_proj_source.clear();
 
-    var point = point_source.getFeatureById(pointId);
-    point.visible = true;
-    point.changed();
-    var pointCoords = point.getGeometry().getCoordinates();
+    for (i = 0; i < point_features.length; i++) {
+        point_feature = point_features[i];
+        point_feature.visible = false;
+        point_feature.changed();
+    }
 
+    for (i = 0; i <= pointId; i++) {
+        point_feature = point_source.getFeatureById(i);
+        point_coords = point_feature.getGeometry().getCoordinates();
+        point_feature.visible = true;
+        point_feature.changed();
+    }
 
-    if (projs.length > 0) {
-        for (var i = 0; i < projs.length; i++) {
-            var projCoords = this.transform(
-                    [projs[i].lon, projs[i].lat]);
-            var line_feature = new ol.Feature
-            ({
-                    geometry: new ol.geom.LineString([
-                    pointCoords,projCoords])
-            });
+    point_feature = point_source.getFeatureById(pointId);
 
-            line_feature.setId(pointId.toString() + '_' + projs[i].arc_id);
-            all_proj_source.addFeature(line_feature);
-            if (line_feature) {
-                line_feature.visible = true;
-                line_feature.changed();
-            }
-        }
+    var point_projections = point_feature.getProperties().projections || [];
+
+    for (var j = 0; j < point_projections.length; j++) {
+        var point_projection = point_projections[j];
+
+        var projection_coords = this.transform([point_projection.lon, point_projection.lat]);
+        var projection_feature = new ol.Feature({
+            geometry: new ol.geom.LineString([point_coords, projection_coords])
+        });
+        projection_feature.setId(pointId.toString() + '_' + point_projection.arc_id);
+
+        all_proj_source.addFeature(projection_feature);
     }
 };
 

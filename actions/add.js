@@ -22,7 +22,6 @@ OLMM.prototype.enableAddMode = function(feature_type) {
         this.addInteraction(feature_type, draw);
         this.map.addInteraction(draw);
     }
-
 };
 
 OLMM.prototype.disableAddMode = function() {

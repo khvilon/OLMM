@@ -207,16 +207,41 @@ OLMM.prototype.styleGoodProjFunction = function (feature, resolution) {
 
 
 OLMM.prototype.styleLastProjFunction = function (feature, resolution) {
+    var opacity, color;
 
-    if (feature.visible) opacity = 1;
-    else opacity = 0;
+    var feature_properties = feature.getProperties();
+    var feature_visible = feature_properties['visible'];
+    var feature_state = feature_properties['state'];
+
+    if (feature_visible) {
+        opacity = 1;
+    } else {
+        opacity = 0.4;
+    }
+
+    switch (feature_state) {
+        case 'current':
+            color = 'purple';
+            break;
+        case 'good':
+            color = 'green';
+            break;
+        case 'mm':
+            color = 'red';
+            break;
+        case 'other':
+            color = 'yellow';
+            break;
+    }
+
+    console.log(color);
 
     var geometry = feature.getGeometry();
     var styles = [
         // linestring
         new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: [255, 204, 51, opacity],//'#ffcc33',
+                color: [color, opacity],//'#ffcc33',
                 width: 2
             })
         })
@@ -228,7 +253,7 @@ OLMM.prototype.styleLastProjFunction = function (feature, resolution) {
             image: new ol.style.Circle({
                 radius: 4,
                 stroke: new ol.style.Stroke({
-                    color: [255, 204, 51, opacity],//'#ffcc33',
+                    color: [color, opacity],//'#ffcc33',
                     width: 2
                 })
             })
