@@ -50086,7 +50086,7 @@ ol.events.condition.never = goog.functions.FALSE;
 /**
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if the browser event is a `pointermove` event.
- * @apimousemove
+ * @api
  */
 ol.events.condition.pointerMove = function(mapBrowserEvent) {
   return mapBrowserEvent.type == 'pointermove';
