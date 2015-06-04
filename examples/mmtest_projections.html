@@ -20,7 +20,7 @@
 
     <!-- TODO: заменить все scripts выше на один script: -->
     <!-- <script src="../build/mmtest/olmm.js"></script> -->
-    <title>mm test tdr example</title>
+    <title>mm test projections</title>
 </head>
 <body>
 <div id="map" class="map" style="height: 100%; width: 100%;"></div>
@@ -28,10 +28,14 @@
     sel = function (event, id) {
         olmm.show_point_info(id)
     };
+    sel2 = function (event, id) {
+        console.log(id);
+    };
 
     var olmm = new OLMM();
     olmm.init('map');
     olmm.addFeatureClickFunction(sel, 'points');
+    olmm.addFeatureClickFunction(sel2, 'good_proj');
 
     var url = "../test3.json";
     $.ajax({
@@ -45,8 +49,6 @@
 
         }
     });
-
-    //olmm.draw_tdr_lines(json_line, 'tdr_lines');
 
 </script>
 </body>

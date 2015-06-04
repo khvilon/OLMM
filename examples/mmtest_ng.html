@@ -31,6 +31,40 @@
 <body>
 <div id="map" class="map"></div>
 <script type="text/javascript">
+    function add() {
+        var url = "../test4.json";
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+                olmm.mmTestNextGenAddDynamicFeatures(data);
+            }
+        });
+    }
+
+    function add_or_replace() {
+        var url = "../test4.json";
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+                window.data = data;
+                olmm.mmTestNextGenAddFeatures(data);
+            }
+        });
+    }
+
+    function deleteByFeatureId() {
+        var url = "../test4.json";
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+
+            }
+        })
+    }
+
     sel = function (event, id) {
         console.log(id);
     };
@@ -39,14 +73,8 @@
     olmm.init('map');
     olmm.addFeatureClickFunction(sel, 'main');
 
-    var url = "../test2.json";
-    $.ajax({
-        url: url,
-        dataType: 'json',
-        success: function(data) {
-            olmm.mmTestNextGenAddInitialFeatures(data, true);
-        }
-    });
+    add_or_replace()
+
 </script>
 </body>
 </html>

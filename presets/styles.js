@@ -163,7 +163,7 @@ OLMM.prototype.styleMmProjFunction = function (feature, resolution) {
                 radius: 4,
                 stroke: new ol.style.Stroke({
                     color: [239, 20, 20, opacity],
-                    width: 2
+                    width: 3
                 })
             })
         }));
@@ -184,7 +184,7 @@ OLMM.prototype.styleGoodProjFunction = function (feature, resolution) {
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: [86, 204, 51, opacity],
-                width: 2
+                width: 3
             })
         })
     ];
@@ -196,7 +196,7 @@ OLMM.prototype.styleGoodProjFunction = function (feature, resolution) {
                 radius: 4,
                 stroke: new ol.style.Stroke({
                     color: [86, 204, 51, opacity],
-                    width: 2
+                    width: 3
                 })
             })
         }));
@@ -212,11 +212,16 @@ OLMM.prototype.styleLastProjFunction = function (feature, resolution) {
     var feature_properties = feature.getProperties();
     var feature_visible = feature_properties['visible'];
     var feature_state = feature_properties['state'];
+    var feature_transparent = feature_properties['transparent'];
 
     if (feature_visible) {
         opacity = 1;
     } else {
         opacity = 0.4;
+    }
+
+    if (feature_transparent) {
+        opacity = 0;
     }
 
     switch (feature_state) {
@@ -234,15 +239,13 @@ OLMM.prototype.styleLastProjFunction = function (feature, resolution) {
             break;
     }
 
-    console.log(color);
-
     var geometry = feature.getGeometry();
     var styles = [
         // linestring
         new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: [color, opacity],//'#ffcc33',
-                width: 2
+                color: [255, 204, 51, opacity],//'#ffcc33',
+                width: 3
             })
         })
     ];
@@ -253,8 +256,8 @@ OLMM.prototype.styleLastProjFunction = function (feature, resolution) {
             image: new ol.style.Circle({
                 radius: 4,
                 stroke: new ol.style.Stroke({
-                    color: [color, opacity],//'#ffcc33',
-                    width: 2
+                    color: [255, 204, 51, opacity],//'#ffcc33',
+                    width: 3
                 })
             })
         }));

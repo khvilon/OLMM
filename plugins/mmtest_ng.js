@@ -1,9 +1,36 @@
-OLMM.prototype.mmTestNextGenAddInitialFeatures = function(geojson_data) {
+OLMM.prototype.mmTestNextGenAddFeatures = function(geojson_data) {
+    this._mmTestNextGenClearAll();
     this._mmTestNextGenAddFeatures(geojson_data, true)
 };
 
 OLMM.prototype.mmTestNextGenAddDynamicFeatures = function(geojson_data) {
     this._mmTestNextGenAddFeatures(geojson_data, false)
+};
+
+OLMM.prototype._mmTestNextGenClearAll = function() {
+    var source_name, source;
+
+    for (source_name in this.sources) {
+        source = this.getSourceByName(source_name);
+        if (!!source.getFeatures) {
+            source.clear();
+        }
+    }
+};
+
+OLMM.prototype.mmTestDeleteFeatureById = function(feature_id, source_name) {
+    var source_name, source, point_feature;
+
+    for (source_name in this.sources) {
+        source = this.getSourceByName(source_name);
+        if (!!source.getFeatures) {
+            point_feature = source.getFeatureById(feature_id);
+
+            source.removeFeature(source.getFeatureById(feature_id));
+        }
+
+
+    }
 };
 
 OLMM.prototype._mmTestNextGenAddFeatures = function(geojson_data, need_fit) {
