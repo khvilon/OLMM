@@ -21,6 +21,17 @@
         }
     };
 
+    module.initHoverOnFeature = function() {
+        var self = this;
+
+        var selectMouseMove = new ol.interaction.Select({
+            condition: ol.events.condition.pointerMove,
+            layers: [self.getLayerByName('main')]
+        });
+
+        self.map.addInteraction(selectMouseMove);
+    };
+
     module.initLayers = function() {
         var self = this;
 
