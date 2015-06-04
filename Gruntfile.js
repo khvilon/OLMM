@@ -33,7 +33,6 @@ module.exports = function(grunt) {
                     'OpenLayers/build/ol.js',
                     'apps/core.js',
                     'actions/edit.js',
-
                     'presets/styles.js',
                     'presets/layers.js',
                     'presets/sources.js',
@@ -55,7 +54,7 @@ module.exports = function(grunt) {
             mmtest_ng: {
                 src: [
                     'jquery-1.10.2.js',
-                    'OpenLayers/build/ol.js',
+                    'OpenLayers/build/ol-debug.js',
                     'apps/core.js',
                     'actions/edit.js',
                     'actions/select.js',
@@ -67,7 +66,9 @@ module.exports = function(grunt) {
                     'utils/wkt.js',
                     'utils/geojson.js',
                     'utils/transform.js',
+                    'utils/projections.js',
                     'actions/click.js',
+                    'actions/add.js',
                     'plugins/mmtest_ng.js'
                 ],
                 dest: 'build/mmtest_ng/olmm.js'
