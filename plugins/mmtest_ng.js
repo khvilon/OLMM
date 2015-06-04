@@ -1,78 +1,80 @@
-OLMM.prototype.mmTestNextGenAddFeatures = function(geojson_data) {
-    this._mmTestNextGenClearAll();
-    this._mmTestNextGenAddFeatures(geojson_data, true)
-};
+(function (module) {
+    module.mmTestNextGenAddFeatures = function(geojsonData) {
+        this._clearAllSources();
+        this._addFeatures(geojsonData, true)
+    };
 
-OLMM.prototype.mmTestNextGenAddDynamicFeatures = function(geojson_data) {
-    this._mmTestNextGenAddFeatures(geojson_data, false)
-};
+    module.mmTestNextGenAddDynamicFeatures = function(geojsonData) {
+        this._addFeatures(geojsonData, false)
+    };
 
-OLMM.prototype._mmTestNextGenClearAll = function() {
-    var source_name, source;
+    module.mmTestDeleteFeatureById = function(feature_id) {
+        var source_name, source, point_feature;
 
-    for (source_name in this.sources) {
-        source = this.getSourceByName(source_name);
-        if (!!source.getFeatures) {
-            source.clear();
+        for (source_name in this.sources) {
+            source = this.getSourceByName(source_name);
+            if (!!source.getFeatures) {
+                point_feature = source.getFeatureById(feature_id);
+
+                source.removeFeature(source.getFeatureById(feature_id));
+            }
         }
-    }
-};
+    };
 
-OLMM.prototype.mmTestDeleteFeatureById = function(feature_id, source_name) {
-    var source_name, source, point_feature;
+    module._clearAllSources = function() {
+        var source_name, source;
 
-    for (source_name in this.sources) {
-        source = this.getSourceByName(source_name);
-        if (!!source.getFeatures) {
-            point_feature = source.getFeatureById(feature_id);
+        for (source_name in this.sources) {
+            source = this.getSourceByName(source_name);
+            if (!!source.getFeatures) {
+                source.clear();
+            }
+        }
+    };
 
-            source.removeFeature(source.getFeatureById(feature_id));
+    module._addFeatures = function(geojson_data, need_fit) {
+        var self = this;
+
+        if (!self.getLayerByName('osm')){
+            self.addLayer('osm', self.createOSMLayer(self.createOSMLayer()));
         }
 
+        var json_string = JSON.stringify(geojson_data);
+        var geojson = JSON.parse(json_string);
 
-    }
-};
+        var features = self.readGeoJSON(geojson, true);
 
-OLMM.prototype._mmTestNextGenAddFeatures = function(geojson_data, need_fit) {
+        if (!self.getLayerByName('lines')){
+            var line_layer = self.createVectorLayer(self.styleGraphFunction);
+            self.addLayer('lines', line_layer);
+        }
 
-    if (!this.getLayerByName('osm')){
-        this.addLayer('osm', this.createOSMLayer(this.createOSMLayer()));
-    }
-
-    var json_string = JSON.stringify(geojson_data);
-    var geojson = JSON.parse(json_string);
-
-    var features = this.readGeoJSON(geojson);
-
-    if (!this.getLayerByName('lines')){
-        var line_layer = this.createVectorLayer(this.styleGraphFunction);
-        this.addLayer('lines', line_layer);
-    }
-
-    if (!this.getLayerByName('main')){
-        this.addLayer('main', this.createVectorLayer(
-            new ol.style.Style({ // TODO
-                image: new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: 'black',
-                        opacity: 1
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'black',
-                        opacity: 1
+        if (!self.getLayerByName('main')){
+            self.addLayer('main', self.createVectorLayer(
+                new ol.style.Style({ // TODO
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'black',
+                            opacity: 1
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'black',
+                            opacity: 1
+                        })
                     })
                 })
-            })
-            )
-        );
-    }
+                )
+            );
+        }
 
-    this.getSourceByName('main').addFeatures(features);
+        self.getSourceByName('main').addFeatures(features);
 
-    this.transformPointsToLine(features, this.getSourceByName('lines'));
+        self.transformPointsToLine(features, 'lines');
 
-    if (need_fit){
-        this.fitToExtent(this.getSourceByName('lines'));
-    }
-};
+        if (need_fit){
+            self.fitToExtent('lines');
+        }
+    };
+
+})(OLMM.prototype);

@@ -3,11 +3,11 @@ function OLMM() {
     this.sources = {};
     this.firstLayers = [];
     this.interactions = {};
+    this.styles = {};
 }
 
 OLMM.prototype.createMap = function (divName) {
-    this.map = new ol.Map(
-    {
+    this.map = new ol.Map({
         target: divName,
         layers: this.firstLayers,
         view: new ol.View({
@@ -33,6 +33,10 @@ OLMM.prototype.getSourceByName = function(name) {
     return this.sources[name];
 };
 
+OLMM.prototype.getStyleByName = function (name) {
+    return this.styles[name];
+};
+
 OLMM.prototype.addInteraction = function(name, interaction) {
     this.interactions[name] = interaction
 };
@@ -47,7 +51,9 @@ OLMM.prototype.addLayer = function(name, layer) {
     if(this.map) {
         this.map.addLayer(layer);
     }
-    else this.firstLayers.push(layer);
+    else {
+        this.firstLayers.push(layer);
+    }
 };
 
 OLMM.prototype.setLayerVisible = function(layer_name, visible) {
