@@ -27,7 +27,7 @@
         }
     </style>
 
-    <title>integration example</title>
+    <title>integration mmtest next gen example</title>
 </head>
 <body>
 <div id="map" class="map"></div>
@@ -50,6 +50,7 @@
             dataType: 'json',
             success: function(data) {
                 window.data = data;
+                olmm.initLayers();
                 olmm.mmTestNextGenAddFeatures(data);
                 olmm.drawAllProjections();
             }

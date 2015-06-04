@@ -71,7 +71,6 @@ OLMM.prototype.createCustomLineStyle = function(line_color, line_width){
     })
 };
 
-
 styleCache = {};
 
 OLMM.prototype.createVectorClusterLayer = function (source, style) {
@@ -114,23 +113,6 @@ OLMM.prototype.createVectorClusterLayer = function (source, style) {
     //    return style;
     //}
     })
-};
-
-OLMM.prototype.addPntSelect = function (handleFeatureFunction, handleMapClickFunction) {
-    this.map.on('singleclick', function(evt){
-        var feature = this.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
-                return feature;
-            });
-        if (feature && feature.get('name') == 'Point') {
-            console.log(feature.getGeometry().getCoordinates());
-            var id = feature.getId();
-            console.log(feature.get('name'), id);
-            handleFeatureFunction(id);
-        } else {
-            handleMapClickFunction(id)
-        }
-    });
 };
 
 OLMM.prototype.createIconLayer = function(coords, need_cluster, layer_style){

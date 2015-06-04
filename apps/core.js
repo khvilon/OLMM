@@ -45,6 +45,10 @@ OLMM.prototype.addSource = function(name, source) {
     this.sources[name] = source
 };
 
+OLMM.prototype.addStyle = function(name, style) {
+    this.styles[name] = style
+};
+
 OLMM.prototype.addLayer = function(name, layer) {
     this.layers[name] = layer;
     this.addSource(name, layer.getSource());
