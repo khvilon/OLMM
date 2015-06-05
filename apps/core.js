@@ -6,62 +6,72 @@ function OLMM() {
     this.styles = {};
 }
 
-OLMM.prototype.createMap = function (divName) {
-    this.map = new ol.Map({
-        target: divName,
-        layers: this.firstLayers,
-        view: new ol.View({
-            center: [0, 0],
-            zoom: 10
-        })
-    });
-};
+(function (module) {
 
-OLMM.prototype.init = function (divName) {
-    this.createMap(divName);
-};
+    module.createMap = function (divName) {
+        this.map = new ol.Map({
+            target: divName,
+            layers: this.firstLayers,
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 10
+            })
+        });
+    };
 
-OLMM.prototype.getInteractionsByName = function(name) {
-    return this.interactions[name];
-};
+    module.deleteFeatureById = function(source_name, feature_id) {
+        var source = this.getSourceByName(source_name);
+        var feature = source.getFeatureById(feature_id);
+        source.removeFeature(feature);
 
-OLMM.prototype.getLayerByName = function(name) {
-    return this.layers[name];
-};
+        console.log(feature.getProperties()['projections'])
+    };
 
-OLMM.prototype.getSourceByName = function(name) {
-    return this.sources[name];
-};
+    module.init = function (divName) {
+        this.createMap(divName);
+    };
 
-OLMM.prototype.getStyleByName = function (name) {
-    return this.styles[name];
-};
+    module.getInteractionsByName = function(name) {
+        return this.interactions[name];
+    };
 
-OLMM.prototype.addInteraction = function(name, interaction) {
-    this.interactions[name] = interaction
-};
+    module.getLayerByName = function(name) {
+        return this.layers[name];
+    };
 
-OLMM.prototype.addSource = function(name, source) {
-    this.sources[name] = source
-};
+    module.getSourceByName = function(name) {
+        return this.sources[name];
+    };
 
-OLMM.prototype.addStyle = function(name, style) {
-    this.styles[name] = style
-};
+    module.getStyleByName = function (name) {
+        return this.styles[name];
+    };
 
-OLMM.prototype.addLayer = function(name, layer) {
-    this.layers[name] = layer;
-    this.addSource(name, layer.getSource());
-    if(this.map) {
-        this.map.addLayer(layer);
-    }
-    else {
-        this.firstLayers.push(layer);
-    }
-};
+    module.addInteraction = function(name, interaction) {
+        this.interactions[name] = interaction
+    };
 
-OLMM.prototype.setLayerVisible = function(layer_name, visible) {
-    this.getLayerByName(layer_name).setVisible(visible);
-};
+    module.addSource = function(name, source) {
+        this.sources[name] = source
+    };
 
+    module.addStyle = function(name, style) {
+        this.styles[name] = style
+    };
 
+    module.addLayer = function(name, layer) {
+        this.layers[name] = layer;
+        this.addSource(name, layer.getSource());
+        if(this.map) {
+            this.map.addLayer(layer);
+        }
+        else {
+            this.firstLayers.push(layer);
+        }
+    };
+
+    module.setLayerVisible = function(layer_name, visible) {
+        this.getLayerByName(layer_name).setVisible(visible);
+    };
+
+})(OLMM.prototype);

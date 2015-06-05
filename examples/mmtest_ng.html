@@ -38,7 +38,18 @@
             url: url,
             dataType: 'json',
             success: function(data) {
-                olmm.mmTestNextGenAddDynamicFeatures(data);
+                olmm.mmTestNextGenAddDynamicFeatures(data, 'main');
+            }
+        });
+    }
+
+    function tdrs() {
+        var url = "../test.json";
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+                olmm.mmTestNextGenAddFeaturesWithClean(data, 'tdrs');
             }
         });
     }
@@ -51,31 +62,30 @@
             success: function(data) {
                 window.data = data;
                 olmm.initLayers();
-                olmm.mmTestNextGenAddFeatures(data);
+                olmm.mmTestNextGenAddFeaturesWithClean(data, 'main');
                 olmm.drawAllProjections();
-                olmm.initHoverOnFeature();
             }
         });
     }
 
-    function deleteByFeatureId() {
-        var url = "../test4.json";
-        $.ajax({
-            url: url,
-            dataType: 'json',
-            success: function(data) {
+    function deleteByFeatureId(source_name) {
 
-            }
-        })
     }
 
-    sel = function (event, id) {
-        console.log(id);
+    sel = function (event, feature) {
+        console.log(feature.getId());
+        feature.setProperties({'state': 'good_selected'});
+    };
+
+    sel2 = function (event, feature) {
+        window.f = feature;
+        console.log(feature.getProperties());
     };
 
     var olmm = new OLMM();
     olmm.init('map');
     olmm.addFeatureClickFunction(sel, 'main');
+    olmm.addFeatureClickFunction(sel2, 'lines');
 
     add_or_replace();
 
