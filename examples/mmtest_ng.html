@@ -32,83 +32,6 @@
 <body>
 <div id="map" class="map"></div>
 <script type="text/javascript">
-    function initLayers () {
-        var self = this;
-
-        if (!self.getLayerByName('osm')){
-            self.addLayer('osm', self.createOSMLayer());
-        }
-
-        if (!self.getLayerByName('tdrs')){
-            self.addLayer('tdrs', self.createVectorLayer(
-                new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: 'blue',
-                        width: 3
-                    }),
-                    fill: new ol.style.Fill({
-                        color: 'blue'
-                    })
-                })
-            ));
-        }
-
-        if (!self.getLayerByName('lines')){
-            self.addLayer('lines', self.createVectorLayer(function (feature, resolution) {
-
-                var featureStateMap = {
-                    'good': 'darkgreen',
-                    'good_selected': 'green'
-                };
-                var featureState = feature.getProperties()['state'];
-
-                var geometry = feature.getGeometry();
-                var styles = [
-                    new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: featureStateMap[featureState] || 'dark',
-                            width: 2
-                        })
-                    })
-                ];
-
-                geometry.forEachSegment(function (start, end) {
-                    styles.push(new ol.style.Style({
-                        geometry: new ol.geom.Point(end),
-                        image: new ol.style.Circle({
-                            radius: 4,
-                            stroke: new ol.style.Stroke({
-                                color: featureStateMap[featureState] || 'dark',
-                                width: 2
-                            })
-                        })
-                    }));
-                });
-
-                return styles;
-            }));
-        }
-
-        if (!self.getLayerByName('main')){
-            self.addLayer('main', self.createVectorLayer(
-                new ol.style.Style({ // TODO
-                    image: new ol.style.Circle({
-                        radius: 5,
-                        fill: new ol.style.Fill({
-                            color: 'black',
-                            opacity: 1
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'black',
-                            opacity: 1
-                        })
-                    })
-                })
-                )
-            );
-        }
-    };
-
     function add() {
         var url = "../test4.json";
         $.ajax({
@@ -138,6 +61,7 @@
             dataType: 'json',
             success: function(data) {
                 window.data = data;
+                olmm.initLayers();
                 olmm.mmTestNextGenAddFeaturesWithClean(data, 'main');
                 olmm.drawAllProjections();
             }
@@ -160,7 +84,7 @@
 
     var olmm = new OLMM();
     olmm.init('map');
-    initLayers();
+    olmm.initLayers();
     olmm.addFeatureClickFunction(sel, 'main');
     olmm.addFeatureClickFunction(sel2, 'lines');
 
