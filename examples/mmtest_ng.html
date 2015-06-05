@@ -38,7 +38,11 @@
             url: url,
             dataType: 'json',
             success: function(data) {
-                olmm.mmTestNextGenAddDynamicFeatures(data, 'main');
+                olmm.mmTestNextGenAddFeatures({
+                    "geojson_data": data,
+                    "source_name": 'main',
+                    "need_fit": true
+                });
             }
         });
     }
@@ -49,7 +53,11 @@
             url: url,
             dataType: 'json',
             success: function(data) {
-                olmm.mmTestNextGenAddFeaturesWithClean(data, 'tdrs');
+                olmm.mmTestNextGenAddFeatures({
+                    "geojson_data": data,
+                    "source_name": 'tdrs',
+                    "need_fit": true
+                });
             }
         });
     }
@@ -62,7 +70,12 @@
             success: function(data) {
                 window.data = data;
                 olmm.initLayers();
-                olmm.mmTestNextGenAddFeaturesWithClean(data, 'main');
+                olmm.clearSources();
+                olmm.mmTestNextGenAddFeatures({
+                    "geojson_data": data,
+                    "source_name": 'main',
+                    "need_fit": true
+                });
                 olmm.drawAllProjections();
             }
         });
