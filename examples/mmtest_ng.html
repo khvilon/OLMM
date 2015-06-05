@@ -32,13 +32,101 @@
 <body>
 <div id="map" class="map"></div>
 <script type="text/javascript">
+    function initLayers () {
+        var self = this;
+
+        if (!self.getLayerByName('osm')){
+            self.addLayer('osm', self.createOSMLayer());
+        }
+
+        if (!self.getLayerByName('tdrs')){
+            self.addLayer('tdrs', self.createVectorLayer(
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'blue'
+                    })
+                })
+            ));
+        }
+
+        if (!self.getLayerByName('lines')){
+            self.addLayer('lines', self.createVectorLayer(function (feature, resolution) {
+
+                var featureStateMap = {
+                    'good': 'darkgreen',
+                    'good_selected': 'green'
+                };
+                var featureState = feature.getProperties()['state'];
+
+                var geometry = feature.getGeometry();
+                var styles = [
+                    new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: featureStateMap[featureState] || 'dark',
+                            width: 2
+                        })
+                    })
+                ];
+
+                geometry.forEachSegment(function (start, end) {
+                    styles.push(new ol.style.Style({
+                        geometry: new ol.geom.Point(end),
+                        image: new ol.style.Circle({
+                            radius: 4,
+                            stroke: new ol.style.Stroke({
+                                color: featureStateMap[featureState] || 'dark',
+                                width: 2
+                            })
+                        })
+                    }));
+                });
+
+                return styles;
+            }));
+        }
+
+        if (!self.getLayerByName('main')){
+            self.addLayer('main', self.createVectorLayer(
+                new ol.style.Style({ // TODO
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'black',
+                            opacity: 1
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'black',
+                            opacity: 1
+                        })
+                    })
+                })
+                )
+            );
+        }
+    };
+
     function add() {
         var url = "../test4.json";
         $.ajax({
             url: url,
             dataType: 'json',
             success: function(data) {
-                olmm.mmTestNextGenAddDynamicFeatures(data);
+                olmm.mmTestNextGenAddDynamicFeatures(data, 'main');
+            }
+        });
+    }
+
+    function tdrs() {
+        var url = "../test.json";
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+                olmm.mmTestNextGenAddFeaturesWithClean(data, 'tdrs');
             }
         });
     }
@@ -50,32 +138,31 @@
             dataType: 'json',
             success: function(data) {
                 window.data = data;
-                olmm.initLayers();
-                olmm.mmTestNextGenAddFeatures(data);
+                olmm.mmTestNextGenAddFeaturesWithClean(data, 'main');
                 olmm.drawAllProjections();
-                olmm.initHoverOnFeature();
             }
         });
     }
 
-    function deleteByFeatureId() {
-        var url = "../test4.json";
-        $.ajax({
-            url: url,
-            dataType: 'json',
-            success: function(data) {
+    function deleteByFeatureId(source_name) {
 
-            }
-        })
     }
 
-    sel = function (event, id) {
-        console.log(id);
+    sel = function (event, feature) {
+        console.log(feature.getId());
+        feature.setProperties({'state': 'good_selected'});
+    };
+
+    sel2 = function (event, feature) {
+        window.f = feature;
+        console.log(feature.getProperties());
     };
 
     var olmm = new OLMM();
     olmm.init('map');
+    initLayers();
     olmm.addFeatureClickFunction(sel, 'main');
+    olmm.addFeatureClickFunction(sel2, 'lines');
 
     add_or_replace();
 

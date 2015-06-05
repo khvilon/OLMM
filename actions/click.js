@@ -23,7 +23,7 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
                 }
             });
         if (feature) {
-            handleFeatureClickFunction(event, feature.getId());
+            handleFeatureClickFunction(event, feature);
         }
     });
 };
