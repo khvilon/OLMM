@@ -28,7 +28,8 @@
                     'good': 'darkgreen',
                     'good_selected': 'green',
                     'bad': 'darkred',
-                    'bad_selected': 'red'
+                    'bad_selected': 'red',
+                    'selected': 'yellow'
                 };
                 var featureState = feature.getProperties()['state'];
                 var color = featureStateMap[featureState] || 'transparent';
@@ -64,8 +65,7 @@
             self.addLayer('main', self.createVectorLayer(function (feature, resolution) {
 
                 var featureStateMap = {
-                    'good': 'darkgreen',
-                    'good_selected': 'green',
+                    'selected': 'yellow'
                 };
                 var featureState = feature.getProperties()['state'];
 
@@ -126,5 +126,31 @@
             self.fitToExtent('main');
         }
     };
+
+    module.selectFeature = function (feature) {
+        var self = this;
+
+        var featureState = feature.getProperties()['state'];
+        var featureId = feature.getId();
+
+        feature.setProperties({'state': self.getFeatureState(featureState)});
+        feature.changed();
+
+        self.getSourceByName('lines').getFeatures().map(function(projection){
+            if (projection.getProperties()['point_id'] == featureId) {
+                projection.setProperties({'state': self.getFeatureState(projection.getProperties()['state'])});
+                projection.changed();
+            }
+        });
+    };
+
+    module.getFeatureState = function (state) {
+        console.log('state');
+        if (state) {
+            return state += '_selected'
+        } else {
+            return 'selected'
+        }
+    }
 
 })(OLMM.prototype);

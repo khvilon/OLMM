@@ -87,14 +87,9 @@
     }
 
     sel = function (event, feature) {
-        console.log(feature.getId());
         olmm.unSelectFeatures('main');
         olmm.unSelectFeatures('lines');
-        feature.setProperties({'state': 'good_selected'});
-        feature.changed();
-
-        olmm.changePointProjectionsState(feature, 'lines', 'good_selected');
-
+        olmm.selectFeature(feature);
         olmm.drawProjections(feature, 'lines');
     };
 

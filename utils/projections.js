@@ -34,6 +34,7 @@
     };
 
     module.changePointProjectionsState = function (pointFeature, projection_source_name, state) {
+        var self = this;
         state = state || '';
         var featureId = pointFeature.getId();
 
