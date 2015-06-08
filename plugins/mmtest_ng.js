@@ -135,6 +135,17 @@
         var self = this;
         self.unSelectFeatures('main');
         self.unSelectFeatures('lines');
+
+        var featureId = feature.getId();
+
+        if (self._lastSelectedPoint != undefined && featureId == self._lastSelectedPoint) {
+            self._lastSelectedPoint = undefined;
+            return;
+        } else {
+            self._lastSelectedPoint = featureId;
+        }
+
+        self.selectFeature(feature);
     };
 
     module.selectFeature = function (feature) {

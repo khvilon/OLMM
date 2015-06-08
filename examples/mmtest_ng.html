@@ -87,20 +87,7 @@
     }
 
     sel = function (event, feature) {
-
-        olmm.unSelectFeatures('lines');
-        olmm.unSelectFeatures('main');
-
-        var featureId = feature.getId();
-
-        if (this._lastSelectedPoint != undefined && featureId == this._lastSelectedPoint) {
-            this._lastSelectedPoint = undefined;
-            return;
-        } else {
-            this._lastSelectedPoint = featureId;
-        }
-
-        olmm.selectFeature(feature);
+        olmm.toggleFeature(feature);
     };
 
     sel2 = function (event, feature) {
