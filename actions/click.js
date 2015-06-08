@@ -33,7 +33,8 @@ OLMM.prototype.unSelectFeatures = function (source_name, default_state) {
 
     this.getSourceByName(source_name).getFeatures().map(
         function(feature){
-            feature.setProperties({'state': state});
+
+            feature.setProperties({'priorityState': state});
             feature.changed();
         }
     );

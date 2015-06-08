@@ -25,14 +25,16 @@
             self.addLayer('lines', self.createVectorLayer(function (feature, resolution) {
 
                 var featureStateMap = {
-                    'good': 'darkgreen',
+                    'good': 'lightgreen',
                     'good_selected': 'green',
-                    'bad': 'darkred',
+                    'bad': 'lightcoral',
                     'bad_selected': 'red',
-                    'selected': 'yellow'
+                    'selected': 'darkorange'
                 };
+
                 var featureState = feature.getProperties()['state'];
-                var color = featureStateMap[featureState] || 'transparent';
+                var featurePriorityState = feature.getProperties()['priorityState'];
+                var color = featureStateMap[featurePriorityState] || featureStateMap[featureState] || 'transparent';
 
                 var geometry = feature.getGeometry();
                 var styles = [
@@ -68,12 +70,14 @@
                     'selected': 'yellow'
                 };
                 var featureState = feature.getProperties()['state'];
+                var featurePriorityState = feature.getProperties()['priorityState'];
+                var color = featureStateMap[featurePriorityState] || featureStateMap[featureState] || 'black';
 
                 return [new ol.style.Style({
                     image: new ol.style.Circle({
                         radius: 5,
                         fill: new ol.style.Fill({
-                            color: featureStateMap[featureState] || 'black',
+                            color: color,
                             opacity: 1
                         }),
                         stroke: new ol.style.Stroke({
@@ -127,25 +131,42 @@
         }
     };
 
+    module.toggleFeature = function (feature) {
+        var self = this;
+        self.unSelectFeatures('main');
+        self.unSelectFeatures('lines');
+    };
+
     module.selectFeature = function (feature) {
         var self = this;
 
         var featureState = feature.getProperties()['state'];
+        var featurePriorityState = feature.getProperties()['priorityState'];
+        var state = featurePriorityState || featureState;
+
         var featureId = feature.getId();
 
-        feature.setProperties({'state': self.getFeatureState(featureState)});
-        feature.changed();
+        self.setFeatureState(feature, self.getFeatureStateForSelect(state));
 
         self.getSourceByName('lines').getFeatures().map(function(projection){
             if (projection.getProperties()['point_id'] == featureId) {
-                projection.setProperties({'state': self.getFeatureState(projection.getProperties()['state'])});
+                var projState = projection.getProperties()['state'];
+                var projPriorityState = projection.getProperties()['priorityState'];
+                var state = projPriorityState || projState;
+                self.setFeatureState(projection, self.getFeatureStateForSelect(state));
                 projection.changed();
             }
         });
+
+        olmm.showProjections(feature, 'lines');
     };
 
-    module.getFeatureState = function (state) {
-        console.log('state');
+    module.setFeatureState = function (feature, state) {
+        feature.setProperties({'priorityState': state});
+        feature.changed();
+    };
+
+    module.getFeatureStateForSelect = function (state) {
         if (state) {
             return state += '_selected'
         } else {

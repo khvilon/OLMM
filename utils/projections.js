@@ -14,6 +14,20 @@
         self.getSourceByName(sourceName).addFeatures(features);
     };
 
+    module.showProjections = function (pointFeature, sourceName) {
+        var self = this;
+
+        var point_projections = pointFeature.getProperties().projections || [];
+        self.readGeoJSON(point_projections).map(
+            function (proj) {
+                self.setFeatureState(proj, 'selected');
+                proj.setProperties({'point_id': pointFeature.getId()});
+                proj.changed();
+            }
+        );
+
+    };
+
     module.drawAllProjections = function () {
         var self = this;
 
