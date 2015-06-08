@@ -8,7 +8,7 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
     var layer_obj;
     var olmm = this;
 
-    this.map.on('singleclick', function (event) {
+    olmm.map.on('singleclick', function (event) {
         if (layer_name) {
             layer_obj = olmm.getLayerByName(layer_name);
         }
@@ -26,4 +26,15 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
             handleFeatureClickFunction(event, feature);
         }
     });
+};
+
+OLMM.prototype.unSelectFeatures = function (source_name, default_state) {
+    var state = default_state || '';
+
+    this.getSourceByName(source_name).getFeatures().map(
+        function(feature){
+            feature.setProperties({'state': state});
+            feature.changed();
+        }
+    );
 };

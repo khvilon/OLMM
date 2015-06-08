@@ -7,6 +7,7 @@
     <script src="../apps/core.js" type="text/javascript"></script>
     <script src="../actions/edit.js" type="text/javascript"></script>
     <script src="../actions/select.js" type="text/javascript"></script>
+    <script src="../actions/drag.js" type="text/javascript"></script>
     <script src="../presets/styles.js" type="text/javascript"></script>
     <script src="../presets/layers.js" type="text/javascript"></script>
     <script src="../presets/sources.js" type="text/javascript"></script>
@@ -37,7 +38,7 @@
         $.ajax({
             url: url,
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 olmm.mmTestNextGenAddFeatures({
                     "geojson_data": data,
                     "source_name": 'main',
@@ -52,7 +53,7 @@
         $.ajax({
             url: url,
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 olmm.mmTestNextGenAddFeatures({
                     "geojson_data": data,
                     "source_name": 'tdrs',
@@ -67,7 +68,7 @@
         $.ajax({
             url: url,
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 window.data = data;
                 olmm.initLayers();
                 olmm.clearSources();
@@ -82,17 +83,23 @@
     }
 
     function deleteByFeatureId(source_name) {
-
+        console.log(source_name);
     }
 
     sel = function (event, feature) {
         console.log(feature.getId());
+        olmm.unSelectFeatures('main');
+        olmm.unSelectFeatures('lines');
         feature.setProperties({'state': 'good_selected'});
+        feature.changed();
+
+        olmm.changePointProjectionsState(feature, 'lines', 'good_selected');
+
+        olmm.drawProjections(feature, 'lines');
     };
 
     sel2 = function (event, feature) {
         window.f = feature;
-        console.log(feature.getProperties());
     };
 
     var olmm = new OLMM();

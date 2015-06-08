@@ -1,4 +1,20 @@
-OLMM.prototype.enableAddMode = function(feature_type, source_name) {
+OLMM.prototype.enableDrawModeForPoint = function (source_name) {
+    this.enableDrawMode('Point', source_name);
+};
+
+OLMM.prototype.enableDrawModeForLineString = function (source_name) {
+    this.enableDrawMode('LineString', source_name);
+};
+
+OLMM.prototype.enableDrawModeForPolygon = function (source_name) {
+    this.enableDrawMode('Polygon', source_name);
+};
+
+OLMM.prototype.enableDrawModeForCircle = function (source_name) {
+    this.enableDrawMode('Circle', source_name);
+};
+
+OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
     var self = this;
 
     if (['Point', 'LineString', 'Polygon', 'Circle'].indexOf(feature_type) == -1) {
@@ -6,9 +22,9 @@ OLMM.prototype.enableAddMode = function(feature_type, source_name) {
         return;
     }
 
-    this.disableAddMode();
+    self.disableDrawMode();
 
-    var cached_add_mode = this.getInteractionsByName(feature_type);
+    var cached_add_mode = self.getInteractionsByName(feature_type);
 
     if (cached_add_mode) {
         cached_add_mode.setActive(true)
@@ -20,16 +36,24 @@ OLMM.prototype.enableAddMode = function(feature_type, source_name) {
 
         var draw = new ol.interaction.Draw({
             source: source,
-            type: feature_type
+            type: feature_type,
+            callbacks: { done: function() { console.log('polygon done')} }
         });
 
-        this.addInteraction(feature_type, draw);
-        this.map.addInteraction(draw);
+        draw.on('drawend', function(event) {
+            var format = new ol.format.GeoJSON();
+            console.log(format.writeFeature(event.feature));
+            console.log('draw end!');
+          }, this);
+
+        self.addInteraction(feature_type, draw);
+        self.map.addInteraction(draw);
     }
 };
 
-OLMM.prototype.disableAddMode = function() {
-    for (var interaction_name in this.interactions) {
-        this.interactions[interaction_name].setActive(false)
+OLMM.prototype.disableDrawMode = function() {
+    var self = this;
+    for (var interaction_name in self.interactions) {
+        self.interactions[interaction_name].setActive(false)
     }
 };

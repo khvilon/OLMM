@@ -3,11 +3,11 @@
     module.initLayers = function() {
         var self = this;
 
-        if (!self.getLayerByName('osm')){
+        if (!self.getLayerByName('osm')) {
             self.addLayer('osm', self.createOSMLayer());
         }
 
-        if (!self.getLayerByName('tdrs')){
+        if (!self.getLayerByName('tdrs')) {
             self.addLayer('tdrs', self.createVectorLayer(
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({
@@ -21,20 +21,23 @@
             ));
         }
 
-        if (!self.getLayerByName('lines')){
+        if (!self.getLayerByName('lines')) {
             self.addLayer('lines', self.createVectorLayer(function (feature, resolution) {
 
                 var featureStateMap = {
                     'good': 'darkgreen',
-                    'good_selected': 'green'
+                    'good_selected': 'green',
+                    'bad': 'darkred',
+                    'bad_selected': 'red'
                 };
                 var featureState = feature.getProperties()['state'];
+                var color = featureStateMap[featureState] || 'transparent';
 
                 var geometry = feature.getGeometry();
                 var styles = [
                     new ol.style.Style({
                         stroke: new ol.style.Stroke({
-                            color: featureStateMap[featureState] || 'dark',
+                            color: color,
                             width: 2
                         })
                     })
@@ -46,7 +49,7 @@
                         image: new ol.style.Circle({
                             radius: 4,
                             stroke: new ol.style.Stroke({
-                                color: featureStateMap[featureState] || 'dark',
+                                color: color,
                                 width: 2
                             })
                         })
@@ -57,13 +60,20 @@
             }));
         }
 
-        if (!self.getLayerByName('main')){
-            self.addLayer('main', self.createVectorLayer(
-                new ol.style.Style({ // TODO
+        if (!self.getLayerByName('main')) {
+            self.addLayer('main', self.createVectorLayer(function (feature, resolution) {
+
+                var featureStateMap = {
+                    'good': 'darkgreen',
+                    'good_selected': 'green',
+                };
+                var featureState = feature.getProperties()['state'];
+
+                return [new ol.style.Style({
                     image: new ol.style.Circle({
                         radius: 5,
                         fill: new ol.style.Fill({
-                            color: 'black',
+                            color: featureStateMap[featureState] || 'black',
                             opacity: 1
                         }),
                         stroke: new ol.style.Stroke({
@@ -71,13 +81,13 @@
                             opacity: 1
                         })
                     })
-                })
-                )
-            );
+                })]
+            }));
         }
     };
 
     module.initHoverOnFeature = function() {
+        // TODO cursor or pointer object with events
         var self = this;
 
         var selectMouseMove = new ol.interaction.Select({
