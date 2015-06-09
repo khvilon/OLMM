@@ -27,6 +27,18 @@
     <title>integration example</title>
 </head>
 <body>
+
+<div style="position: fixed; z-index: 1000; padding: 10px; border: 3px solid black; border-radius: 5px; margin-left: 55px; margin-top: 12px;">
+    <label>map</label>
+    <input type="checkbox" class="toggle-layers" name="map" checked="checked"/>
+    <label>roads</label>
+    <input type="checkbox" class="toggle-layers" name="roads" checked="checked"/>
+    <label>froads</label>
+    <input type="checkbox" class="toggle-layers" name="froads" checked="checked"/>
+    <label>svp</label>
+    <input type="checkbox" class="toggle-layers" name="svp" checked="checked"/>
+</div>
+
 <div id="map" class="map"></div>
 <script type="text/javascript">
     sel = function (id) {
@@ -38,9 +50,15 @@
 
     olmm.addLayer('map', olmm.createOSMLayer());
     //olmm.addLayer('map', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'map'));
-    //olmm.addLayer('roads', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'roads'));
-    //olmm.addLayer('froads', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'froads'));
-    //olmm.addLayer('svp', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'svp'));
+    olmm.addLayer('roads', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'roads'));
+    olmm.addLayer('froads', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'froads'));
+    olmm.addLayer('svp', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'svp'));
+
+    $(document).ready(function(){
+        $('.toggle-layers').on('click', function(){
+            olmm.setLayerVisible(this.name, this.checked);
+        })
+    })
 
 
 

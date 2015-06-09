@@ -74,4 +74,12 @@ function OLMM() {
         this.getLayerByName(layer_name).setVisible(visible);
     };
 
+    module.toggleLayerVisible = function(layer_name) {
+        var self = this;
+        var layer = this.getLayerByName(layer_name);
+        var new_layer_visible = !layer.getVisible();
+        self.setLayerVisible(layer_name, new_layer_visible);
+        return new_layer_visible;
+    };
+
 })(OLMM.prototype);
