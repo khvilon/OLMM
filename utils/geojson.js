@@ -8,7 +8,7 @@
             var geometry_type = feature.getGeometry().getType();
             var coords = feature.getGeometry().getCoordinates();
             var featureProperties = feature.getProperties();
-            feature = module.transformWithGeometry(feature);
+            feature = module.transformWithGeometryFromLonLat(feature);
 
             if (setId) {
                 if (featureProperties['id']) { feature.setId(featureProperties['id']) }

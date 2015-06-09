@@ -107,6 +107,7 @@
     };
 
     module.clearSources = function () {
+        var self = this;
         for (var source_name in self.sources) {
             var source = self.getSourceByName(source_name);
             if (!!source.getFeatures) {

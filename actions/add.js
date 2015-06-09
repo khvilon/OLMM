@@ -1,20 +1,20 @@
-OLMM.prototype.enableDrawModeForPoint = function (source_name) {
-    this.enableDrawMode('Point', source_name);
+OLMM.prototype.enableDrawModeForPoint = function (source_name, callback) {
+    this.enableDrawMode('Point', source_name, callback);
 };
 
-OLMM.prototype.enableDrawModeForLineString = function (source_name) {
-    this.enableDrawMode('LineString', source_name);
+OLMM.prototype.enableDrawModeForLineString = function (source_name, callback) {
+    this.enableDrawMode('LineString', source_name, callback);
 };
 
-OLMM.prototype.enableDrawModeForPolygon = function (source_name) {
-    this.enableDrawMode('Polygon', source_name);
+OLMM.prototype.enableDrawModeForPolygon = function (source_name, callback) {
+    this.enableDrawMode('Polygon', source_name, callback);
 };
 
-OLMM.prototype.enableDrawModeForCircle = function (source_name) {
-    this.enableDrawMode('Circle', source_name);
+OLMM.prototype.enableDrawModeForCircle = function (source_name, callback) {
+    this.enableDrawMode('Circle', source_name, callback);
 };
 
-OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
+OLMM.prototype.enableDrawMode = function(feature_type, source_name, callback) {
     var self = this;
 
     if (['Point', 'LineString', 'Polygon', 'Circle'].indexOf(feature_type) == -1) {
@@ -36,14 +36,13 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
 
         var draw = new ol.interaction.Draw({
             source: source,
-            type: feature_type,
-            callbacks: { done: function() { console.log('polygon done')} }
+            type: feature_type
         });
 
         draw.on('drawend', function(event) {
             var format = new ol.format.GeoJSON();
-            console.log(format.writeFeature(event.feature));
-            console.log('draw end!');
+            var geojson = format.writeFeature(self.transformWithGeometryToLonLat(event.feature.clone()));
+            callback(geojson);
           }, this);
 
         self.addInteraction(feature_type, draw);

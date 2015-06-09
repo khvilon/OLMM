@@ -24,7 +24,15 @@
         }
     };
 
-    module.transformWithGeometry = function (feature) {
+    module.transformWithGeometryFromLonLat = function (feature) {
+        return module.transformWithGeometry(feature, module.transform)
+    };
+
+    module.transformWithGeometryToLonLat = function (feature) {
+        return module.transformWithGeometry(feature, module.transform_to_lot_lan)
+    };
+
+    module.transformWithGeometry = function (feature, transform_function) {
         var geometry = feature.getGeometry();
         var geometry_type = geometry.getType();
         var coords = geometry.getCoordinates();
@@ -35,7 +43,7 @@
             'Circle': ol.geom.Circle
         };
 
-        feature.setGeometry(new geometry_type_map[geometry_type](module.transform(coords)));
+        feature.setGeometry(new geometry_type_map[geometry_type](transform_function(coords)));
 
         return feature;
     };

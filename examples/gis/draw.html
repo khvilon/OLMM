@@ -1,11 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+
     <link rel="stylesheet" href="../../OpenLayers/css/ol.css" type="text/css">
     <script src="../../jquery-1.10.2.js"></script>
     <script src="../../OpenLayers/build/ol.js" type="text/javascript"></script>
     <script src="../../apps/core.js" type="text/javascript"></script>
     <script src="../../actions/add.js" type="text/javascript"></script>
+    <script src="../../actions/edit.js" type="text/javascript"></script>
     <script src="../../presets/styles.js" type="text/javascript"></script>
     <script src="../../presets/layers.js" type="text/javascript"></script>
     <script src="../../presets/sources.js" type="text/javascript"></script>
@@ -29,14 +32,10 @@
 <body>
 
 <div style="position: fixed; z-index: 1000; padding: 10px; border: 3px solid black; border-radius: 5px; margin-left: 55px; margin-top: 12px;">
-    <label>map</label>
-    <input type="checkbox" class="toggle-layers" name="osm" checked="checked"/>
-    <label>roads</label>
-    <input type="checkbox" class="toggle-layers" name="roads" checked="checked"/>
-    <label>froads</label>
-    <input type="checkbox" class="toggle-layers" name="froads" checked="checked"/>
-    <label>svp</label>
-    <input type="checkbox" class="toggle-layers" name="svp" checked="checked"/>
+    <input type="button" class="enable-add-mode" name="Point" value="Точка"/>
+    <input type="button" class="enable-add-mode" name="LineString" value="Линия"/>
+    <input type="button" class="enable-add-mode" name="Polygon" value="Полигон"/>
+    <input type="button" class="disable-add-mode" value="Перестань!"/>
 </div>
 
 <div id="map" class="map"></div>
@@ -48,17 +47,19 @@
     var olmm = new OLMM();
     olmm.init('map');
 
-    //olmm.addLayer('map', olmm.createOSMLayer());
-    olmm.addLayer('map', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'osm'));
-    olmm.addLayer('roads', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'roads'));
-    olmm.addLayer('froads', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'froads'));
-    olmm.addLayer('svp', olmm.createWMSLayer('http://10.0.2.60/mapcache/', 'svp'));
+    olmm.addLayer('map', olmm.createOSMLayer());
 
     $(document).ready(function(){
-        $('.toggle-layers').on('click', function() {
-            olmm.setLayerVisible(this.name, this.checked);
+        $('.enable-add-mode').on('click', function() {
+            olmm.enableDrawMode(this.name, '', function(geojson){console.log(geojson)})
+        });
+
+        $('.disable-add-mode').on('click', function() {
+            olmm.disableDrawMode();
         })
     })
+
+
 
 </script>
 </body>
