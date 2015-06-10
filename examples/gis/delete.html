@@ -9,6 +9,7 @@
     <script src="../../apps/core.js" type="text/javascript"></script>
     <script src="../../actions/add.js" type="text/javascript"></script>
     <script src="../../actions/delete.js" type="text/javascript"></script>
+    <script src="../../actions/click.js" type="text/javascript"></script>
     <script src="../../presets/styles.js" type="text/javascript"></script>
     <script src="../../presets/layers.js" type="text/javascript"></script>
     <script src="../../presets/sources.js" type="text/javascript"></script>
@@ -35,7 +36,7 @@
 
 <div id="map" class="map"></div>
 <script type="text/javascript">
-    sel = function (feature) {
+    sel = function (event, feature) {
         console.log(feature);
     };
 
@@ -58,6 +59,7 @@
                 });
                 olmm.enableDeleteMode('main');
                 olmm.drawAllProjections();
+                olmm.addFeatureClickFunction(sel);
             }
         });
 
