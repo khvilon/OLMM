@@ -4,7 +4,7 @@ OLMM.prototype.addDeleteFunction = function () {
             function(feature, layer) {
                 return feature;
             });
-        if (feature && feature.get('name') == 'Point') {
+        if (feature) {
             var id = feature.getId();
             console.log(feature.get('name'), id);
             feature.remove();
