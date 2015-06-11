@@ -4,6 +4,7 @@ function OLMM() {
     this.firstLayers = [];
     this.interactions = {};
     this.styles = {};
+    this.config = {};
 }
 
 (function (module) {
@@ -48,7 +49,8 @@ function OLMM() {
     };
 
     module.addInteraction = function(name, interaction) {
-        this.interactions[name] = interaction
+        this.interactions[name] = interaction;
+        this.map.addInteraction(interaction);
     };
 
     module.addSource = function(name, source) {

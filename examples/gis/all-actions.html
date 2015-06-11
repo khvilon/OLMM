@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../OpenLayers/css/ol.css" type="text/css">
+    <script src="../../jquery-1.10.2.js"></script>
+    <script src="../../OpenLayers/build/ol.js" type="text/javascript"></script>
+    <script src="../../apps/core.js" type="text/javascript"></script>
+    <script src="../../actions/add.js" type="text/javascript"></script>
+    <script src="../../actions/edit.js" type="text/javascript"></script>
+    <script src="../../actions/drag.js" type="text/javascript"></script>
+    <script src="../../actions/interaction.js" type="text/javascript"></script>
+    <script src="../../actions/delete.js" type="text/javascript"></script>
+    <script src="../../presets/styles.js" type="text/javascript"></script>
+    <script src="../../presets/layers.js" type="text/javascript"></script>
+    <script src="../../presets/sources.js" type="text/javascript"></script>
+    <script src="../../utils/line.js" type="text/javascript"></script>
+    <script src="../../utils/fit.js" type="text/javascript"></script>
+    <script src="../../utils/wkt.js" type="text/javascript"></script>
+    <script src="../../utils/geojson.js" type="text/javascript"></script>
+    <script src="../../utils/transform.js" type="text/javascript"></script>
+    <script src="../../utils/map.js" type="text/javascript"></script>
+    <script src="../../plugins/gis.js" type="text/javascript"></script>
+
+    <style>
+        .map {
+            height: 100%;
+            width: 100%;
+        }
+        .item {
+            background-color: lightgray;
+            padding: 10px; border: 3px solid black; border-radius: 5px; display: inline-table;
+        }
+    </style>
+
+    <title>all interactions example</title>
+</head>
+<body>
+
+<div style="position: fixed; z-index: 1000; margin-left: 55px; width: 95%; margin-top: 12px;">
+    <div class="item">
+        <h3 style="text-align: center">Общее</h3>
+        <input type="button" class="disable-interactions" value="Перестань!"/>
+    </div>
+
+    <div class="item">
+        <h3 style="text-align: center">Рисовалка</h3>
+        <input type="button" class="enable-add-mode" name="Point" value="Точка"/>
+        <input type="button" class="enable-add-mode" name="LineString" value="Линия"/>
+        <input type="button" class="enable-add-mode" name="Polygon" value="Полигон"/>
+    </div>
+
+    <div class="item">
+        <h3 style="text-align: center">Редактирование</h3>
+        <input type="button" class="enable-edit-mode" value="Редактирование" style="width: 100%"/>
+    </div>
+
+    <div class="item">
+        <h3 style="text-align: center">Перетаскивание</h3>
+        <input type="button" class="enable-drag-mode" value="Перетаскивание" style="width: 100%"/>
+    </div>
+
+    <div class="item">
+        <h3 style="text-align: center">Удаление</h3>
+        <input type="button" class="enable-delete-mode" value="Удалять при клике"/>
+    </div>
+
+    <div class="item" style="float: right">
+        <h3 id="state" style="text-align: center"></h3>
+    </div>
+</div>
+
+<div id="map" class="map"></div>
+<script type="text/javascript">
+    sel = function (id) {
+        console.log(id);
+    };
+
+    var olmm = new OLMM();
+    olmm.init('map');
+
+    olmm.config['add_callback'] = function(event, feature) {console.log('add: ' + feature)};
+    olmm.config['edit_callback'] = function(event, feature) {console.log('edited')};
+    olmm.config['drag_callback'] = function(event, geojson) {console.log('drag: ' + geojson)};
+    olmm.config['delete_callback'] = function(event, featureId) {console.log('deleted: ' + featureId)};
+
+    olmm.addLayer('map', olmm.createOSMLayer());
+
+    $(document).ready(function(){
+        $('input[type=button]').on('click', function() {
+            $('#state').html(this.value);
+        });
+
+        $('.enable-add-mode').on('click', function() {
+            olmm.enableDrawMode(this.name)
+        });
+
+        $('.enable-edit-mode').on('click', function() {
+            olmm.enableEditMode()
+        });
+
+        $('.enable-drag-mode').on('click', function() {
+            olmm.enableDragMode()
+        });
+
+        $('.enable-delete-mode').on('click', function() {
+            olmm.enableDeleteMode('draw')
+        });
+
+        $('.disable-interactions').on('click', function() {
+            olmm.disableInteractions();
+        })
+    });
+
+</script>
+</body>
+</html>

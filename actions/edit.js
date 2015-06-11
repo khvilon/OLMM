@@ -1,13 +1,39 @@
 OLMM.prototype.enableEditMode = function(layer_name) {
     var self = this;
-    var layer = self.getLayerByName(layer_name);
 
-    if (Object.keys(this.interactions).length > 0) {
-        this.interactions.map(function(interaction){
-            interaction.setActive(true)
-        })
+    console.log('a');
+
+    self.disableInteractions();
+
+    var interaction_name = 'edit';
+    var select_name = 'select';
+
+    if (layer_name) {
+        interaction_name += '-' + layer_name;
+        select_name += '-' + layer_name;
+    }
+
+    var select = self.getInteractionsByName(select_name);
+    var interaction = self.getInteractionsByName(interaction_name);
+
+    if (select) {
+        select.setActive(true)
     } else {
-        var select = new ol.interaction.Select();
+        if (layer_name) {
+            var layer = self.getLayerByName(layer_name);
+            select = new ol.interaction.Select({
+                layers: [layer]
+            });
+        } else {
+            select = new ol.interaction.Select()
+        }
+
+        this.addInteraction(select_name, select);
+    }
+
+    if (interaction) {
+        interaction.setActive(true);
+    } else {
         var features = select.getFeatures();
 
         var modify = new ol.interaction.Modify({
@@ -17,18 +43,10 @@ OLMM.prototype.enableEditMode = function(layer_name) {
         features.on('add', function(event) {
             var feature = event.element;
             feature.on('change', function(event) {
-                console.log('1');
+                self.config['edit_callback'](event, feature);
             });
         });
 
-        this.map.addInteraction(select);
-        this.map.addInteraction(modify);
-        this.interactions = [modify, select];
+        this.addInteraction(interaction_name, modify);
     }
-};
-
-OLMM.prototype.disableEditMode = function() {
-    this.interactions.map(function(interaction){
-        interaction.setActive(false)
-    })
 };

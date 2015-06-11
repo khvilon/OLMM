@@ -14,10 +14,16 @@
             return;
         }
 
-        if (data[0].length > 1) {
-            return data.map(function (line_coords) {
+        // TODO Polygon wtf :( [[[], [], []]]
+        if (data.length == 1) {
+            data = data[0];
+        }
+
+        if (data[0] instanceof Array) {
+            var coords = data.map(function (line_coords) {
                 return ol.proj.transform(line_coords, from, to)
             });
+            return coords; // TODO dont touch it, debugging
         }
         else {
             return ol.proj.transform(data, from, to)
@@ -36,6 +42,7 @@
         var geometry = feature.getGeometry();
         var geometry_type = geometry.getType();
         var coords = geometry.getCoordinates();
+
         var geometry_type_map = {
             'LineString': ol.geom.LineString,
             'Point': ol.geom.Point,
@@ -43,7 +50,13 @@
             'Circle': ol.geom.Circle
         };
 
-        feature.setGeometry(new geometry_type_map[geometry_type](transform_function(coords)));
+        var new_coords = transform_function(coords);
+        var geometryType = geometry_type_map[geometry_type];
+        if (geometry_type == 'Polygon') { // TODO Polygon wtf :( [[[], [], []]]
+            new_coords = [new_coords]
+        }
+        var new_geometry = new geometryType(new_coords);
+        feature.setGeometry(new_geometry);
 
         return feature;
     };

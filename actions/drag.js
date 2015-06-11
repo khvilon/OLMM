@@ -1,5 +1,4 @@
-OLMM.Drag = function () {
-
+OLMM.Drag = function (olmm) {
     ol.interaction.Pointer.call(this, {
         handleDownEvent: OLMM.Drag.prototype.handleDownEvent,
         handleDragEvent: OLMM.Drag.prototype.handleDragEvent,
@@ -7,38 +6,17 @@ OLMM.Drag = function () {
         handleUpEvent: OLMM.Drag.prototype.handleUpEvent
     });
 
-    /**
-     * @type {ol.Pixel}
-     * @private
-     */
+    this.config = olmm.config;
     this.coordinate_ = null;
-
-    /**
-     * @type {string|undefined}
-     * @private
-     */
     this.cursor_ = 'pointer';
-
-    /**
-     * @type {ol.Feature}
-     * @private
-     */
     this.feature_ = null;
-
-    /**
-     * @type {string|undefined}
-     * @private
-     */
     this.previousCursor_ = undefined;
-
 };
+
+
 ol.inherits(OLMM.Drag, ol.interaction.Pointer);
 
 
-/**
- * @param {ol.MapBrowserEvent} evt Map browser event.
- * @return {boolean} `true` to start the drag sequence.
- */
 OLMM.Drag.prototype.handleDownEvent = function (evt) {
     var map = evt.map;
 
@@ -56,9 +34,6 @@ OLMM.Drag.prototype.handleDownEvent = function (evt) {
 };
 
 
-/**
- * @param {ol.MapBrowserEvent} evt Map browser event.
- */
 OLMM.Drag.prototype.handleDragEvent = function (evt) {
     var map = evt.map;
 
@@ -70,8 +45,7 @@ OLMM.Drag.prototype.handleDragEvent = function (evt) {
     var deltaX = evt.coordinate[0] - this.coordinate_[0];
     var deltaY = evt.coordinate[1] - this.coordinate_[1];
 
-    var geometry = /** @type {ol.geom.SimpleGeometry} */
-        (this.feature_.getGeometry());
+    var geometry = this.feature_.getGeometry();
     geometry.translate(deltaX, deltaY);
 
     this.coordinate_[0] = evt.coordinate[0];
@@ -79,9 +53,6 @@ OLMM.Drag.prototype.handleDragEvent = function (evt) {
 };
 
 
-/**
- * @param {ol.MapBrowserEvent} evt Event.
- */
 OLMM.Drag.prototype.handleMoveEvent = function (evt) {
     if (this.cursor_) {
         var map = evt.map;
@@ -102,30 +73,29 @@ OLMM.Drag.prototype.handleMoveEvent = function (evt) {
     }
 };
 
-OLMM.Drag.prototype.getFeature = function (evt, layer) {
-    
-};
 
-
-/**
- * @param {ol.MapBrowserEvent} evt Map browser event.
- * @return {boolean} `false` to stop the drag sequence.
- */
-OLMM.Drag.prototype.handleUpEvent = function (evt) {
+OLMM.Drag.prototype.handleUpEvent = function (event) {
 
     var format = new ol.format.GeoJSON();
 
     var geojson = format.writeFeature(this.feature_);
 
-    this.feature_
+    this.config['drag_callback'](event, geojson);
 
-    console.log(geojson);
-
-    console.log('------------------');
-    console.log(this.feature_.getId());
-    console.log(this.feature_);
-    console.log('------------------');
     this.coordinate_ = null;
     this.feature_ = null;
     return false;
+};
+
+OLMM.prototype.enableDragMode = function () {
+    var self = this;
+
+    self.disableInteractions();
+
+    var interaction = self.getInteractionsByName('drag');
+    if (interaction) {
+        interaction.setActive(true)
+    } else {
+        self.addInteraction('drag', new OLMM.Drag(self))
+    }
 };

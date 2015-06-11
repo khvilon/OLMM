@@ -9,6 +9,7 @@
     <script src="../../apps/core.js" type="text/javascript"></script>
     <script src="../../actions/add.js" type="text/javascript"></script>
     <script src="../../actions/edit.js" type="text/javascript"></script>
+    <script src="../../actions/drag.js" type="text/javascript"></script>
     <script src="../../presets/styles.js" type="text/javascript"></script>
     <script src="../../presets/layers.js" type="text/javascript"></script>
     <script src="../../presets/sources.js" type="text/javascript"></script>
@@ -17,8 +18,10 @@
     <script src="../../utils/wkt.js" type="text/javascript"></script>
     <script src="../../utils/geojson.js" type="text/javascript"></script>
     <script src="../../utils/transform.js" type="text/javascript"></script>
+    <script src="../../utils/projections.js" type="text/javascript"></script>
     <script src="../../utils/map.js" type="text/javascript"></script>
     <script src="../../plugins/gis.js" type="text/javascript"></script>
+    <script src="../../plugins/mmtest_ng.js" type="text/javascript"></script>
 
     <style>
         .map {
@@ -27,21 +30,14 @@
         }
     </style>
 
-    <title>integration example</title>
+    <title>drag feature example</title>
 </head>
 <body>
 
-<div style="position: fixed; z-index: 1000; padding: 10px; border: 3px solid black; border-radius: 5px; margin-left: 55px; margin-top: 12px;">
-    <input type="button" class="enable-add-mode" name="Point" value="Точка"/>
-    <input type="button" class="enable-add-mode" name="LineString" value="Линия"/>
-    <input type="button" class="enable-add-mode" name="Polygon" value="Полигон"/>
-    <input type="button" class="disable-add-mode" value="Перестань!"/>
-</div>
-
 <div id="map" class="map"></div>
 <script type="text/javascript">
-    sel = function (id) {
-        console.log(id);
+    sel = function (feature) {
+        console.log(feature);
     };
 
     var olmm = new OLMM();
@@ -49,17 +45,22 @@
 
     olmm.addLayer('map', olmm.createOSMLayer());
 
-    $(document).ready(function(){
-        $('.enable-add-mode').on('click', function() {
-            olmm.enableDrawMode(this.name, '', function(geojson){console.log(geojson)})
+    var url = "../../test7.json";
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function (data) {
+                window.data = data;
+                olmm.initLayers();
+                olmm.mmTestNextGenAddFeatures({
+                    "geojson_data": data,
+                    "source_name": 'main',
+                    "need_fit": true
+                });
+                olmm.drawAllProjections();
+                olmm.enableDragMode();
+            }
         });
-
-        $('.disable-add-mode').on('click', function() {
-            olmm.disableDrawMode();
-        })
-    })
-
-
 
 </script>
 </body>
