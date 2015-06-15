@@ -19,8 +19,6 @@ OLMM.prototype.deleteFeatureFromLayer = function(event) {
     );
 
     if (feature) {
-        console.log('hello');
-        source.clear();
         source.removeFeature(feature);
         map.config['delete_callback'](event, feature.getId());
     }
