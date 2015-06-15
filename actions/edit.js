@@ -1,8 +1,6 @@
 OLMM.prototype.enableEditMode = function(layer_name) {
     var self = this;
 
-    console.log('a');
-
     self.disableInteractions();
 
     var interaction_name = 'edit';
@@ -40,11 +38,8 @@ OLMM.prototype.enableEditMode = function(layer_name) {
             features: features
         });
 
-        features.on('add', function(event) {
-            var feature = event.element;
-            feature.on('change', function(event) {
-                self.config['edit_callback'](event, feature);
-            });
+        features.on('remove', function(event) {
+            self.config['edit_callback'](event, event.element);
         });
 
         this.addInteraction(interaction_name, modify);

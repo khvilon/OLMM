@@ -48,11 +48,13 @@
     var olmm = new OLMM();
     olmm.init('map');
 
+
+
     var a = [
         {'layer_name': 'map', wms_conf: {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm'}},
         {'layer_name': 'roads', wms_conf: {'url': 'http://10.0.2.60/mapcache/', 'layers': 'roads'}},
         {'layer_name': 'froads', wms_conf: {'url': 'http://10.0.2.60/mapcache/', 'layers': 'froads'}},
-        {'layer_name': 'svp', wms_conf: {'url': 'http://10.0.2.60/mapcache/', 'layers': 'svp'}},
+        {'layer_name': 'svp', wms_conf: {'url': 'http://10.0.2.60/mapcache/', 'layers': 'svp'}}
     ];
 
     olmm.loadWMSLayers(a);

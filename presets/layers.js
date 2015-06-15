@@ -72,6 +72,6 @@ OLMM.prototype.loadWMSLayers = function (layers_data) {
         var layer_name = layer_data['layer_name'];
         var wms_conf = layer_data['wms_conf'];
 
-        self.addLayer(layer_name, self.createWMSLayer(wms_conf['url'], wms_conf['server_layer']))
+        self.addLayer(layer_name, self.createWMSLayer(wms_conf['url'], wms_conf['layers']))
     })
 }
