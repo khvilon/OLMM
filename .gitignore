@@ -46,6 +46,7 @@ Temporary Items
 .idea
 
 node_modules
+bower_components
 
 # gruntfile build folder
 build

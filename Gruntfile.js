@@ -16,13 +16,19 @@ module.exports = function(grunt) {
                 files: {
                     'build/mmtest_ng/olmm.min.js': 'build/mmtest_ng/olmm.js'
                 }
+            },
+            gis_layers: {
+                files: {
+                    'build/gis/olmm.min.js': 'build/gis/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
         clean: {
             build: [
                 'build/mmtest/olmm.js',
-                'build/mmtest_ng/olmm.js'
+                'build/mmtest_ng/olmm.js',
+                'build/gis/olmm.js'
             ]
         },
 
@@ -72,6 +78,26 @@ module.exports = function(grunt) {
                     'plugins/mmtest_ng.js'
                 ],
                 dest: 'build/mmtest_ng/olmm.js'
+            },
+
+            gis_layers: {
+                src: [
+                    'jquery-1.10.2.js',
+                    'OpenLayers/build/ol-debug.js',
+                    'apps/core.js',
+                    'actions/add.js',
+                    'presets/styles.js',
+                    'presets/layers.js',
+                    'presets/sources.js',
+                    'utils/line.js',
+                    'utils/fit.js',
+                    'utils/wkt.js',
+                    'utils/geojson.js',
+                    'utils/transform.js',
+                    'utils/map.js',
+                    'plugins/gis.js'
+                ],
+                dest: 'build/gis/olmm.js'
             }
         }
     });
@@ -101,5 +127,11 @@ module.exports = function(grunt) {
         'clean',
         'concat:mmtest_ng',
         'uglify:mmtest_ng'
+    ])
+
+    grunt.registerTask('gis_layers', [
+        'clean',
+        'concat:gis_layers',
+        'uglify:gis_layers'
     ])
 };
