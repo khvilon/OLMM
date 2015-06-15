@@ -32,21 +32,21 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
             var layer = self.createVectorLayer();
             self.addLayer(source_name, layer);
         }
+
+        var source = self.getSourceByName(source_name);
+
+        var draw = new ol.interaction.Draw({
+            source: source,
+            type: feature_type
+        });
+
+        draw.on('drawend', function(event) {
+            var format = new ol.format.GeoJSON();
+            // clone to prevent overwrite current feature
+            var geojson = format.writeFeature(self.transformWithGeometryToLonLat(event.feature.clone()));
+            self.config['add_callback'](event, geojson);
+          }, this);
+
+        self.addInteraction(interaction_name, draw);
     }
-
-    var source = self.getSourceByName(source_name);
-
-    var draw = new ol.interaction.Draw({
-        source: source,
-        type: feature_type
-    });
-
-    draw.on('drawend', function(event) {
-        var format = new ol.format.GeoJSON();
-        // clone to prevent overwrite current feature
-        var geojson = format.writeFeature(self.transformWithGeometryToLonLat(event.feature.clone()));
-        self.config['add_callback'](event, geojson);
-      }, this);
-
-    self.addInteraction(interaction_name, draw);
 };

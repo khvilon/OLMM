@@ -367,4 +367,8 @@ function getBearing(c1, c2) {
     return radians((degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0) + Math.PI / 2.0;
 }
 
-
+OLMM.prototype.setLayerStyle = function (style_name, layer_name) {
+    var style = this.getStyleByName(style_name);
+    var layer = this.getLayerByName(layer_name);
+    layer.setStyle(style);
+};

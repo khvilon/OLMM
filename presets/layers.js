@@ -64,3 +64,14 @@ OLMM.prototype.createVectorLayer = function (style, features) {
         style: style
     });
 };
+
+OLMM.prototype.loadWMSLayers = function (layers_data) {
+    var self = this;
+
+    layers_data.map(function(layer_data){
+        var layer_name = layer_data['layer_name'];
+        var wms_conf = layer_data['wms_conf'];
+
+        self.addLayer(layer_name, self.createWMSLayer(wms_conf['url'], wms_conf['server_layer']))
+    })
+}
