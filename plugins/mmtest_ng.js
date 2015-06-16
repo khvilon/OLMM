@@ -102,20 +102,6 @@
         //self.map.addInteraction(selectMouseMove);
     };
 
-    module.clearSource = function (source_name) {
-        self.getSourceByName(source_name).clear();
-    };
-
-    module.clearSources = function () {
-        var self = this;
-        for (var source_name in self.sources) {
-            var source = self.getSourceByName(source_name);
-            if (!!source.getFeatures) {
-                source.clear();
-            }
-        }
-    };
-
     module.mmTestNextGenAddFeatures = function(kwargs_data) {
         var self = this;
         var geojson_data = kwargs_data['geojson_data'] || [];

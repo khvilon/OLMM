@@ -20,7 +20,7 @@
 
     module.addFeaturesFromGeoJSON = function(kwargs_data) {
         var self = this;
-        
+
         var geojson_data = kwargs_data['geojson_data'] || [];
         var source_name = kwargs_data['source_name'] || '';
         var need_fit = kwargs_data['need_fit'] || false;
