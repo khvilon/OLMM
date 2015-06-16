@@ -41,14 +41,18 @@ OLMM.prototype.createOSMLayer = function () {
 };
 
 
-OLMM.prototype.createWMSLayer = function (server, layers) {
+OLMM.prototype.createWMSLayer = function (server, layers, visible) {
+    if (visible == undefined) {
+        visible = true
+    }
+
     var source = new ol.source.TileWMS({
         url: server,
         params: {'LAYERS': layers, 'TILED': true},
         serverType: 'geoserver'
     });
 
-    return new ol.layer.Tile({source: source});
+    return new ol.layer.Tile({source: source, visible: visible});
 };
 
 
@@ -72,6 +76,6 @@ OLMM.prototype.loadWMSLayers = function (layers_data) {
         var layer_name = layer_data['layer_name'];
         var wms_conf = layer_data['wms_conf'];
 
-        self.addLayer(layer_name, self.createWMSLayer(wms_conf['url'], wms_conf['layers']))
+        self.addLayer(layer_name, self.createWMSLayer(wms_conf['url'], wms_conf['layers'], wms_conf['visible']))
     })
 }

@@ -15,6 +15,7 @@
     <script src="../../presets/styles.js" type="text/javascript"></script>
     <script src="../../presets/layers.js" type="text/javascript"></script>
     <script src="../../presets/sources.js" type="text/javascript"></script>
+    <script src="../../utils/feature.js" type="text/javascript"></script>
     <script src="../../utils/line.js" type="text/javascript"></script>
     <script src="../../utils/fit.js" type="text/javascript"></script>
     <script src="../../utils/wkt.js" type="text/javascript"></script>
@@ -81,9 +82,9 @@
     olmm.init('map');
 
     olmm.config['add_callback'] = function(event, feature) {console.log('add: ' + feature)};
-    olmm.config['edit_callback'] = function(event, feature) {console.log('edited')};
-    olmm.config['drag_callback'] = function(event, geojson) {console.log('drag: ' + geojson)};
-    olmm.config['delete_callback'] = function(event, featureId) {console.log('deleted: ' + featureId)};
+    olmm.config['edit_callback'] = function(event, feature) {console.log('edited: ' + feature)};
+    olmm.config['drag_callback'] = function(event, feature) {console.log('drag: ' + feature)};
+    olmm.config['delete_callback'] = function(event, feature) {console.log('deleted: ' + feature)};
 
     olmm.addLayer('map', olmm.createOSMLayer());
 
@@ -109,7 +110,7 @@
         });
 
         $('.disable-interactions').on('click', function() {
-            olmm.disableInteractions();
+            olmm.disableActions();
         })
     });
 

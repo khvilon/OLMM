@@ -14,8 +14,8 @@ function OLMM() {
             target: divName,
             layers: this.firstLayers,
             view: new ol.View({
-                center: [0, 0],
-                zoom: 10
+                center: [4188115.1089405594,7509151.488234565],
+                zoom: 11
             })
         });
     };
@@ -30,7 +30,14 @@ function OLMM() {
 
     module.init = function (divName) {
         this.createMap(divName);
+        this._defaultInteractions = this.map.getInteractions(); // TODO deepcopy or......
     };
+
+    module.getDefaultInteractions = function () {
+        return this._defaultInteractions
+    };
+
+    // надо ограничивать действия в треугольнике, а зумить можно внутри него!
 
     module.getInteractionsByName = function(name) {
         return this.interactions[name];

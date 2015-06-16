@@ -19,7 +19,8 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
         return;
     }
 
-    self.disableInteractions();
+    self.disableActions();
+    self.disableDefaultInteractions();
 
     var interaction_name = 'draw-' + feature_type;
 
@@ -41,10 +42,7 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
         });
 
         draw.on('drawend', function(event) {
-            var format = new ol.format.GeoJSON();
-            // clone to prevent overwrite current feature
-            var geojson = format.writeFeature(self.transformWithGeometryToLonLat(event.feature.clone()));
-            self.config['add_callback'](event, geojson);
+            self.config['add_callback'](event, event.feature);
           }, this);
 
         self.addInteraction(interaction_name, draw);

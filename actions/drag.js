@@ -75,13 +75,7 @@ OLMM.Drag.prototype.handleMoveEvent = function (evt) {
 
 
 OLMM.Drag.prototype.handleUpEvent = function (event) {
-
-    var format = new ol.format.GeoJSON();
-
-    var geojson = format.writeFeature(this.feature_);
-
-    this.config['drag_callback'](event, geojson);
-
+    this.config['drag_callback'](event, this.feature_);
     this.coordinate_ = null;
     this.feature_ = null;
     return false;
@@ -90,7 +84,8 @@ OLMM.Drag.prototype.handleUpEvent = function (event) {
 OLMM.prototype.enableDragMode = function () {
     var self = this;
 
-    self.disableInteractions();
+    self.disableActions();
+    self.disableDefaultInteractions();
 
     var interaction = self.getInteractionsByName('drag');
     if (interaction) {
