@@ -20,7 +20,6 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
     }
 
     self.disableActions();
-    self.disableDefaultInteractions();
 
     var interaction_name = 'draw-' + feature_type;
 

@@ -31,7 +31,6 @@ OLMM.prototype.enableDeleteMode = function(layer_name) {
     var self = this;
 
     self.disableActions();
-    self.disableDefaultInteractions();
 
     self.map._deleteCallback = self.config['delete_callback'];
     self.map._layerForDelete = self.getLayerByName(layer_name);

@@ -2,7 +2,6 @@ OLMM.prototype.enableEditMode = function(layer_name) {
     var self = this;
 
     self.disableActions();
-    self.disableDefaultInteractions();
 
     var interaction_name = 'edit';
     var select_name = 'select';

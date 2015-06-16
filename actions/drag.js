@@ -85,7 +85,6 @@ OLMM.prototype.enableDragMode = function () {
     var self = this;
 
     self.disableActions();
-    self.disableDefaultInteractions();
 
     var interaction = self.getInteractionsByName('drag');
     if (interaction) {
