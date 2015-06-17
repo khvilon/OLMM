@@ -14,7 +14,7 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
     var self = this;
     source_name = source_name || 'draw';
 
-    if (['Point', 'LineString', 'Polygon', 'Circle'].indexOf(feature_type) == -1) {
+    if (['Point', 'LineString', 'Polygon', 'Circle', 'MultiLineString'].indexOf(feature_type) == -1) {
         alert(feature_type+': not allowed');
         return;
     }
