@@ -18,8 +18,10 @@
 
     module.getMainDataWithCloneAndTransform = function () {
         var feature = this;
+        var id = feature.getId();
         feature = feature.clone();
-        return feature.transformWithGeometryToLonLat().getMainData()
+        feature.setId(id);
+            return feature.transformWithGeometryToLonLat().getMainData()
     };
 
     module.transform_from_lot_lan = function () {
