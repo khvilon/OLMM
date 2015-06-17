@@ -31,7 +31,7 @@
         self.getSourceByName(source_name).addFeatures(features);
 
         if (need_fit){
-            self.fitToExtent('main');
+            self.fitToExtent(source_name);
         }
     };
 
