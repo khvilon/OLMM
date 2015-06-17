@@ -7,7 +7,7 @@ OLMM.prototype.createVectorSource = function () {
 };
 
 OLMM.prototype.clearSource = function (source_name) {
-    self.getSourceByName(source_name).clear();
+    this.getSourceByName(source_name).clear();
 };
 
 OLMM.prototype.clearSources = function () {

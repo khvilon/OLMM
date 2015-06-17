@@ -7,12 +7,9 @@ OLMM.prototype.initGisLayers = function () {
         self.addLayer(layer_name, self.createVectorLayer(
             new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: 'blue',
+                    color: 'black',
                     width: 3
                 }),
-                fill: new ol.style.Fill({
-                    color: 'blue'
-                })
             })
         ));
     }
