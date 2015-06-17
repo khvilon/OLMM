@@ -8,7 +8,7 @@ OLMM.prototype.initGisLayers = function () {
             [
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({
-                        color: 'black',
+                        color: 'green',
                         width: 3
                     }),
                     image: new ol.style.Circle({

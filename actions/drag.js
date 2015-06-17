@@ -75,8 +75,7 @@ OLMM.Drag.prototype.handleMoveEvent = function (evt) {
 
 
 OLMM.Drag.prototype.handleUpEvent = function (event) {
-    var feature = this.transformWithGeometryToLonLat(this.feature_.clone());
-    this.config['drag_callback'](event, feature);
+    this.config['drag_callback'](event, this.feature_.getMainDataWithCloneAndTransform());
     this.coordinate_ = null;
     this.feature_ = null;
     return false;

@@ -81,10 +81,17 @@
     var olmm = new OLMM();
     olmm.init('map');
 
-    olmm.attachAddCallback(function(event, feature) {console.log('add: ' + feature.toGeoJSON())});
-    olmm.attachEditCallback(function(event, feature) {console.log('edited: ' + feature.toGeoJSON())});
-    olmm.attachDragCallback(function(event, feature) {console.log('drag: ' + feature)});
-    olmm.attachDeleteCallback(function(event, feature) {console.log('deleted: ' + feature.getId())});
+    olmm.readActionConfig({
+        'add_callback': function(event, feature) {console.log('add: ', feature)},
+        'edit_callback': function(event, feature) {console.log('edited: ', feature)},
+        'drag_callback': function(event, feature) {console.log('drag: ', feature)},
+        'delete_callback': function(event, feature) {console.log('deleted: ', feature)}
+    });
+
+//    olmm.attachAddCallback(function(event, feature) {console.log('add: ' + feature.toGeoJSON())});
+//    olmm.attachEditCallback(function(event, feature) {console.log('edited: ' + feature.toGeoJSON())});
+//    olmm.attachDragCallback(function(event, feature) {console.log('drag: ' + feature)});
+//    olmm.attachDeleteCallback(function(event, feature) {console.log('deleted: ' + feature.getId())});
 
     olmm.addLayer('map', olmm.createOSMLayer());
 
@@ -93,7 +100,7 @@
         olmm.initGisLayers();
 
         $.ajax({
-            url: '../../test19.json',
+            url: '../../test9.json',
             dataType: 'json',
             success: function (data) {
                 olmm.addFeaturesFromGeoJSON({
@@ -121,7 +128,7 @@
         });
 
         $('.enable-delete-mode').on('click', function() {
-            olmm.enableDeleteMode('draw')
+            olmm.enableDeleteMode('edit')
         });
 
         $('.disable-interactions').on('click', function() {

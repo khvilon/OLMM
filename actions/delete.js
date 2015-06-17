@@ -21,7 +21,7 @@ OLMM.prototype.deleteFeatureFromLayer = function(event) {
 
     if (feature) {
         source.removeFeature(feature);
-        deleteCallback(event, feature);
+        deleteCallback(event, feature.getMainDataWithCloneAndTransform());
     }
 
     return false;

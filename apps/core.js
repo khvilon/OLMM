@@ -94,20 +94,27 @@ function OLMM() {
         return new_layer_visible;
     };
 
+    module.readActionConfig = function (config) {
+        var self = this;
+        for (var name in config) {
+            self.config[name] = config[name];
+        }
+    };
+
     module.attachAddCallback = function (callback) {
         this.config['add_callback'] = callback;
-    }
+    };
 
     module.attachEditCallback = function (callback) {
         this.config['edit_callback'] = callback;
-    }
+    };
 
     module.attachDragCallback = function (callback) {
         this.config['drag_callback'] = callback;
-    }
+    };
 
     module.attachDeleteCallback = function (callback) {
         this.config['delete_callback'] = callback;
-    }
+    };
 
 })(OLMM.prototype);
