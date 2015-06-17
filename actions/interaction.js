@@ -9,7 +9,7 @@ OLMM.prototype.disableActions = function () {
         interaction.setActive(false);
 
         if (interaction_name.indexOf('select') === 0) {
-            self.map.removeInteraction(interaction); // TODO remove select from map or clear it
+            self.deleteInteractionsByName(interaction_name);
         }
     }
 };

@@ -35,6 +35,17 @@ function OLMM() {
         return this.interactions[name];
     };
 
+    module.deleteInteractionsByName = function(name) {
+        var self = this;
+
+        var interaction = self.interactions[name];
+
+        interaction.setActive(false);
+        self.map.removeInteraction(interaction);
+
+        delete self.interactions[name];
+    };
+
     module.getLayerByName = function(name) {
         return this.layers[name];
     };
@@ -82,5 +93,21 @@ function OLMM() {
         self.setLayerVisible(layer_name, new_layer_visible);
         return new_layer_visible;
     };
+
+    module.attachAddCallback = function (callback) {
+        this.config['add_callback'] = callback;
+    }
+
+    module.attachEditCallback = function (callback) {
+        this.config['edit_callback'] = callback;
+    }
+
+    module.attachDragCallback = function (callback) {
+        this.config['drag_callback'] = callback;
+    }
+
+    module.attachDeleteCallback = function (callback) {
+        this.config['delete_callback'] = callback;
+    }
 
 })(OLMM.prototype);

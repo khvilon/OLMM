@@ -81,10 +81,10 @@
     var olmm = new OLMM();
     olmm.init('map');
 
-    olmm.config['add_callback'] = function(event, feature) {console.log('add: ' + feature.toGeoJSON())};
-    olmm.config['edit_callback'] = function(event, feature) {console.log('edited: ' + feature.toGeoJSON())};
-    olmm.config['drag_callback'] = function(event, feature) {console.log('drag: ' + feature)};
-    olmm.config['delete_callback'] = function(event, feature) {console.log('deleted: ' + feature.getId())};
+    olmm.attachAddCallback(function(event, feature) {console.log('add: ' + feature.toGeoJSON())});
+    olmm.attachEditCallback(function(event, feature) {console.log('edited: ' + feature.toGeoJSON())});
+    olmm.attachDragCallback(function(event, feature) {console.log('drag: ' + feature)});
+    olmm.attachDeleteCallback(function(event, feature) {console.log('deleted: ' + feature.getId())});
 
     olmm.addLayer('map', olmm.createOSMLayer());
 
