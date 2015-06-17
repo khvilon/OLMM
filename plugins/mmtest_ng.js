@@ -103,19 +103,7 @@
     };
 
     module.mmTestNextGenAddFeatures = function(kwargs_data) {
-        var self = this;
-        var geojson_data = kwargs_data['geojson_data'] || [];
-        var source_name = kwargs_data['source_name'] || '';
-        var need_fit = kwargs_data['need_fit'] || false;
-
-        var geojson = JSON.parse(JSON.stringify(geojson_data));
-        var features = self.readGeoJSON(geojson, true);
-
-        self.getSourceByName(source_name).addFeatures(features);
-
-        if (need_fit){
-            self.fitToExtent('main');
-        }
+        module.addFeaturesFromGeoJSON(kwargs_data); // TODO backward compability
     };
 
     module.toggleFeature = function (feature) {

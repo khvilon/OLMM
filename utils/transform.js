@@ -47,12 +47,13 @@
             'LineString': ol.geom.LineString,
             'Point': ol.geom.Point,
             'Polygon': ol.geom.Polygon,
-            'Circle': ol.geom.Circle
+            'Circle': ol.geom.Circle,
+            'MultiLineString': ol.geom.MultiLineString
         };
 
         var new_coords = transform_function(coords);
         var geometryType = geometry_type_map[geometry_type];
-        if (geometry_type == 'Polygon') { // TODO Polygon wtf :( [[[], [], []]]
+        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') { // TODO Polygon wtf :( [[[], [], []]]
             new_coords = [new_coords]
         }
         var new_geometry = new geometryType(new_coords);
