@@ -5,6 +5,11 @@ OLMM.prototype.disableActions = function () {
     self.disableDeleteMode();
 
     for (interaction_name in self.interactions) {
-        self.getInteractionsByName(interaction_name).setActive(false)
+        var interaction = self.getInteractionsByName(interaction_name);
+        interaction.setActive(false);
+
+        if (interaction_name.indexOf('select') === 0) {
+            self.map.removeInteraction(interaction); // TODO remove select from map or clear it
+        }
     }
 };

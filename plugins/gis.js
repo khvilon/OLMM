@@ -5,12 +5,26 @@ OLMM.prototype.initGisLayers = function () {
 
     if (!layer) {
         self.addLayer(layer_name, self.createVectorLayer(
-            new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'black',
-                    width: 3
-                }),
-            })
+            [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'black',
+                        width: 3
+                    }),
+                    image: new ol.style.Circle({
+                      radius: 10,
+                      fill: new ol.style.Fill({
+                        color: '#ff9900',
+                        opacity: 0.6
+                      }),
+                      stroke: new ol.style.Stroke({
+                        color: '#ffcc00',
+                        opacity: 0.4
+                      })
+                    })
+                })
+
+            ]
         ));
     }
 };
