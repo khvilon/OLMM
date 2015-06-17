@@ -39,7 +39,8 @@ OLMM.prototype.enableEditMode = function(layer_name) {
         });
 
         features.on('remove', function(event) {
-            self.config['edit_callback'](event, event.element);
+            var feature = self.transformWithGeometryToLonLat(event.element.clone());
+            self.config['edit_callback'](event, feature);
         });
 
         this.addInteraction(interaction_name, modify);

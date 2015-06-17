@@ -41,7 +41,8 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
         });
 
         draw.on('drawend', function(event) {
-            self.config['add_callback'](event, event.feature);
+            var feature = self.transformWithGeometryToLonLat(event.feature.clone());
+            self.config['add_callback'](event, feature);
           }, this);
 
         self.addInteraction(interaction_name, draw);
