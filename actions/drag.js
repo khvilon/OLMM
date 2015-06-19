@@ -83,13 +83,6 @@ OLMM.Drag.prototype.handleUpEvent = function (event) {
 
 OLMM.prototype.enableDragMode = function () {
     var self = this;
-
     self.disableActions();
-
-    var interaction = self.getInteractionsByName('drag');
-    if (interaction) {
-        interaction.setActive(true)
-    } else {
-        self.addInteraction('drag', new OLMM.Drag(self))
-    }
+    self.addInteraction(new OLMM.Drag(self))
 };

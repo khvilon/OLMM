@@ -21,34 +21,26 @@ OLMM.prototype.enableDrawMode = function(feature_type, source_name) {
 
     self.disableActions();
 
-    var interaction_name = 'draw-' + feature_type;
-
-    var cached_add_mode = self.getInteractionsByName(interaction_name);
-
-    if (cached_add_mode) {
-        cached_add_mode.setActive(true)
-    } else {
-        if (!self.getSourceByName(source_name)) {
-            var layer = self.createVectorLayer();
-            self.addLayer(source_name, layer);
-        }
-
-        var source = self.getSourceByName(source_name);
-
-        var draw = new ol.interaction.Draw({
-            source: source,
-            type: feature_type
-        });
-
-        draw.on('drawend', function(event) {
-            var feature = event.feature;
-            var s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var n = 32;
-            var id = Array.apply(null, Array(n)).map(function() { return s.charAt(Math.floor(Math.random() * s.length)); }).join('');
-            feature.setId(id);
-            self.config['add_callback'](event, event.feature.getMainDataWithCloneAndTransform());
-          }, this);
-
-        self.addInteraction(interaction_name, draw);
+    if (!self.getSourceByName(source_name)) {
+        var layer = self.createVectorLayer();
+        self.addLayer(source_name, layer);
     }
+
+    var source = self.getSourceByName(source_name);
+
+    var draw = new ol.interaction.Draw({
+        source: source,
+        type: feature_type
+    });
+
+    draw.on('drawend', function(event) {
+        var feature = event.feature;
+        var s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var n = 32;
+        var id = Array.apply(null, Array(n)).map(function() { return s.charAt(Math.floor(Math.random() * s.length)); }).join('');
+        feature.setId(id);
+        self.config['add_callback'](event, event.feature.getMainDataWithCloneAndTransform());
+      }, this);
+
+    self.addInteraction(draw);
 };

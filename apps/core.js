@@ -5,6 +5,8 @@ function OLMM() {
     this.interactions = {};
     this.styles = {};
     this.config = {};
+    this.select = null;
+    this.interaction = null;
 }
 
 (function (module) {
@@ -21,7 +23,44 @@ function OLMM() {
         });
     };
 
-    module.deleteFeatureById = function(source_name, feature_id) {
+    module.addSelect = function (select) {
+        this.select = select;
+        this.map.addInteraction(select);
+    };
+
+    module.getSelect = function () {
+        return this.select
+    };
+
+    module.removeSelect = function () {
+        var interaction = this.getSelect();
+        if (interaction) {
+            interaction.getFeatures().clear();
+            interaction.setActive(false);
+            this.map.removeInteraction(interaction);
+            this.select = null
+        }
+    };
+
+    module.addInteraction = function (interaction) {
+        this.interaction = interaction;
+        this.map.addInteraction(interaction);
+    };
+
+    module.getInteraction = function () {
+        return this.interaction
+    };
+
+    module.removeInteraction = function () {
+        var interaction = this.getInteraction();
+        if (interaction) {
+            interaction.setActive(false);
+            this.map.removeInteraction(interaction);
+            this.select = null
+        }
+    };
+
+    module.deleteFeatureById = function (source_name, feature_id) {
         var source = this.getSourceByName(source_name);
         var feature = source.getFeatureById(feature_id);
         source.removeFeature(feature);
@@ -31,11 +70,11 @@ function OLMM() {
         this.createMap(divName);
     };
 
-    module.getInteractionsByName = function(name) {
+    module.getInteractionsByName = function (name) {
         return this.interactions[name];
     };
 
-    module.deleteInteractionsByName = function(name) {
+    module.deleteInteractionsByName = function (name) {
         var self = this;
 
         var interaction = self.interactions[name];
@@ -56,11 +95,6 @@ function OLMM() {
 
     module.getStyleByName = function (name) {
         return this.styles[name];
-    };
-
-    module.addInteraction = function(name, interaction) {
-        this.interactions[name] = interaction;
-        this.map.addInteraction(interaction);
     };
 
     module.addSource = function(name, source) {
