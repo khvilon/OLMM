@@ -2,11 +2,8 @@
 
     module.readGeoJSON = function(geojson, setId) {
         setId = setId || false;
-        var transformer = ol.proj.transform;
 
         return new ol.format.GeoJSON().readFeatures(geojson).map(function (feature) {
-            var geometry_type = feature.getGeometry().getType();
-            var coords = feature.getGeometry().getCoordinates();
             var featureProperties = feature.getProperties();
             feature = module.transformWithGeometryFromLonLat(feature);
 
@@ -34,5 +31,18 @@
             self.fitToExtent(source_name);
         }
     };
+
+    module.updateFeatureWithGeoJSON = function (featureId, source_name, geojson) {
+        var self = this;
+        var source = self.getSourceByName(source_name);
+        var feature = source.getFeatureById(featureId);
+        source.removeFeature(feature);
+
+        self.addFeaturesFromGeoJSON({
+            geojson_data: geojson,
+            source_name: source_name,
+            need_fit: false
+        })
+    }
 
 })(OLMM.prototype);
