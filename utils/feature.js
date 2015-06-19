@@ -1,18 +1,27 @@
 (function (module) {
 
-    module.toGeoJSON = function () {
-        var feature = this.clone();
+    module.toGeoJSON = function (useOriginFeature) {
+        var feature;
+
+        if (useOriginFeature == true) {
+            feature = this;
+        } else {
+            feature = this.clone();
+        }
+
         var format = new ol.format.GeoJSON();
 
         return format.writeFeature(feature);
     };
 
     module.getMainData = function () {
-        var geometry = this.getGeometry();
+        var feature = this;
+        var geometry = feature.getGeometry();
         return {
             'id': this.getId() || '',
             'coords': geometry.getCoordinates() || '',
-            'type': geometry.getType() || ''
+            'type': geometry.getType() || '',
+            'geojson': feature.toGeoJSON(true)
         }
     };
 
@@ -21,7 +30,7 @@
         var id = feature.getId();
         feature = feature.clone();
         feature.setId(id);
-            return feature.transformWithGeometryToLonLat().getMainData()
+        return feature.transformWithGeometryToLonLat().getMainData()
     };
 
     module.transform_from_lot_lan = function () {

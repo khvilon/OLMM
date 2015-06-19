@@ -5,11 +5,6 @@ OLMM.prototype.disableActions = function () {
     self.disableDeleteMode();
 
     for (interaction_name in self.interactions) {
-        var interaction = self.getInteractionsByName(interaction_name);
-        interaction.setActive(false);
-
-        if (interaction_name.indexOf('select') === 0) {
-            self.deleteInteractionsByName(interaction_name);
-        }
+        self.deleteInteractionsByName(interaction_name);
     }
 };

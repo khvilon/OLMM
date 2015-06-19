@@ -14,6 +14,10 @@ OLMM.prototype.enableEditMode = function(layer_name) {
     var select = self.getInteractionsByName(select_name);
     var interaction = self.getInteractionsByName(interaction_name);
 
+    if (interaction) {
+        console.log(interaction.getActive());
+    }
+
     if (select) {
         select.setActive(true)
     } else {
