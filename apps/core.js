@@ -32,11 +32,17 @@ function OLMM() {
         return this.select
     };
 
-    module.removeSelect = function () {
+    module.disableSelect = function () {
         var interaction = this.getSelect();
         if (interaction) {
             interaction.getFeatures().clear();
-            interaction.setActive(false);
+        }
+    };
+
+    module.removeSelect = function () {
+        this.disableSelect();
+        var interaction = this.getSelect();
+        if (interaction) {
             this.map.removeInteraction(interaction);
             this.select = null
         }
