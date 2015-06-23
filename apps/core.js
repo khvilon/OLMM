@@ -83,16 +83,8 @@ function OLMM() {
         return this.sources[name];
     };
 
-    module.getStyleByName = function (name) {
-        return this.styles[name];
-    };
-
     module.addSource = function(name, source) {
         this.sources[name] = source
-    };
-
-    module.addStyle = function(name, style) {
-        this.styles[name] = style
     };
 
     module.addLayer = function(name, layer) {

@@ -3,4 +3,6 @@ OLMM.prototype.disableActions = function () {
     self.disableDeleteMode();
     self.removeSelect();
     self.removeInteraction();
+    self.map.getViewport().style.cursor = '';
 };
+

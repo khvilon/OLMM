@@ -89,9 +89,6 @@
             'MultiLineString': ol.geom.MultiLineString
         };
 
-        console.log(geometry_type);
-        console.log(geometry_type_map[geometry_type]);
-
         var new_coords = transform_function.call(feature, coords);
         var geometryType = geometry_type_map[geometry_type];
         if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') { // TODO Polygon wtf :( [[[], [], []]]

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../OpenLayers/css/ol.css" type="text/css">
+
+    <script src="../../jquery-1.10.2.js"></script>
+    <script src="../../OpenLayers/build/ol-debug.js" type="text/javascript"></script>
+
+    <script src="../../build/gis/olmm.js" type="text/javascript"></script>
+
+    <style>
+        .map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+
+    <title>icons example</title>
+</head>
+<body>
+
+<div style="position: fixed; z-index: 1000; padding: 10px; border: 3px solid black; border-radius: 5px; margin-left: 55px; margin-top: 12px;">
+    <input type="button" class="enable-add-mode" name="Point" value="Точка"/>
+    <input type="button" class="enable-add-mode" name="LineString" value="Линия"/>
+    <input type="button" class="enable-add-mode" name="Polygon" value="Полигон"/>
+    <input type="button" class="disable-add-mode" value="Перестань!"/>
+</div>
+
+<div id="map" class="map"></div>
+<script type="text/javascript">
+    sel = function (id) {
+        console.log(id);
+    };
+
+    var olmm = new OLMM();
+    olmm.init('map');
+
+    olmm.addLayer('map', olmm.createOSMLayer());
+
+    var style1 = olmm.addStyle('icon1', olmm.createIconStyle('http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'));
+    var style2 = olmm.addStyle('icon2', olmm.createIconStyle('http://bestkinozal.com/bkz/icn/info-btn.png'));
+
+
+
+
+</script>
+</body>
+</html>

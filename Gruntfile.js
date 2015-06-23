@@ -49,7 +49,6 @@ module.exports = function (grunt) {
                     'presets/layers.js',
                     'presets/sources.js',
 
-                    'utils/line.js',
                     'utils/wkt.js',
                     'utils/geojson.js',
 
@@ -65,17 +64,13 @@ module.exports = function (grunt) {
             // для examples/mmtest_ng.html
             mmtest_ng: {
                 src: [
-                    'jquery-1.10.2.js',
-                    'OpenLayers/build/ol-debug.js',
                     'apps/core.js',
                     'actions/edit.js',
                     'actions/select.js',
                     'presets/styles.js',
                     'presets/layers.js',
                     'presets/sources.js',
-                    'utils/line.js',
                     'utils/fit.js',
-                    'utils/wkt.js',
                     'utils/geojson.js',
                     'utils/transform.js',
                     'utils/projections.js',
@@ -92,15 +87,13 @@ module.exports = function (grunt) {
                     'OpenLayers/build/ol-debug.js',
                     'apps/core.js',
                     'actions/add.js',
-                    'presets/styles.js',
                     'presets/layers.js',
                     'presets/sources.js',
-                    'utils/line.js',
                     'utils/fit.js',
-                    'utils/wkt.js',
                     'utils/geojson.js',
                     'utils/transform.js',
                     'utils/map.js',
+                    'utils/style.js',
                     'plugins/gis.js'
                 ],
                 dest: 'build/gis/olmm.js'

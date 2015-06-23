@@ -1,8 +1,11 @@
-OLMM.prototype.createWayLayers = function() {
+OLMM.prototype.createWayLayers = function(icon_src) {
     var self = this;
+
+    self.addStyle('icon1', self.createIconStyle(icon_src));
+
     self.addLayer('osm', self.createOSMLayer());
 
-    self.addLayer('ways', this.createVectorLayer(
+    self.addLayer('ways', self.createVectorLayer(
         function (feature, resolution) {
             var featureStateMap = {
                 true: 'red',
@@ -24,6 +27,8 @@ OLMM.prototype.createWayLayers = function() {
             return styles;
         }
     ));
+
+    self.addLayer('mark', self.createVectorLayer(self.getStyleByName('icon1')))
 };
 
 OLMM.prototype.waysGetCoordsForRequest = function () {
@@ -39,4 +44,23 @@ OLMM.prototype.waysGetCoordsForRequest = function () {
     };
     console.log(d);
     return d
+};
+
+OLMM.prototype.waysEnableDraw = function () {
+    var self = this;
+    self.enableDrawModeForPoint('mark');
+    self.map.getViewport().style.cursor = 'pointer';
+};
+
+OLMM.prototype.initWayApp = function (icon_src) {
+
+    olmm.init('map');
+    olmm.createWayLayers(icon_src);
+
+    var sel = function(event, data) {
+        olmm.disableActions();
+        return olmm.config['waysCallBackFunction'](data["coords"])
+    };
+
+    olmm.attachAddCallback(sel);
 };

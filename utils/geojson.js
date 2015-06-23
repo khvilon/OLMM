@@ -22,8 +22,7 @@
         var source_name = kwargs_data['source_name'] || '';
         var need_fit = kwargs_data['need_fit'] || false;
 
-        var geojson = JSON.parse(JSON.stringify(geojson_data));
-        var features = self.readGeoJSON(geojson, true);
+        var features = self.readGeoJSON(geojson_data, true);
 
         self.getSourceByName(source_name).addFeatures(features);
 
