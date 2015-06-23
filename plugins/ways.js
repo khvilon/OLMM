@@ -1,16 +1,16 @@
 OLMM.prototype.createWayLayers = function() {
     var self = this;
     self.addLayer('osm', self.createOSMLayer());
+
     self.addLayer('ways', this.createVectorLayer(
         function (feature, resolution) {
             var featureStateMap = {
-                '1': 'red',
-                '0': 'blue'
+                true: 'red',
+                false: 'blue'
             };
 
-            var featureState = feature.getProperties()['is_federal'];
+            var featureState = feature.getProperties()['federal'];
             var color = featureStateMap[featureState];
-            console.log(color);
 
             var styles = [
                 new ol.style.Style({

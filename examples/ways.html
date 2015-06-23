@@ -3,18 +3,18 @@
 <head>
     <script src="../jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="../OpenLayers/css/ol.css" type="text/css">
-    <!--<script src="../OpenLayers/build/ol.js" type="text/javascript"></script>-->
-    <!--<script src="../apps/core.js" type="text/javascript"></script>-->
-    <!--<script src="../actions/click.js" type="text/javascript"></script>-->
-    <!--<script src="../presets/layers.js" type="text/javascript"></script>-->
-    <!--<script src="../presets/sources.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/geojson.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/fit.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/map.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/transform.js" type="text/javascript"></script>-->
-    <!--<script src="../plugins/ways.js" type="text/javascript"></script>-->
+    <script src="../OpenLayers/build/ol.js" type="text/javascript"></script>
+    <script src="../apps/core.js" type="text/javascript"></script>
+    <script src="../actions/click.js" type="text/javascript"></script>
+    <script src="../presets/layers.js" type="text/javascript"></script>
+    <script src="../presets/sources.js" type="text/javascript"></script>
+    <script src="../utils/geojson.js" type="text/javascript"></script>
+    <script src="../utils/fit.js" type="text/javascript"></script>
+    <script src="../utils/map.js" type="text/javascript"></script>
+    <script src="../utils/transform.js" type="text/javascript"></script>
+    <script src="../plugins/ways.js" type="text/javascript"></script>
 
-     <script src="../build/ways/olmm.js"></script>
+     <!--<script src="../build/ways/olmm.js"></script>-->
     <title>ways example</title>
 </head>
 <body>
@@ -33,13 +33,12 @@
 
     $.ajax({
         url: 'http://10.0.12.247:5000/route?lon1=37.58&lon0=37.66&lat1=55.91&lat0=55.66&type=nofed',
-        //data: olmm.waysGetCoordsForRequest(),
         dataType: 'json',
         crossDomain: true,
         success: function( data ) {
             window.d = data; // TODO DEBUG
             olmm.addFeaturesFromGeoJSON({
-                "geojson_data": data,
+                "geojson_data": data["verb"],
                 "source_name": 'ways',
                 "need_fit": true
             })
