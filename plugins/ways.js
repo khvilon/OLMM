@@ -31,21 +31,6 @@ OLMM.prototype.createWayLayers = function(icon_src) {
     self.addLayer('mark', self.createVectorLayer(self.getStyleByName('icon1')))
 };
 
-OLMM.prototype.waysGetCoordsForRequest = function () {
-    var self = this;
-    var coords = self.getViewPortCoords();
-
-    var d = {
-        lon0: coords[0][0],
-        lat0: coords[0][1],
-        lon1: coords[1][0],
-        lat1: coords[1][1],
-        type: 'nofed'
-    };
-    console.log(d);
-    return d
-};
-
 OLMM.prototype.waysEnableDraw = function () {
     var self = this;
     self.enableDrawModeForPoint('mark');

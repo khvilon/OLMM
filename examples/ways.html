@@ -32,6 +32,8 @@
         console.log(coordinates);
     };
 
+    olmm.waysEnableDraw();
+
     $.ajax({
         url: 'http://10.0.12.247:5000/route?lon1=37.58&lon0=37.66&lat1=55.91&lat0=55.66&type=nofed',
         dataType: 'json',
@@ -41,7 +43,7 @@
                 "geojson_data": data["verb"],
                 "source_name": 'ways',
                 "need_fit": true
-            })  
+            })
         }
     });
 
