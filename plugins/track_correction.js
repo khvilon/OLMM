@@ -13,9 +13,6 @@ OLMM.prototype.createRequiredLayers = function(){
         source: this.federalHighWaySource,
         style: this.federalHighWayStyle });
 
-
-
-
     this.simpleRoadStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'black',

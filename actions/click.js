@@ -1,7 +1,9 @@
 OLMM.prototype.addMapClickFunction = function (handleMapClickFunction) {
-    this.map.on('singleclick', function (event) {
-        handleMapClickFunction(event)
-    });
+    this.map.on('singleclick', handleMapClickFunction)
+};
+
+OLMM.prototype.addOnceMapClickFunction = function (handleMapClickFunction) {
+    this.map.once('singleclick', handleMapClickFunction)
 };
 
 OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, layer_name) {
@@ -26,6 +28,10 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
             handleFeatureClickFunction(event, feature);
         }
     });
+};
+
+OLMM.prototype.getClickCoordinatesLonLat = function(event) {
+    return this.transform_to_lot_lan(event.coordinate)
 };
 
 OLMM.prototype.unSelectFeatures = function (source_name, default_state) {

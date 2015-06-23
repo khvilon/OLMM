@@ -1,7 +1,7 @@
 /**
  * Файл конфигурации сборки Grunt
  */
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         uglify: {
             mmtest: {
                 files: {
-                    'build/mmtest/olmm.min.js' : 'build/mmtest/olmm.js'
+                    'build/mmtest/olmm.min.js': 'build/mmtest/olmm.js'
                 }
             },
             mmtest_ng: {
@@ -21,6 +21,11 @@ module.exports = function(grunt) {
                 files: {
                     'build/gis/olmm.min.js': 'build/gis/olmm.js'
                 }
+            },
+            ways: {
+                files: {
+                    'build/ways/olmm.min.js': 'build/ways/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -28,7 +33,8 @@ module.exports = function(grunt) {
             build: [
                 'build/mmtest/olmm.js',
                 'build/mmtest_ng/olmm.js',
-                'build/gis/olmm.js'
+                'build/gis/olmm.js',
+                'build/ways/olmm.js'
             ]
         },
 
@@ -98,6 +104,22 @@ module.exports = function(grunt) {
                     'plugins/gis.js'
                 ],
                 dest: 'build/gis/olmm.js'
+            },
+
+            ways: {
+                src: [
+                    'OpenLayers/build/ol-debug.js',
+                    'apps/core.js',
+                    'actions/click.js',
+                    'presets/layers.js',
+                    'presets/sources.js',
+                    'utils/fit.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/transform.js',
+                    'plugins/ways.js'
+                ],
+                dest: 'build/ways/olmm.js'
             }
         }
     });
@@ -118,20 +140,26 @@ module.exports = function(grunt) {
     // Сборка теста mmtest.html
     // Запуск: `grunt mmtest`
     grunt.registerTask('mmtest', [
-            'clean',
-            'concat:mmtest',
-            'uglify:mmtest'
-        ]);
+        'clean',
+        'concat:mmtest',
+        'uglify:mmtest'
+    ]);
 
     grunt.registerTask('mmtest_ng', [
         'clean',
         'concat:mmtest_ng',
         'uglify:mmtest_ng'
-    ])
+    ]);
 
     grunt.registerTask('gis_layers', [
         'clean',
         'concat:gis_layers',
         'uglify:gis_layers'
+    ]);
+
+    grunt.registerTask('ways', [
+        'clean',
+        'concat:ways',
+        'uglify:ways'
     ])
 };

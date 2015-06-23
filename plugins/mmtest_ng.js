@@ -103,7 +103,7 @@
     };
 
     module.mmTestNextGenAddFeatures = function(kwargs_data) {
-        module.addFeaturesFromGeoJSON(kwargs_data); // TODO backward compability
+        module.addFeaturesFromGeoJSON(kwargs_data); // backward compability
     };
 
     module.toggleFeature = function (feature) {

@@ -2,7 +2,6 @@ function OLMM() {
     this.layers = {};
     this.sources = {};
     this.firstLayers = [];
-    this.interactions = {};
     this.styles = {};
     this.config = {};
     this.select = null;
@@ -74,21 +73,6 @@ function OLMM() {
 
     module.init = function (divName) {
         this.createMap(divName);
-    };
-
-    module.getInteractionsByName = function (name) {
-        return this.interactions[name];
-    };
-
-    module.deleteInteractionsByName = function (name) {
-        var self = this;
-
-        var interaction = self.interactions[name];
-
-        interaction.setActive(false);
-        self.map.removeInteraction(interaction);
-
-        delete self.interactions[name];
     };
 
     module.getLayerByName = function(name) {
