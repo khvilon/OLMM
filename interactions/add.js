@@ -27,8 +27,6 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
         self.addLayer(source_name, layer);
     }
 
-    console.log(self.getStyleByName('draw_style'));
-
     var source = self.getSourceByName(source_name);
 
     var draw = new ol.interaction.Draw({

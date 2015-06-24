@@ -24,7 +24,6 @@ OLMM.prototype.addUnselectOnHoverEvent = function(selector) {
 };
 
 OLMM.prototype.selectOnHover = function(event_target) {
-    console.log(this.layers_for_hover_event);
     var layer_name = $(event_target).data('layer-name');
     this.getLayerByName(layer_name).setOpacity(1);
 };

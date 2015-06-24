@@ -25,7 +25,7 @@ OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, la
                 }
             });
         if (feature) {
-            handleFeatureClickFunction(event, feature);
+            handleFeatureClickFunction(event, feature.getMainDataWithCloneAndTransform());
         }
     });
 };

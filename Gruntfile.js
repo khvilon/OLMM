@@ -111,16 +111,28 @@ module.exports = function (grunt) {
 
             ways: {
                 src: [
-                    'OpenLayers/build/ol-debug.js',
+                    'openlayers/ol.js',
+
                     'apps/core.js',
+                    'apps/ways.js',
+
+                    'apps/core.js',
+
+                    'interactions/base.js',
+                    'interactions/add.js',
                     'interactions/click.js',
+                    'interactions/delete.js',
+
                     'presets/layers.js',
                     'presets/sources.js',
+
+                    'utils/feature.js',
                     'utils/fit.js',
+                    'utils/style.js',
                     'utils/map.js',
                     'utils/geojson.js',
-                    'utils/transform.js',
-                    'plugins/ways.js'
+                    'utils/cursor.js',
+                    'utils/transform.js'
                 ],
                 dest: 'build/ways/olmm.js'
             }
