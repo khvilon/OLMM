@@ -120,6 +120,7 @@ module.exports = function (grunt) {
 
                     'interactions/base.js',
                     'interactions/add.js',
+                    'interactions/edit.js',
                     'interactions/click.js',
                     'interactions/delete.js',
 
