@@ -187,7 +187,7 @@ ol.control.OverviewMap.prototype.setMap = function(map) {
 
 
 /**
- * Bind some actions to the main map view.
+ * Bind some interactions to the main map view.
  * @private
  */
 ol.control.OverviewMap.prototype.bindView_ = function() {

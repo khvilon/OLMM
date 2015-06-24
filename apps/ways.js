@@ -34,11 +34,10 @@ OLMM.prototype.createWayLayers = function(icon_src) {
 OLMM.prototype.waysEnableDraw = function () {
     var self = this;
     self.enableDrawModeForPoint('mark');
-    self.map.getViewport().style.cursor = 'pointer';
+    self.makePointerCursor();
 };
 
 OLMM.prototype.initWayApp = function (icon_src) {
-
     olmm.init('map');
     olmm.createWayLayers(icon_src);
 
@@ -48,4 +47,12 @@ OLMM.prototype.initWayApp = function (icon_src) {
     };
 
     olmm.attachAddCallback(sel);
+
+    olmm.config['draw_style'] = new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+                color: 'transparent'
+            })
+        })
+    })
 };

@@ -22,7 +22,7 @@ ol.interaction.InteractionProperty = {
  * @classdesc
  * Abstract base class; normally only used for creating subclasses and not
  * instantiated in apps.
- * User actions that change the state of the map. Some are similar to controls,
+ * User interactions that change the state of the map. Some are similar to controls,
  * but are not associated with a DOM element.
  * For example, {@link ol.interaction.KeyboardZoom} is functionally the same as
  * {@link ol.control.Zoom}, but triggered by a keyboard event not a button

@@ -1,8 +1,10 @@
-OLMM.prototype.initGisLayers = function () {
+OLMM.prototype.initGisApp = function () {
     var self = this;
+
+    self.addStyle('icon', self.createIconStyle(olmm.config['ssk_icon']));
+
     var layer_name = 'edit';
     var layer = self.getLayerByName(layer_name);
-
     if (!layer) {
         self.addLayer(layer_name, self.createVectorLayer(
             [
@@ -12,7 +14,7 @@ OLMM.prototype.initGisLayers = function () {
                         width: 3
                     }),
                     image: new ol.style.Circle({
-                      radius: 10,
+                      radius: 7,
                       fill: new ol.style.Fill({
                         color: '#ff9900',
                         opacity: 0.6
@@ -23,7 +25,6 @@ OLMM.prototype.initGisLayers = function () {
                       })
                     })
                 })
-
             ]
         ));
     }
@@ -40,4 +41,13 @@ OLMM.prototype.getCoordsForRequest = function () {
         'max_lat': coords[3]
     }
 
+};
+
+OLMM.prototype.updateSSKPoints = function () {
+    var self = this;
+    self.updateFeaturesStyleWithFilter({
+        source_name: 'edit',
+        style_name: 'icon',
+        filter_params: {"objecttype": 1}
+    })
 };

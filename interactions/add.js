@@ -20,6 +20,7 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
     }
 
     self.disableActions();
+    self.makePointerCursor();
 
     if (!self.getSourceByName(source_name)) {
         var layer = self.createVectorLayer();
@@ -31,13 +32,7 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
     var draw = new ol.interaction.Draw({
         source: source,
         type: feature_type,
-        style: new ol.style.Style({
-            image: new ol.style.Circle({
-                fill: new ol.style.Fill({
-                    color: 'transparent'
-                })
-            })
-        })
+        style: self.config['draw_style']
     });
 
     draw.on('drawend', function (event) {

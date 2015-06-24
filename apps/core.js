@@ -110,7 +110,7 @@ function OLMM() {
         return new_layer_visible;
     };
 
-    module.readActionConfig = function (config) {
+    module.readConfig = function (config) {
         var self = this;
         for (var name in config) {
             self.config[name] = config[name];

@@ -101,3 +101,48 @@
     };
 
 })(ol.Feature.prototype);
+
+
+(function (module) {
+
+    module.filterFeaturesByProperties = function (source_name, filter_params) {
+        var self = this;
+
+        filter_params = filter_params || undefined;
+        if (!filter_params) { return [] }
+
+        return self.getSourceByName(source_name).getFeatures().filter(function(feature){
+            var pass_filter = true;
+            var feature_properties = feature.getProperties();
+
+            if (!feature_properties) {
+                pass_filter = false;
+            } else if (filter_params) {
+                for (var param in filter_params) {
+                    if (pass_filter && (feature_properties[param] != filter_params[param])) {
+                        pass_filter = false
+                    }
+                }
+            }
+
+            return pass_filter
+        });
+    };
+
+    module.updateFeaturesStyle = function (features, style) {
+        features.map(function(feature){feature.setStyle(style)})
+    };
+
+    module.updateFeaturesStyleWithFilter = function (kwargs) {
+        var source_name = kwargs['source_name'];
+        var filter_params = kwargs['filter_params'];
+        var style_name = kwargs['style_name'];
+
+        var self = this;
+        var style = self.getStyleByName(style_name);
+        var features = self.filterFeaturesByProperties(source_name, filter_params);
+
+        self.updateFeaturesStyle(features, style)
+    }
+
+})(OLMM.prototype);

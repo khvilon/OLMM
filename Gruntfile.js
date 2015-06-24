@@ -44,7 +44,7 @@ module.exports = function (grunt) {
                 src: [
                     'OpenLayers/build/ol.js',
                     'apps/core.js',
-                    'actions/edit.js',
+                    'interactions/edit.js',
                     'presets/styles.js',
                     'presets/layers.js',
                     'presets/sources.js',
@@ -65,8 +65,8 @@ module.exports = function (grunt) {
             mmtest_ng: {
                 src: [
                     'apps/core.js',
-                    'actions/edit.js',
-                    'actions/select.js',
+                    'interactions/edit.js',
+                    'interactions/select.js',
                     'presets/styles.js',
                     'presets/layers.js',
                     'presets/sources.js',
@@ -74,8 +74,8 @@ module.exports = function (grunt) {
                     'utils/geojson.js',
                     'utils/transform.js',
                     'utils/projections.js',
-                    'actions/click.js',
-                    'actions/add.js',
+                    'interactions/click.js',
+                    'interactions/add.js',
                     'plugins/mmtest_ng.js'
                 ],
                 dest: 'build/mmtest_ng/olmm.js'
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
                     'jquery-1.10.2.js',
                     'OpenLayers/build/ol-debug.js',
                     'apps/core.js',
-                    'actions/add.js',
+                    'interactions/add.js',
                     'presets/layers.js',
                     'presets/sources.js',
                     'utils/fit.js',
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
                 src: [
                     'OpenLayers/build/ol-debug.js',
                     'apps/core.js',
-                    'actions/click.js',
+                    'interactions/click.js',
                     'presets/layers.js',
                     'presets/sources.js',
                     'utils/fit.js',
