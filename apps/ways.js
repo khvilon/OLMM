@@ -48,11 +48,11 @@ OLMM.prototype.initWayApp = function (icon_src) {
 
     olmm.attachAddCallback(sel);
 
-    olmm.config['draw_style'] = new ol.style.Style({
+    olmm.addStyle('draw_style', new ol.style.Style({
         image: new ol.style.Circle({
             fill: new ol.style.Fill({
                 color: 'transparent'
             })
         })
-    })
+    }))
 };
