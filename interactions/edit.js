@@ -23,7 +23,7 @@ OLMM.prototype.enableEditMode = function(layer_name) {
 
     features.on('remove', function(event) {
 
-        self.getConfigValue('edit_callback').map(function(callback){
+        self.getConfigValues('edit_callback').map(function(callback){
             callback(event, event.element.getMainDataWithCloneAndTransform())
         });
     });

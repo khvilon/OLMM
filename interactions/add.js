@@ -44,7 +44,7 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
                 return s.charAt(Math.floor(Math.random() * s.length));
             }).join('')
         );
-        self.getConfigValue('add_callback').map(function(callback){
+        self.getConfigValues('add_callback').map(function(callback){
             callback(event, event.feature.getMainDataWithCloneAndTransform())
         });
     }, this);

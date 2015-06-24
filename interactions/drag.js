@@ -76,10 +76,12 @@ OLMM.Drag.prototype.handleMoveEvent = function (evt) {
 
 OLMM.Drag.prototype.handleUpEvent = function (event) {
     var feature = this.feature_;
+    var callbacks = this.config['drag_callback'] || [];
 
-    this.config['drag_callback'].map(function(callback){
+    callbacks.map(function(callback){
         callback(event, feature.getMainDataWithCloneAndTransform())
     });
+
     this.coordinate_ = null;
     this.feature_ = null;
     return false;

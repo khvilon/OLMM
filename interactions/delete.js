@@ -2,7 +2,7 @@ OLMM.prototype.deleteFeatureFromLayer = function(event) {
 
     var map = this;
     var layer = map._layerForDelete;
-    var deleteCallBack = map._deleteCallback || [];
+    var deleteCallBack = map._deleteCallBacks;
 
     if (!layer) {
         return
@@ -22,8 +22,6 @@ OLMM.prototype.deleteFeatureFromLayer = function(event) {
     if (feature) {
         source.removeFeature(feature);
 
-        console.log(deleteCallBack);
-
         deleteCallBack.map(function(callback){
             callback(event, feature.getMainDataWithCloneAndTransform())
         });
@@ -37,7 +35,7 @@ OLMM.prototype.enableDeleteMode = function(layer_name) {
 
     self.disableActions();
 
-    self.map._deleteCallback = self.getConfigValue('delete_callback');
+    self.map._deleteCallBacks = self.getConfigValues('delete_callback');
     self.map._layerForDelete = self.getLayerByName(layer_name);
     self.map.addEventListener('singleclick', self.deleteFeatureFromLayer);
 };

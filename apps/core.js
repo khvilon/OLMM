@@ -121,6 +121,12 @@ function OLMM() {
 
         if (config_value instanceof Array) {
             config_value.push(value)
+        } else if (!!config_value) {
+            if (config_value instanceof Array) {
+                self.config[key].push(value);
+            } else {
+                self.config[key] = [config_value, value];
+            }
         } else {
             self.config[key] = value
         }
@@ -128,6 +134,18 @@ function OLMM() {
 
     module.getConfigValue = function (name) {
         return this.config[name]
+    };
+
+    module.getConfigValues = function (name) {
+        var values = this.config[name];
+
+        if (!values) {return []}
+        
+        if (values instanceof Array) {
+            return values
+        } else {
+            return [values]
+        }
     };
 
     module.readConfig = function (config) {
