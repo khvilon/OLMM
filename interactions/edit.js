@@ -22,7 +22,10 @@ OLMM.prototype.enableEditMode = function(layer_name) {
     });
 
     features.on('remove', function(event) {
-        self.config['edit_callback'](event, event.element.getMainDataWithCloneAndTransform());
+
+        self.getConfigValue('edit_callback').map(function(callback){
+            callback(event, event.element.getMainDataWithCloneAndTransform())
+        });
     });
 
     self.addInteraction(modify);

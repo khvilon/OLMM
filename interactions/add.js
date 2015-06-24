@@ -44,7 +44,9 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
                 return s.charAt(Math.floor(Math.random() * s.length));
             }).join('')
         );
-        self.config['add_callback'](event, event.feature.getMainDataWithCloneAndTransform());
+        self.getConfigValue('add_callback').map(function(callback){
+            callback(event, event.feature.getMainDataWithCloneAndTransform())
+        });
     }, this);
 
     self.addInteraction(draw);

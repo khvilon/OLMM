@@ -3,7 +3,12 @@ function OLMM() {
     this.sources = {};
     this.firstLayers = [];
     this.styles = {};
-    this.config = {};
+    this.config = {
+        'add_callback': [],
+        'edit_callback': [],
+        'delete_callback': [],
+        'drag_callback': []
+    };
     this.select = null;
     this.interaction = null;
 }
@@ -110,27 +115,42 @@ function OLMM() {
         return new_layer_visible;
     };
 
+    module.addToConfig = function (key, value) {
+        var self = this;
+        var config_value = self.config[key];
+
+        if (config_value instanceof Array) {
+            config_value.push(value)
+        } else {
+            self.config[key] = value
+        }
+    };
+
+    module.getConfigValue = function (name) {
+        return this.config[name]
+    };
+
     module.readConfig = function (config) {
         var self = this;
         for (var name in config) {
-            self.config[name] = config[name];
+            self.addToConfig(name, config[name]);
         }
     };
 
     module.attachAddCallback = function (callback) {
-        this.config['add_callback'] = callback;
+        this.addToConfig('add_callback', callback);
     };
 
     module.attachEditCallback = function (callback) {
-        this.config['edit_callback'] = callback;
+        this.addToConfig('edit_callback', callback);
     };
 
     module.attachDragCallback = function (callback) {
-        this.config['drag_callback'] = callback;
+        this.addToConfig('drag_callback', callback);
     };
 
     module.attachDeleteCallback = function (callback) {
-        this.config['delete_callback'] = callback;
+        this.addToConfig('delete_callback', callback);
     };
 
 })(OLMM.prototype);
