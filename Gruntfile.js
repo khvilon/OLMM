@@ -84,17 +84,27 @@ module.exports = function (grunt) {
             gis_layers: {
                 src: [
                     'jquery-1.10.2.js',
-                    'OpenLayers/build/ol-debug.js',
+                    'openlayers/ol.js',
+
                     'apps/core.js',
+                    'apps/gis.js',
+
+                    'interactions/base.js',
                     'interactions/add.js',
+                    'interactions/drag.js',
+                    'interactions/edit.js',
+                    'interactions/delete.js',
+
                     'presets/layers.js',
                     'presets/sources.js',
+
+                    'utils/cursor.js',
                     'utils/fit.js',
+                    'utils/feature.js',
                     'utils/geojson.js',
                     'utils/transform.js',
                     'utils/map.js',
-                    'utils/style.js',
-                    'plugins/gis.js'
+                    'utils/style.js'
                 ],
                 dest: 'build/gis/olmm.js'
             },
