@@ -36,12 +36,17 @@
         var source = self.getSourceByName(source_name);
         var feature = source.getFeatureById(featureId);
         source.removeFeature(feature);
+        self.removeSelect();
 
         self.addFeaturesFromGeoJSON({
             geojson_data: geojson,
             source_name: source_name,
             need_fit: false
-        })
+        });
+
+        if (self.select) { // TODO
+            self.select.addFeature(source.addFeature(source.getFeatureById(featureId)))
+        }
     }
 
 })(OLMM.prototype);
