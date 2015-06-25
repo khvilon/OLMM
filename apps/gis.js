@@ -1,5 +1,12 @@
 OLMM.prototype.initGisApp = function () {
     var self = this;
+    var ssk_icon_style_name, ssk_icon_style_url;
+
+    for (ssk_icon_style_name in self.config.ssk_icons) {
+        ssk_icon_style_url = self.config.ssk_icons[ssk_icon_style_name];
+        console.log(ssk_icon_style_url);
+        self.addStyle(ssk_icon_style_name, self.createIconStyle(ssk_icon_style_url));
+    }
 
     var layer_name = 'edit';
     var layer = self.getLayerByName(layer_name);
@@ -64,11 +71,11 @@ OLMM.prototype.getCoordsForRequest = function () {
 
 };
 
-OLMM.prototype.updateSSKPoints = function () {
+OLMM.prototype.updateSSKPoints = function (style_name) {
     var self = this;
     self.updateFeaturesStyleWithFilter({
         source_name: 'edit',
-        style_name: 'icon',
-        filter_params: {}//{"objecttype": 1}
+        style_name: style_name,
+        filter_params: {"objecttype": 1}
     })
 };
