@@ -142,11 +142,6 @@
         var style = self.getStyleByName(style_name);
         var features = self.filterFeaturesByProperties(source_name, filter_params);
 
-        console.log(style);
-        console.log(style_name);
-        console.log(self.styles);
-        console.log(features);
-
         self.updateFeaturesStyle(features, style)
     };
 
