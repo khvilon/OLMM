@@ -100,18 +100,6 @@
         return feature
     };
 
-    module.updateFeatureGeometry = function (options) {
-        var feature = this;
-        var geometry_type = options['type'] || '';
-        var coordinates = options['type'] || '';
-    };
-
-    module.updateFeatureProperties = function (new_properties) {
-        var feature = this;
-        feature.setProperties(new_properties);
-        return feature;
-    };
-
 })(ol.Feature.prototype);
 
 
@@ -155,6 +143,24 @@
         var features = self.filterFeaturesByProperties(source_name, filter_params);
 
         self.updateFeaturesStyle(features, style)
-    }
+    };
+
+    module.updateFeature = function (source_name, geojson) {
+        var self = this;
+        var featureId = undefined;
+
+        if (geojson.id) {
+            featureId = geojson.id
+        } else if (geojson.properties && geojson.properties.id) {
+            featureId = geojson.properties.id
+        }
+
+        if (!featureId) {
+            return;
+        }
+
+        self.updateFeatureWithGeoJSON(featureId, source_name, geojson)
+
+    };
 
 })(OLMM.prototype);

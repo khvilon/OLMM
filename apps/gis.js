@@ -24,26 +24,21 @@ OLMM.prototype.initGisApp = function () {
                         }
 
                         return [icon_style];
+                    } else {
+                        return [new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 7,
+                                fill: new ol.style.Fill({
+                                    color: '#ff9900',
+                                    opacity: 0.6
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#ffcc00',
+                                    opacity: 0.4
+                                })
+                            })
+                        })]
                     }
-
-                    //if (featureObjectType && featureObjectTypeMap[featureObjectType]) {
-                    //    return [self.getStyleByName(featureObjectTypeMap[featureObjectType])];
-                    //} else {
-                    //    return [self.getStyleByName('default_icon')];
-                    //}
-                    //return [new ol.style.Style({
-                    //    image: new ol.style.Circle({
-                    //        radius: 7,
-                    //        fill: new ol.style.Fill({
-                    //            color: '#ff9900',
-                    //            opacity: 0.6
-                    //        }),
-                    //        stroke: new ol.style.Stroke({
-                    //            color: '#ffcc00',
-                    //            opacity: 0.4
-                    //        })
-                    //    })
-                    //})]
                 } else {
                     return [
                         new ol.style.Style({
