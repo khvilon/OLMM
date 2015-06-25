@@ -1,9 +1,6 @@
 OLMM.prototype.initGisApp = function () {
     var self = this;
 
-    self.addStyle('icon', self.createIconStyle(olmm.config['ssk_icon']));
-    self.addStyle('default_icon', self.createIconStyle(olmm.config['default_icon']));
-
     var layer_name = 'edit';
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
