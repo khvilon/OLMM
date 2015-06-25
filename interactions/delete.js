@@ -30,6 +30,13 @@ OLMM.prototype.deleteFeatureFromLayer = function(event) {
     return false;
 };
 
+OLMM.prototype.removeFeatureById = function (source_name, featureId) {
+    var self = this;
+    var source = self.getSourceByName(source_name);
+    var feature = source.getFeatureById(featureId);
+    source.removeFeature(feature);
+};
+
 OLMM.prototype.enableDeleteMode = function(layer_name) {
     var self = this;
 
