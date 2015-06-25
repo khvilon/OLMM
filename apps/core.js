@@ -22,7 +22,9 @@ function OLMM() {
             view: new ol.View({
                 projection: 'EPSG:3857',
                 center: [4188115.1089405594,7509151.488234565],
-                zoom: 11
+                zoom: 11,
+                maxZoom: 26,
+                minZoom: 3
             })
         });
     };
@@ -140,7 +142,7 @@ function OLMM() {
         var values = this.config[name];
 
         if (!values) {return []}
-        
+
         if (values instanceof Array) {
             return values
         } else {

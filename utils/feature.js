@@ -100,6 +100,18 @@
         return feature
     };
 
+    module.updateFeatureGeometry = function (options) {
+        var feature = this;
+        var geometry_type = options['type'] || '';
+        var coordinates = options['type'] || '';
+    };
+
+    module.updateFeatureProperties = function (new_properties) {
+        var feature = this;
+        feature.setProperties(new_properties);
+        return feature;
+    };
+
 })(ol.Feature.prototype);
 
 
@@ -130,7 +142,7 @@
     };
 
     module.updateFeaturesStyle = function (features, style) {
-        features.map(function(feature){feature.setStyle(style)})
+        features.map(function(feature){feature.setStyle(style);feature.changed()});
     };
 
     module.updateFeaturesStyleWithFilter = function (kwargs) {

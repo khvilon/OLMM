@@ -31,7 +31,7 @@ OLMM.prototype.createWayLayers = function(icon_src) {
     self.addLayer('mark', self.createVectorLayer(self.getStyleByName('icon1')))
 };
 
-OLMM.prototype.waysEnableDraw = function (el) {
+OLMM.prototype.waysEnableDraw = function () {
     var self = this;
     self.enableDrawModeForPoint('mark');
     self.makePointerCursor();

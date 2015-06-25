@@ -7,4 +7,14 @@
         return self.transform_to_lot_lan(extent_to_transform)
     };
 
+    module.getMapImage = function (elementId) {
+        var self = this;
+
+        self.map.once('postcompose', function(event) {
+            var canvas = event.context.canvas;
+            document.getElementById(elementId).href = canvas.toDataURL('image/png');
+            this.renderSync();
+        })
+    };
+
 })(OLMM.prototype);
