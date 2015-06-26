@@ -17,4 +17,9 @@
         })
     };
 
+    module.fitToCoords = function (lon, lat) {
+        var self = this;
+        self.map.getView().setCenter(self.transform([lon, lat]));
+    }
+
 })(OLMM.prototype);
