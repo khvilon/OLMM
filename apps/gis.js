@@ -4,7 +4,6 @@ OLMM.prototype.initGisApp = function () {
 
     for (ssk_icon_style_name in self.config.ssk_icons) {
         ssk_icon_style_url = self.config.ssk_icons[ssk_icon_style_name];
-        console.log(ssk_icon_style_url);
         self.addStyle(ssk_icon_style_name, self.createIconStyle(ssk_icon_style_url));
     }
 
@@ -44,10 +43,11 @@ OLMM.prototype.initGisApp = function () {
                         })]
                     }
                 } else {
+                    var color = feature.getProperties()['color'] || 'green';
                     return [
                         new ol.style.Style({
                             stroke: new ol.style.Stroke({
-                                color: 'green',
+                                color: color,
                                 width: 3
                             })
                         })
