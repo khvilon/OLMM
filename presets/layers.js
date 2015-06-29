@@ -75,13 +75,12 @@
 
         var source = new ol.source.TileWMS({
             url: server,
-            params: {'LAYERS': layers, 'TILED': true},
+            params: {'LAYERS': layers, 'TILED': true, 'WIDTH': 256, 'HEIGHT': 256},
             serverType: 'geoserver'
         });
 
         return new ol.layer.Tile({source: source, visible: visible});
     };
-
 
     module.createVectorLayer = function (style, features) {
         var source = new ol.source.Vector();
@@ -108,5 +107,3 @@
     };
 
 })(OLMM.prototype);
-
-
