@@ -38,7 +38,7 @@ OLMM.prototype.waysEnableDraw = function () {
 };
 
 OLMM.prototype.initWayApp = function (icon_src) {
-    olmm.init('map');
+    olmm.createMap();
     olmm.createWayLayers(icon_src);
 
     var sel = function(event, data) {

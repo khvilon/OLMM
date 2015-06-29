@@ -130,6 +130,7 @@ module.exports = function (grunt) {
                     'presets/sources.js',
 
                     'utils/feature.js',
+                    'utils/points.js',
                     'utils/fit.js',
                     'utils/style.js',
                     'utils/map.js',

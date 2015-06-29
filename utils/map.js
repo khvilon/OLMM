@@ -22,6 +22,11 @@
         self.map.getView().setCenter(self.transform([lon, lat]));
     };
 
+    module.fitToFeature = function (feature) {
+        var self = this;
+        self.map.getView().setCenter(feature.getGeometry().getCoordinates());
+    };
+
     module.fitToExtent = function (source_name) {
         var self = this;
         var source = self.getSourceByName(source_name);
