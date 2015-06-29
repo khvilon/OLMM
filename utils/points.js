@@ -23,9 +23,10 @@ OLMM.prototype.points_features_from_coords = function(json_data) {
 
 OLMM.prototype.makePointFromLonLat = function (lon, lat, source_name) {
     var self = this;
-    var map_coords = self.transform([lon, lat]);
+    var map_coords = self.transform([parseFloat(lon), parseFloat(lat)]);
+    console.log(lon, lat);
+    console.log(map_coords);
     var geometry = new ol.geom.Point(map_coords);
     var point = new ol.Feature({geometry: geometry});
     self.getSourceByName(source_name).addFeature(point);
-    window.a = point;
 };

@@ -45,10 +45,9 @@
     });
 
     $('#addPoint').on('click', function(){
-        olmm.makePointFromLonLat(
+        olmm.makePoint(
             document.getElementById('lon').value,
-            document.getElementById('lat').value,
-            'mark'
+            document.getElementById('lat').value
         )
     });
 

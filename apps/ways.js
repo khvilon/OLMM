@@ -56,3 +56,7 @@ OLMM.prototype.initWayApp = function (icon_src) {
         })
     }))
 };
+
+OLMM.prototype.makePoint = function (lon, lat) {
+    this.makePointFromLonLat(lon, lat, 'mark')
+};
