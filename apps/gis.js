@@ -17,7 +17,14 @@ OLMM.prototype.initGisApp = function () {
 
                     var featureObjectType = feature.getProperties()['objecttype'];
                     if (featureObjectType != undefined) {
-                        var icon_url = self.config.icons.objecttype[featureObjectType]['default'];
+                        var icon_config = self.config.icons.objecttype[featureObjectType];
+
+                        if (icon_config) {
+                            var icon_url = icon_config['default'];
+                        } else {
+                            icon_url = self.config.icons.objecttype['default']
+                        }
+
                         var icon_style_name = icon_url.replace(/\s+/g, '-').replace(/[^a-zA-Z-]/g, '').toLowerCase();
 
                         var icon_style = self.getStyleByName(icon_style_name);
