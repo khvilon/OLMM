@@ -3,13 +3,19 @@ OLMM.prototype.createWayLayers = function(icon_src) {
 
     self.addStyle('icon1', self.createIconStyle(icon_src));
 
-    self.addLayer('osm', self.createOSMLayer());
+    var osm_layer = [{
+        'layer_name': 'osm',
+        'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
+    }];
+
+    self.loadWMSLayers(osm_layer);
+
 
     self.addLayer('ways', self.createVectorLayer(
         function (feature, resolution) {
             var featureStateMap = {
                 true: 'red',
-                false: 'blue'
+                false: '#009933'
             };
 
             var featureState = feature.getProperties()['federal'];
@@ -19,7 +25,7 @@ OLMM.prototype.createWayLayers = function(icon_src) {
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: color,
-                        width: 2
+                        width: 5
                     })
                 })
             ];
