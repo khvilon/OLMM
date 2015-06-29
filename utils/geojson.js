@@ -1,26 +1,17 @@
 (function (module) {
 
-    module.readGeoJSON = function(geojson, setId) {
-        setId = setId || false;
-
+    module.readGeoJSON = function(geojson) {
         return new ol.format.GeoJSON().readFeatures(geojson).map(function (feature) {
-            var featureProperties = feature.getProperties();
-            feature = module.transformWithGeometryFromLonLat(feature);
-
-            if (setId) {
-                if (featureProperties['id']) { feature.setId(featureProperties['id']) }
-            }
-
-            return feature;
+            return module.transformWithGeometryFromLonLat(feature);
         });
     };
 
-    module.addFeaturesFromGeoJSON = function(kwargs_data) {
+    module.addFeaturesFromGeoJSON = function(options) {
         var self = this;
 
-        var geojson_data = kwargs_data['geojson_data'] || [];
-        var source_name = kwargs_data['source_name'] || '';
-        var need_fit = kwargs_data['need_fit'] || false;
+        var geojson_data = options['geojson_data'] || [];
+        var source_name = options['source_name'] || '';
+        var need_fit = options['need_fit'] || false;
 
         var features = self.readGeoJSON(geojson_data, true);
 
@@ -44,7 +35,7 @@
             need_fit: false
         });
 
-        if (self.select) { // TODO
+        if (self.select) { // TODO говнокод, который что-то там чинит
             self.select.addFeature(source.addFeature(source.getFeatureById(featureId)))
         }
     }

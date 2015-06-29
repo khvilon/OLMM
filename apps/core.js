@@ -15,75 +15,28 @@ function OLMM() {
 
 (function (module) {
 
-    module.createMap = function (divName) {
+    module.createMap = function (options) {
+        options = options || {};
+        var target = options['target'] || 'map';
+        var projection = options['projection'] || 'EPSG:3857';
+        var center = options['center'] || [4188115.1089405594,7509151.488234565];
+        var zoom = options['zoom'] || 11;
+        var maxZoom = options['maxZoom'] || 26;
+        var minZoom = options['minZoom'] || 3;
+
         this.map = new ol.Map({
-            target: divName,
+            target: target,
             layers: this.firstLayers,
             view: new ol.View({
-                projection: 'EPSG:3857',
-                center: [4188115.1089405594,7509151.488234565],
-                zoom: 11,
-                maxZoom: 26,
-                minZoom: 3
+                projection: projection,
+                center: center,
+                zoom: zoom,
+                maxZoom: maxZoom,
+                minZoom: minZoom
             })
         });
-    };
 
-    module.addSelect = function (select) {
-        this.select = select;
-        this.map.addInteraction(select);
-    };
-
-    module.getSelect = function () {
-        return this.select
-    };
-
-    module.disableSelect = function () {
-        var interaction = this.getSelect();
-        if (interaction) {
-            interaction.getFeatures().clear();
-        }
-    };
-
-    module.removeSelect = function () {
-        this.disableSelect();
-        var interaction = this.getSelect();
-        if (interaction) {
-            this.map.removeInteraction(interaction);
-            this.select = null
-        }
-    };
-
-    module.addInteraction = function (interaction) {
-        this.interaction = interaction;
-        this.map.addInteraction(interaction);
-    };
-
-    module.getInteraction = function () {
-        return this.interaction
-    };
-
-    module.removeInteraction = function () {
-        var interaction = this.getInteraction();
-        if (interaction) {
-            interaction.setActive(false);
-            this.map.removeInteraction(interaction);
-            this.select = null
-        }
-    };
-
-    module.deleteFeatureById = function (source_name, feature_id) {
-        var source = this.getSourceByName(source_name);
-        var feature = source.getFeatureById(feature_id);
-        source.removeFeature(feature);
-    };
-
-    module.init = function (divName) {
-        this.createMap(divName);
-    };
-
-    module.getLayerByName = function(name) {
-        return this.layers[name];
+        this.map.addControl(new ol.control.ZoomSlider());
     };
 
     module.getSourceByName = function(name) {
@@ -92,29 +45,6 @@ function OLMM() {
 
     module.addSource = function(name, source) {
         this.sources[name] = source
-    };
-
-    module.addLayer = function(name, layer) {
-        this.layers[name] = layer;
-        this.addSource(name, layer.getSource());
-        if(this.map) {
-            this.map.addLayer(layer);
-        }
-        else {
-            this.firstLayers.push(layer);
-        }
-    };
-
-    module.setLayerVisible = function(layer_name, visible) {
-        this.getLayerByName(layer_name).setVisible(visible);
-    };
-
-    module.toggleLayerVisible = function(layer_name) {
-        var self = this;
-        var layer = this.getLayerByName(layer_name);
-        var new_layer_visible = !layer.getVisible();
-        self.setLayerVisible(layer_name, new_layer_visible);
-        return new_layer_visible;
     };
 
     module.addToConfig = function (key, value) {

@@ -1,35 +1,62 @@
-OLMM.prototype.initLayersForHoverEvent = function(layers) {
-    var layer, i;
-    this.layers_for_hover_event = [];
+(function (module) {
 
-    for (i = 0; i < layers.length; i++) {
-        layer = layers[i];
-        layer.setOpacity(0.3);
-        this.layers_for_hover_event.push(layer);
-    }
-};
+    module.addSelect = function (select) {
+        this.select = select;
+        this.map.addInteraction(select);
+    };
 
-OLMM.prototype.addSelectOnHoverEvent = function(selector, layers) {
-    var olmm = this;
-    $(selector).mouseenter(function (event) {
-        olmm.selectOnHover(event.target);
-    });
-};
+    module.getSelect = function () {
+        return this.select
+    };
 
-OLMM.prototype.addUnselectOnHoverEvent = function(selector) {
-    var olmm = this;
-    $(selector).mouseout(function(event){
-        olmm.unselectOnHover(event.target);
-    })
-};
+    module.disableSelect = function () {
+        var interaction = this.getSelect();
+        if (interaction) {
+            interaction.getFeatures().clear();
+        }
+    };
 
-OLMM.prototype.selectOnHover = function(event_target) {
-    var layer_name = $(event_target).data('layer-name');
-    this.getLayerByName(layer_name).setOpacity(1);
-};
+    module.removeSelect = function () {
+        this.disableSelect();
+        var interaction = this.getSelect();
+        if (interaction) {
+            this.map.removeInteraction(interaction);
+            this.select = null
+        }
+    };
 
-OLMM.prototype.unselectOnHover = function() {
-    for (var i = 0; i < this.layers_for_hover_event.length; i++) {
-        this.layers_for_hover_event[i].setOpacity(0.3)
-    }
-};
+    module.initLayersForHoverEvent = function(layers) {
+        var layer, i;
+        this.layers_for_hover_event = [];
+
+        for (i = 0; i < layers.length; i++) {
+            layer = layers[i];
+            layer.setOpacity(0.3);
+            this.layers_for_hover_event.push(layer);
+        }
+    };
+
+    module.addSelectOnHoverEvent = function(selector, layers) {
+        var olmm = this;
+        $(selector).mouseenter(function (event) {
+            olmm.selectOnHover(event.target);
+        });
+    };
+
+    module.addUnselectOnHoverEvent = function(selector) {
+        var olmm = this;
+        $(selector).mouseout(function(event){
+            olmm.unselectOnHover(event.target);
+        })
+    };
+
+    module.selectOnHover = function(event_target) {
+        var layer_name = $(event_target).data('layer-name');
+        this.getLayerByName(layer_name).setOpacity(1);
+    };
+
+    module.unselectOnHover = function() {
+        this.layers_for_hover_event.map(function(l){l.setOpacity(0.3)});
+    };
+
+})(OLMM.prototype);

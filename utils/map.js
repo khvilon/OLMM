@@ -20,6 +20,12 @@
     module.fitToCoords = function (lon, lat) {
         var self = this;
         self.map.getView().setCenter(self.transform([lon, lat]));
-    }
+    };
+
+    module.fitToExtent = function (source_name) {
+        var self = this;
+        var source = self.getSourceByName(source_name);
+        self.map.getView().fitExtent(source.getExtent(), self.map.getSize());
+    };
 
 })(OLMM.prototype);

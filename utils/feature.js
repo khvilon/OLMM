@@ -133,10 +133,10 @@
         features.map(function(feature){feature.setStyle(style);feature.changed()});
     };
 
-    module.updateFeaturesStyleWithFilter = function (kwargs) {
-        var source_name = kwargs['source_name'];
-        var filter_params = kwargs['filter_params'];
-        var style_name = kwargs['style_name'];
+    module.updateFeaturesStyleWithFilter = function (options) {
+        var source_name = options['source_name'];
+        var filter_params = options['filter_params'];
+        var style_name = options['style_name'];
 
         var self = this;
         var style = self.getStyleByName(style_name);
@@ -160,7 +160,12 @@
         }
 
         self.updateFeatureWithGeoJSON(featureId, source_name, geojson)
+    };
 
+    module.deleteFeatureById = function (source_name, feature_id) {
+        var source = this.getSourceByName(source_name);
+        var feature = source.getFeatureById(feature_id);
+        source.removeFeature(feature);
     };
 
 })(OLMM.prototype);

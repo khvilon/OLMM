@@ -13,6 +13,7 @@
     <script src="../../interactions/add.js" type="text/javascript"></script>
     <script src="../../interactions/edit.js" type="text/javascript"></script>
     <script src="../../interactions/drag.js" type="text/javascript"></script>
+    <script src="../../interactions/select.js" type="text/javascript"></script>
     <script src="../../interactions/base.js" type="text/javascript"></script>
     <script src="../../interactions/delete.js" type="text/javascript"></script>
 
@@ -20,7 +21,6 @@
     <script src="../../presets/sources.js" type="text/javascript"></script>
 
     <script src="../../utils/cursor.js" type="text/javascript"></script>
-    <script src="../../utils/fit.js" type="text/javascript"></script>
     <script src="../../utils/feature.js" type="text/javascript"></script>
     <script src="../../utils/geojson.js" type="text/javascript"></script>
     <script src="../../utils/transform.js" type="text/javascript"></script>
@@ -86,7 +86,7 @@
     };
 
     var olmm = new OLMM();
-    olmm.init('map');
+    olmm.createMap();
 
     olmm.readConfig({
         'add_callback': function(event, feature) {console.log('add: ', feature)},
@@ -108,10 +108,9 @@
             }
         },
         'ssk_icons': {
-          ssk_1: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png',
-          ssk_2: 'http://mtdata.ru/u18/photo538B/20465451192-0/xsmall.jpeg'
+            ssk_1: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png',
+            ssk_2: 'http://mtdata.ru/u18/photo538B/20465451192-0/xsmall.jpeg'
         }
-
     });
 
     olmm.addLayer('map', olmm.createOSMLayer());

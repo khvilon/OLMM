@@ -102,8 +102,8 @@
         //self.map.addInteraction(selectMouseMove);
     };
 
-    module.mmTestNextGenAddFeatures = function(kwargs_data) {
-        module.addFeaturesFromGeoJSON(kwargs_data); // backward compability
+    module.mmTestNextGenAddFeatures = function(options) {
+        module.addFeaturesFromGeoJSON(options); // backward compability
     };
 
     module.toggleFeature = function (feature) {
