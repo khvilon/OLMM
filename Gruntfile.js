@@ -92,6 +92,7 @@ module.exports = function (grunt) {
                     'interactions/base.js',
                     'interactions/add.js',
                     'interactions/select.js',
+                    'interactions/click.js',
                     'interactions/drag.js',
                     'interactions/edit.js',
                     'interactions/delete.js',
