@@ -108,6 +108,12 @@ OLMM.prototype.gisFindAndMarkFeatures = function (filter_params) {
     })
 };
 
+OLMM.prototype.gisUpdateInSearchState = function (featuresId) {
+    var self = this;
+    var source = self.getSourceByName('edit');
+    featuresId.map(function(fId){source.getFeatureById(fId).setProperties({"_state": 'selected'})})
+};
+
 OLMM.prototype.gisChangeStyleOnSelect = function(featureId) {
     olmm.getSourceByName('edit').getFeatureById(featureId).setProperties({"_state": 'selected'})
 };
