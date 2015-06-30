@@ -79,7 +79,7 @@
             serverType: 'geoserver'
         });
 
-        return new ol.layer.Tile({source: source, visible: visible});
+        return new ol.layer.Tile({source: source, visible: visible, crossOrigin:'anonymous'});
     };
 
     module.createVectorLayer = function (style, features) {
