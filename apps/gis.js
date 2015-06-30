@@ -2,11 +2,6 @@ OLMM.prototype.initGisApp = function () {
     var self = this;
     var ssk_icon_style_name, ssk_icon_style_url;
 
-    for (ssk_icon_style_name in self.config.ssk_icons) {
-        ssk_icon_style_url = self.config.ssk_icons[ssk_icon_style_name];
-        self.addStyle(ssk_icon_style_name, self.createIconStyle(ssk_icon_style_url));
-    }
-
     var layer_name = 'edit';
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
@@ -18,6 +13,7 @@ OLMM.prototype.initGisApp = function () {
                     var featureProperties = feature.getProperties();
                     var featureObjectType = featureProperties['objecttype'];
                     var featureState = featureProperties['_state'] || 'default';
+                    featureState += featureProperties['_state_additional'] || '';
 
                     if (featureObjectType != undefined) {
 
@@ -91,11 +87,11 @@ OLMM.prototype.getCoordsForRequest = function () {
     }
 };
 
-OLMM.prototype.updateSSKPoints = function (style_name) {
+OLMM.prototype.updateSSKPoints = function (ssk_name) {
     var self = this;
-    self.updateFeaturesStyleWithFilter({
+    self.updateFeatureProperties({
         source_name: 'edit',
-        style_name: style_name,
+        update_params: {"_state_additional": ssk_name},
         filter_params: {"objecttype": 1}
     })
 };
