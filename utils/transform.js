@@ -14,16 +14,15 @@
             return;
         }
 
-        // TODO Polygon wtf :( [[[], [], []]]
+        // polygon && multilinestring
         if (data.length == 1) {
             data = data[0];
         }
 
         if (data[0] instanceof Array) {
-            var coords = data.map(function (line_coords) {
+            return data.map(function (line_coords) {
                 return ol.proj.transform(line_coords, from, to)
             });
-            return coords; // TODO dont touch it, debugging
         }
         else {
             return ol.proj.transform(data, from, to)
@@ -53,7 +52,7 @@
 
         var new_coords = transform_function(coords);
         var geometryType = geometry_type_map[geometry_type];
-        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') { // TODO Polygon wtf :( [[[], [], []]]
+        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') {
             new_coords = [new_coords]
         }
         var new_geometry = new geometryType(new_coords);

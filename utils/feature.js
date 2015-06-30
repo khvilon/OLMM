@@ -49,7 +49,7 @@
             return;
         }
 
-        // TODO Polygon wtf :( [[[], [], []]]
+        // polygon && multilinestring
         if (data.length == 1) {
             data = data[0];
         }
@@ -91,7 +91,7 @@
 
         var new_coords = transform_function.call(feature, coords);
         var geometryType = geometry_type_map[geometry_type];
-        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') { // TODO Polygon wtf :( [[[], [], []]]
+        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') {
             new_coords = [new_coords]
         }
         var new_geometry = new geometryType(new_coords);
