@@ -32,7 +32,8 @@ function OLMM() {
                 center: center,
                 zoom: zoom,
                 maxZoom: maxZoom,
-                minZoom: minZoom
+                minZoom: minZoom,
+                tileSize: [256, 256]
             })
         });
 

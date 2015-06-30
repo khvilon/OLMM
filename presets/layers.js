@@ -75,7 +75,7 @@
 
         var source = new ol.source.TileWMS({
             url: server,
-            params: {'LAYERS': layers, 'TILED': true, 'WIDTH': 256, 'HEIGHT': 256},
+            params: {'LAYERS': layers, 'WIDTH': 256, 'HEIGHT': 256, 'VERSION': '1.1.1'},
             serverType: 'geoserver'
         });
 
