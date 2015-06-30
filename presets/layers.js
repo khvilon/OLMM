@@ -75,11 +75,12 @@
 
         var source = new ol.source.TileWMS({
             url: server,
+            crossOrigin:'anonymous',
             params: {'LAYERS': layers, 'WIDTH': 256, 'HEIGHT': 256, 'VERSION': '1.1.1'},
             serverType: 'geoserver'
         });
 
-        return new ol.layer.Tile({source: source, visible: visible, crossOrigin:'anonymous'});
+        return new ol.layer.Tile({source: source, visible: visible});
     };
 
     module.createVectorLayer = function (style, features) {
