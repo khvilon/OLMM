@@ -145,6 +145,18 @@
         self.updateFeaturesStyle(features, style)
     };
 
+    module.updateFeatureProperties = function (options) {
+        var source_name = options['source_name'];
+        var filter_params = options['filter_params'];
+        var update_params = options['update_params'];
+
+        var self = this;
+
+        var features = self.filterFeaturesByProperties(source_name, filter_params);
+
+        features.map(function(f){f.setProperties(update_params)});
+    };
+
     module.updateFeature = function (source_name, geojson) {
         var self = this;
         var featureId = undefined;

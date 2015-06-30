@@ -13,6 +13,7 @@
     <script src="../../interactions/add.js" type="text/javascript"></script>
     <script src="../../interactions/edit.js" type="text/javascript"></script>
     <script src="../../interactions/drag.js" type="text/javascript"></script>
+    <script src="../../interactions/click.js" type="text/javascript"></script>
     <script src="../../interactions/select.js" type="text/javascript"></script>
     <script src="../../interactions/base.js" type="text/javascript"></script>
     <script src="../../interactions/delete.js" type="text/javascript"></script>
@@ -88,6 +89,12 @@
     var olmm = new OLMM();
     olmm.createMap();
 
+    var sel = function (event, feature_data) {
+        olmm.gisChangeStyleOnSelect(feature_data.id);
+    };
+
+    olmm.addFeatureClickFunction(sel ,'edit');
+
     olmm.readConfig({
         'add_callback': function(event, feature) {console.log('add: ', feature)},
         'edit_callback': function(event, feature) {console.log('edited: ', feature)},
@@ -96,15 +103,17 @@
         'icons': {
             'objecttype': {
                 'default': 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png',
+                'in_search': 'http://mtdata.ru/u18/photo538B/20465451192-0/xsmall.jpeg',
+                'selected': 'http://dkrolik.ru/uploads/images/00/18/89/2013/10/23/avatar_24x24.gif?030000',
                 1: {
                     default: 'http://dkrolik.ru/uploads/images/00/18/89/2013/10/23/avatar_24x24.gif?030000',
-                    selected: '',
-                    found: ''
+                    selected: 'http://mtdata.ru/u18/photo538B/20465451192-0/xsmall.jpeg',
+                    in_search: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'
                 },
                 2: {
                     default: 'http://mtdata.ru/u18/photo538B/20465451192-0/xsmall.jpeg',
-                    selected: '',
-                    found: ''
+                    selected: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png',
+                    in_search: 'http://dkrolik.ru/uploads/images/00/18/89/2013/10/23/avatar_24x24.gif?030000'
                 }
             }
         },

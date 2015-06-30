@@ -15,14 +15,20 @@ OLMM.prototype.initGisApp = function () {
 
                 if (feature.getGeometry().getType() == 'Point') {
 
-                    var featureObjectType = feature.getProperties()['objecttype'];
-                    if (featureObjectType != undefined) {
-                        var icon_config = self.config.icons.objecttype[featureObjectType];
+                    var featureProperties = feature.getProperties();
+                    var featureObjectType = featureProperties['objecttype'];
+                    var featureState = featureProperties['_state'] || 'default';
 
+                    if (featureObjectType != undefined) {
+
+                        var icon_config = self.config.icons.objecttype[featureObjectType];
                         if (icon_config) {
-                            var icon_url = icon_config['default'];
+                            var icon_url = icon_config[featureState];
                         } else {
-                            icon_url = self.config.icons.objecttype['default']
+                            icon_url = self.config.icons.objecttype[featureState];
+                            if (!icon_url) {
+                                icon_url = self.config.icons[featureState];
+                            }
                         }
 
                         var icon_style_name = icon_url.replace(/\s+/g, '-').replace(/[^a-zA-Z-]/g, '').toLowerCase();
@@ -34,6 +40,7 @@ OLMM.prototype.initGisApp = function () {
                         }
 
                         return [icon_style];
+
                     } else {
                         return [new ol.style.Style({
                             image: new ol.style.Circle({
@@ -50,15 +57,22 @@ OLMM.prototype.initGisApp = function () {
                         })]
                     }
                 } else {
-                    var color = feature.getProperties()['color'] || 'green';
-                    return [
-                        new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: color,
-                                width: 3
+
+                    var line_style_name = 'baseLineStyle';
+                    var line_style = self.getStyleByName(line_style_name);
+                    if (!line_style) {
+                        line_style = self.addStyle(
+                            line_style_name,
+                            new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: feature.getProperties()['color'] || 'green',
+                                    width: 3
+                                })
                             })
-                        })
-                    ]
+                        )
+                    }
+
+                    return [line_style];
                 }
             }
         ));
@@ -75,7 +89,6 @@ OLMM.prototype.getCoordsForRequest = function () {
         'max_lot': coords[2],
         'max_lat': coords[3]
     }
-
 };
 
 OLMM.prototype.updateSSKPoints = function (style_name) {
@@ -85,4 +98,20 @@ OLMM.prototype.updateSSKPoints = function (style_name) {
         style_name: style_name,
         filter_params: {"objecttype": 1}
     })
+};
+
+OLMM.prototype.gisFindAndMarkFeatures = function (filter_params) {
+    this.updateFeatureProperties({
+        "source_name": 'edit',
+        "filter_params": filter_params,
+        "update_params": {"_state": 'in_search'}
+    })
+};
+
+OLMM.prototype.gisChangeStyleOnSelect = function(featureId) {
+    olmm.getSourceByName('edit').getFeatureById(featureId).setProperties({"_state": 'selected'})
+};
+
+OLMM.prototype.resetFeaturesStateStyle = function () {
+    olmm.getSourceByName('edit').getFeatures().map(function(f){f.setProperties({"_state": "default"})})
 };
