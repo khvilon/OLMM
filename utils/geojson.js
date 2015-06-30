@@ -24,9 +24,11 @@
 
     module.updateFeatureWithGeoJSON = function (featureId, source_name, geojson) {
         var self = this;
+        
         var source = self.getSourceByName(source_name);
         var feature = source.getFeatureById(featureId);
         source.removeFeature(feature);
+
         self.removeSelect();
 
         self.addFeaturesFromGeoJSON({
