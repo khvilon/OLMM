@@ -2,6 +2,8 @@ function OLMM() {
     this.layers = {};
     this.sources = {};
     this.firstLayers = [];
+    this.pointShow = true;
+    this.polygonShow = true; // TODO
     this.styles = {};
     this.config = {
         'add_callback': [],
