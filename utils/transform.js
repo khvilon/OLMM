@@ -52,7 +52,7 @@
 
         var new_coords = transform_function(coords);
         var geometryType = geometry_type_map[geometry_type];
-        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') {
+        if (geometry_type == self.polygonName || geometry_type == self.multiLineStringName) {
             new_coords = [new_coords]
         }
         var new_geometry = new geometryType(new_coords);

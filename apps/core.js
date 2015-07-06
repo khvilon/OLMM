@@ -2,8 +2,6 @@ function OLMM() {
     this.layers = {};
     this.sources = {};
     this.firstLayers = [];
-    this.pointShow = true;
-    this.polygonShow = true; // TODO
     this.styles = {};
     this.config = {
         'add_callback': [],
@@ -13,6 +11,11 @@ function OLMM() {
     };
     this.select = null;
     this.interaction = null;
+
+    this.polygonName = 'Polygon';
+    this.lineStringName = 'LineString';
+    this.multiLineStringName = 'MultiLineString';
+    this.pointName = 'Point'
 }
 
 (function (module) {

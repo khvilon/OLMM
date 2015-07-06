@@ -1,5 +1,16 @@
 (function (module) {
 
+    module.polygonName = 'Polygon';
+    module.lineStringName = 'LineString';
+    module.multiLineStringName = 'MultiLineString';
+    module.pointName = 'Point';
+
+    module.geometryTypeMap = {};
+    module.geometryTypeMap[module.lineStringName] = ol.geom.LineString;
+    module.geometryTypeMap[module.pointName] = ol.geom.Point;
+    module.geometryTypeMap[module.polygonName] = ol.geom.Polygon;
+    module.geometryTypeMap[module.multiLineStringName] = ol.geom.MultiLineString;
+
     module.toGeoJSON = function (useOriginFeature) {
         var feature;
 
@@ -55,10 +66,9 @@
         }
 
         if (data[0] instanceof Array) {
-            var coords = data.map(function (line_coords) {
+            return data.map(function (line_coords) {
                 return ol.proj.transform(line_coords, from, to)
             });
-            return coords;
         }
         else {
             return ol.proj.transform(data, from, to)
@@ -81,17 +91,9 @@
         var geometry_type = geometry.getType();
         var coords = geometry.getCoordinates();
 
-        var geometry_type_map = {
-            'LineString': ol.geom.LineString,
-            'Point': ol.geom.Point,
-            'Polygon': ol.geom.Polygon,
-            'Circle': ol.geom.Circle,
-            'MultiLineString': ol.geom.MultiLineString
-        };
-
         var new_coords = transform_function.call(feature, coords);
-        var geometryType = geometry_type_map[geometry_type];
-        if (geometry_type == 'Polygon' || geometry_type == 'MultiLineString') {
+        var geometryType = feature.geometryTypeMap[geometry_type];
+        if (geometry_type == feature.polygonName || geometry_type == feature.multiLineStringName) {
             new_coords = [new_coords]
         }
         var new_geometry = new geometryType(new_coords);
@@ -104,6 +106,54 @@
 
 
 (function (module) {
+
+    module.getFeaturesVisibleByType = function (type) {
+        var self = this;
+        var features = self.getSourceByName('edit').getFeatures();
+        var visible;
+
+        if (type == self.pointName || type == self.polygonName) {
+            var cached_visible = self[type.toLowerCase()+'Show'];
+            if (cached_visible != undefined) {
+                return cached_visible
+            }
+        }
+
+        for (var i = 0; i <= features.length; i++) {
+            var feature = features[i];
+            if (feature && feature.getGeometry().getType() == type) {
+                visible = feature.getProperties()['visible'];
+                if (visible) {
+                    break
+                }
+            }
+        }
+
+        if (visible == undefined) {
+            visible = false;
+        }
+
+        return visible;
+    };
+
+    module.filterFeaturesByType = function (type) {
+        var self = this;
+        return self.getSourceByName('edit').getFeatures().filter(function(feature){
+            return feature.getGeometry().getType() == type
+        })
+    };
+
+    module.toggleFeaturesByType = function (type) {
+        var self = this;
+
+        var new_visible = !self.getFeaturesVisibleByType(type);
+        self[type.toLowerCase()+'Show'] = new_visible; // TODO gis hack :(
+
+        self.filterFeaturesByType(type).forEach(function(feature){
+            feature.setProperties({'visible': new_visible})
+        })
+
+    };
 
     module.filterFeaturesByProperties = function (source_name, filter_params) {
         var self = this;

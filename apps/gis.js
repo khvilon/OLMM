@@ -89,8 +89,7 @@ OLMM.prototype.initGisApp = function () {
 };
 
 OLMM.prototype.getCoordsForRequest = function () {
-    var self = this;
-    var coords = self.getViewPortCoords();
+    var coords = this.getViewPortCoords();
 
     return {
         'min_lot': coords[0],
@@ -101,8 +100,7 @@ OLMM.prototype.getCoordsForRequest = function () {
 };
 
 OLMM.prototype.updateSSKPoints = function (ssk_name) {
-    var self = this;
-    self.updateFeatureProperties({
+    this.updateFeatureProperties({
         source_name: 'edit',
         update_params: {"_state_additional": ssk_name},
         filter_params: {"objecttype": 1}
@@ -129,63 +127,4 @@ OLMM.prototype.gisChangeStyleOnSelect = function(featureId) {
 
 OLMM.prototype.resetFeaturesStateStyle = function () {
     this.getSourceByName('edit').getFeatures().map(function(f){f.setProperties({"_state": "default"})})
-};
-
-OLMM.prototype.toggleFeaturesPointLayer = function () {
-    var self = this;
-    var new_visible = !self.getSourceByName('edit').getFeatures()[0].getProperties()['visible'];
-    self.pointsShow = new_visible;
-    self.getSourceByName('edit').getFeatures().map(
-        function (f) {if (f.getGeometry().getType() == 'Point') {f.setProperties({'visible': new_visible})}}
-    )
-};
-
-OLMM.prototype.getFeaturesVisibleByType = function (type) {
-    var self = this;
-    var features = self.getSourceByName('edit').getFeatures();
-    var visible;
-
-    if (type == 'Point' && self.pointShow != undefined) {
-        return !self.pointShow
-    }
-
-    if (type == 'Polygon' && self.polygonShow != undefined) {
-        return !self.polygonShow
-    }
-
-    for (var i = 0; i <= features.length; i++) {
-        var feature = features[i];
-        if (feature && feature.getGeometry().getType() == type) {
-            visible = feature.getProperties()['visible'];
-            if (visible) {
-                break
-            }
-        }
-    }
-
-    if (visible == undefined) {
-        visible = false;
-    }
-
-    return visible;
-};
-
-OLMM.prototype.toggleFeaturesPolygonLayer = function () {
-    var self = this;
-    var type = 'Polygon';
-    var new_visible = self.getFeaturesVisibleByType(type);
-    self.polygonShow = new_visible;
-    self.getSourceByName('edit').getFeatures().map(
-        function (f) {if (f.getGeometry().getType() == type) {f.setProperties({'visible': new_visible})}}
-    )
-};
-
-OLMM.prototype.toggleFeaturesPointLayer = function () {
-    var self = this;
-    var type = 'Point';
-    var new_visible = self.getFeaturesVisibleByType(type);
-    self.pointShow = new_visible;
-    self.getSourceByName('edit').getFeatures().map(
-        function (f) {if (f.getGeometry().getType() == type) {f.setProperties({'visible': new_visible})}}
-    )
 };
