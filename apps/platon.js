@@ -1,4 +1,4 @@
-OLMM.prototype.initPlatonApp = function () {
+OLMM.prototype.initPlatonApp = function (callback) {
     var self = this;
 
     self.createMap();
@@ -8,6 +8,8 @@ OLMM.prototype.initPlatonApp = function () {
     };
 
     self.addFeatureClickFunction(sel);
+
+    this.addToConfig('featureClickCallback', callback);
 
     self.map.addInteraction(new self.hoverApp.Hover());
 
@@ -41,8 +43,4 @@ OLMM.prototype.initPlatonApp = function () {
             }
         ));
     }
-};
-
-OLMM.prototype.addPlatonFeatureClickFunction = function (func) {
-    this.addToConfig('featureClickCallback', func);
 };
