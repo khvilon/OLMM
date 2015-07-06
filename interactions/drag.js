@@ -92,3 +92,7 @@ OLMM.prototype.enableDragMode = function () {
     self.disableActions();
     self.addInteraction(new OLMM.Drag(self))
 };
+
+OLMM.prototype.attachDragCallback = function (callback) {
+    this.addToConfig('drag_callback', callback);
+};

@@ -26,6 +26,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/ways/olmm.min.js': 'build/ways/olmm.js'
                 }
+            },
+            platon: {
+                files: {
+                    'build/platon/olmm.min.js': 'build/platon/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -34,7 +39,8 @@ module.exports = function (grunt) {
                 'build/mmtest/olmm.js',
                 'build/mmtest_ng/olmm.js',
                 'build/gis/olmm.js',
-                'build/ways/olmm.js'
+                'build/ways/olmm.js',
+                'build/platon/olmm.js'
             ]
         },
 
@@ -46,14 +52,12 @@ module.exports = function (grunt) {
                     'apps/core.js',
                     'interactions/edit.js',
                     'presets/styles.js',
-                    'presets/layers.js',
-                    'presets/sources.js',
+                    'utils/layer.js',
 
-                    'utils/wkt.js',
+                    'utils/source.js',
                     'utils/geojson.js',
-
                     'utils/points.js',
-                    'utils/fit.js',
+                    'utils/map.js',
 
                     'utils/transform.js',
                     'plugins/mmtest.js'
@@ -68,9 +72,9 @@ module.exports = function (grunt) {
                     'interactions/edit.js',
                     'interactions/select.js',
                     'presets/styles.js',
-                    'presets/layers.js',
-                    'presets/sources.js',
-                    'utils/fit.js',
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/map.js',
                     'utils/geojson.js',
                     'utils/transform.js',
                     'utils/projections.js',
@@ -97,11 +101,9 @@ module.exports = function (grunt) {
                     'interactions/edit.js',
                     'interactions/delete.js',
 
-                    'presets/layers.js',
-                    'presets/sources.js',
-
+                    'utils/layer.js',
+                    'utils/source.js',
                     'utils/cursor.js',
-                    'utils/fit.js',
                     'utils/feature.js',
                     'utils/geojson.js',
                     'utils/transform.js',
@@ -127,9 +129,8 @@ module.exports = function (grunt) {
                     'interactions/click.js',
                     'interactions/delete.js',
 
-                    'presets/layers.js',
-                    'presets/sources.js',
-
+                    'utils/layer.js',
+                    'utils/source.js',
                     'utils/feature.js',
                     'utils/points.js',
                     'utils/fit.js',
@@ -140,6 +141,26 @@ module.exports = function (grunt) {
                     'utils/transform.js'
                 ],
                 dest: 'build/ways/olmm.js'
+            },
+
+            platon: {
+                src: [
+                    'apps/core.js',
+                    'apps/platon.js',
+
+                    'interactions/click.js',
+                    'interactions/hover.js',
+
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/feature.js',
+                    'utils/style.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/cursor.js',
+                    'utils/transform.js'
+                ],
+                dest: 'build/platon/olmm.js'
             }
         }
     });
@@ -181,5 +202,11 @@ module.exports = function (grunt) {
         'clean',
         'concat:ways',
         'uglify:ways'
+    ]),
+
+    grunt.registerTask('platon', [
+        'clean',
+        'concat:platon',
+        'uglify:platon'
     ])
 };

@@ -10,6 +10,10 @@ OLMM.prototype.enableDrawModeForPolygon = function (source_name) {
     this.enableDrawMode('Polygon', source_name);
 };
 
+OLMM.prototype.attachAddCallback = function (callback) {
+    this.addToConfig('add_callback', callback);
+};
+
 OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
     var self = this;
     source_name = source_name || 'draw';

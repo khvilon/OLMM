@@ -45,14 +45,6 @@ function OLMM() {
         this.map.addControl(new ol.control.ZoomSlider());
     };
 
-    module.getSourceByName = function(name) {
-        return this.sources[name];
-    };
-
-    module.addSource = function(name, source) {
-        this.sources[name] = source
-    };
-
     module.addToConfig = function (key, value) {
         var self = this;
         var config_value = self.config[key];
@@ -91,22 +83,6 @@ function OLMM() {
         for (var name in config) {
             self.addToConfig(name, config[name]);
         }
-    };
-
-    module.attachAddCallback = function (callback) {
-        this.addToConfig('add_callback', callback);
-    };
-
-    module.attachEditCallback = function (callback) {
-        this.addToConfig('edit_callback', callback);
-    };
-
-    module.attachDragCallback = function (callback) {
-        this.addToConfig('drag_callback', callback);
-    };
-
-    module.attachDeleteCallback = function (callback) {
-        this.addToConfig('delete_callback', callback);
     };
 
 })(OLMM.prototype);

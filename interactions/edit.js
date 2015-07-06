@@ -30,3 +30,7 @@ OLMM.prototype.enableEditMode = function(layer_name) {
 
     self.addInteraction(modify);
 };
+
+OLMM.prototype.attachEditCallback = function (callback) {
+    this.addToConfig('edit_callback', callback);
+};

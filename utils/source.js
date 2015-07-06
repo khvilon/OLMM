@@ -22,4 +22,12 @@
         }
     };
 
+    module.getSourceByName = function(name) {
+        return this.sources[name];
+    };
+
+    module.addSource = function(name, source) {
+        this.sources[name] = source
+    };
+
 })(OLMM.prototype);
