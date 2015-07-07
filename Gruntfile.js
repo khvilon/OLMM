@@ -153,6 +153,7 @@ module.exports = function (grunt) {
                     'interactions/click.js',
                     'interactions/hover.js',
 
+                    'utils/overlay.js',
                     'utils/layer.js',
                     'utils/source.js',
                     'utils/feature.js',

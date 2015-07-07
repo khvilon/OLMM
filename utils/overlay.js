@@ -9,4 +9,11 @@
         this.map.addOverlay(overlay)
     };
 
+    module.closeOverlay = function(name) {
+        name = name || 'overlay';
+        var overlay = this.getOverlayByName(name);
+        overlay.setPosition(undefined);
+        return false;
+    }
+
 })(OLMM.prototype);
