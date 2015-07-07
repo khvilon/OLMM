@@ -15,6 +15,10 @@
         return this.layers[name];
     };
 
+    module.getLayerVisible = function (layer_name) {
+        return this.getLayerByName(layer_name).getVisible()
+    };
+
     module.setLayerVisible = function (layer_name, visible) {
         this.getLayerByName(layer_name).setVisible(visible);
     };

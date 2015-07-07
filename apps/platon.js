@@ -1,9 +1,21 @@
-OLMM.prototype.initPlatonApp = function (callback) {
+OLMM.prototype.initPlatonApp = function (callback, popup, icon1, icon2) {
     var self = this;
+
+    var overlay = new ol.Overlay({
+      element: popup,
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250
+      }
+    });
 
     self.createMap();
 
+    self.addOverlay('overlay', overlay);
+
     var sel = function(event, data) {
+        overlay = self.getOverlayByName('overlay');
+        overlay.setPosition(self.transform(data.coords));
         return olmm.config['featureClickCallback'](event.pixel, data)
     };
 
@@ -15,31 +27,24 @@ OLMM.prototype.initPlatonApp = function (callback) {
 
     self.addLayer('map', self.createOSMLayer());
 
-    //self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
-
-    self.readConfig({
-        'icons': {
-            1: 'http://www.mapize.com/generator/generatorSource/images_mapize/library/mapize_marker_green.png',
-            2: 'http://www.dmv.ri.gov/img/map/blue-dot.png'
-        }
-    });
+    var icon1style = self.addStyle('icon1', self.createIconStyle(icon1));
+    var icon2style = self.addStyle('icon2', self.createIconStyle(icon2));
 
     var layer_name = 'edit';
+    self.defaultSourceName = layer_name;
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
         self.addLayer(layer_name, self.createVectorLayer(
             function (feature, resolution) {
 
                 var featureProperties = feature.getProperties();
-                var featureType = featureProperties['type'];
+                var featureTcos = featureProperties['tcos'];
 
-                var iconStyleName = 'icon'+featureType;
-                var icon_style = self.getStyleByName(iconStyleName);
-                if (!icon_style) {
-                    icon_style = self.addStyle(iconStyleName, self.createIconStyle(self.config.icons[featureType]));
+                if (featureTcos == true) {
+                    return [icon1style]
+                } else {
+                    return [icon2style]
                 }
-
-                return [icon_style];
             }
         ));
     }

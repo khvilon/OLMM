@@ -12,7 +12,6 @@ OLMM.prototype.hoverApp.Hover = function () {
     this.cursor_ = 'pointer';
     this.feature_ = null;
     this.previousCursor_ = undefined;
-
 };
 
 ol.inherits(OLMM.prototype.hoverApp.Hover, ol.interaction.Pointer);

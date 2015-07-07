@@ -38,20 +38,13 @@
     };
 
     module.transformWithGeometry = function (feature, transform_function) {
+        var self = this;
         var geometry = feature.getGeometry();
         var geometry_type = geometry.getType();
         var coords = geometry.getCoordinates();
 
-        var geometry_type_map = {
-            'LineString': ol.geom.LineString,
-            'Point': ol.geom.Point,
-            'Polygon': ol.geom.Polygon,
-            'Circle': ol.geom.Circle,
-            'MultiLineString': ol.geom.MultiLineString
-        };
-
         var new_coords = transform_function(coords);
-        var geometryType = geometry_type_map[geometry_type];
+        var geometryType = self.geometryTypeMap[geometry_type];
         if (geometry_type == self.polygonName || geometry_type == self.multiLineStringName) {
             new_coords = [new_coords]
         }

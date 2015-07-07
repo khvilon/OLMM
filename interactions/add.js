@@ -1,13 +1,16 @@
 OLMM.prototype.enableDrawModeForPoint = function (source_name) {
-    this.enableDrawMode('Point', source_name);
+    var self = this;
+    self.enableDrawMode(self.pointName, source_name);
 };
 
 OLMM.prototype.enableDrawModeForLineString = function (source_name) {
-    this.enableDrawMode('LineString', source_name);
+    var self = this;
+    self.enableDrawMode(self.lineStringName, source_name);
 };
 
 OLMM.prototype.enableDrawModeForPolygon = function (source_name) {
-    this.enableDrawMode('Polygon', source_name);
+    var self = this;
+    self.enableDrawMode(self.polygonName, source_name);
 };
 
 OLMM.prototype.attachAddCallback = function (callback) {
@@ -18,8 +21,8 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
     var self = this;
     source_name = source_name || 'draw';
 
-    if (['Point', 'LineString', 'Polygon', 'Circle', 'MultiLineString'].indexOf(feature_type) == -1) {
-        alert(feature_type + ': not allowed');
+    if ([self.pointName, self.polygonName, self.lineStringName, self.multiLineStringName].indexOf(feature_type) == -1) {
+        console.log(feature_type + ': not allowed');
         return;
     }
 

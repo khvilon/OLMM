@@ -1,6 +1,7 @@
 function OLMM() {
     this.layers = {};
     this.sources = {};
+    this.overlays = {};
     this.firstLayers = [];
     this.styles = {};
     this.config = {
@@ -28,8 +29,20 @@ function OLMM() {
         var zoom = options['zoom'] || 11;
         var maxZoom = options['maxZoom'] || 26;
         var minZoom = options['minZoom'] || 3;
+        var controls = options['controls'];
+        var interactions = options['interactions'];
+
+        if (controls == false) {
+            controls = []
+        }
+
+        if (interactions == false) {
+            interactions = []
+        }
 
         this.map = new ol.Map({
+            controls: controls,
+            interactions: interactions,
             target: target,
             layers: this.firstLayers,
             view: new ol.View({
@@ -42,7 +55,9 @@ function OLMM() {
             })
         });
 
-        this.map.addControl(new ol.control.ZoomSlider());
+        if (controls == undefined) {
+            this.map.addControl(new ol.control.ZoomSlider());
+        }
     };
 
     module.addToConfig = function (key, value) {

@@ -10,7 +10,7 @@
         var self = this;
 
         var geojson_data = options['geojson_data'] || [];
-        var source_name = options['source_name'] || '';
+        var source_name = options['source_name'] || self.defaultSourceName || '';
         var need_fit = options['need_fit'] || false;
 
         var features = self.readGeoJSON(geojson_data);

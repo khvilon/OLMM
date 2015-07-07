@@ -25,7 +25,6 @@
                 proj.changed();
             }
         );
-
     };
 
     module.drawAllProjections = function () {

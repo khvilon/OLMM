@@ -5,30 +5,33 @@
 
     <link rel="stylesheet" href="../openlayers/ol.css" type="text/css">
     <script src="../jquery-1.10.2.js"></script>
-    <!--<script src="../openlayers/ol.js" type="text/javascript"></script>-->
+    <script src="../openlayers/ol.js" type="text/javascript"></script>
 
-    <!--<script src="../apps/core.js" type="text/javascript"></script>-->
-    <!--<script src="../apps/platon.js" type="text/javascript"></script>-->
+    <script src="../apps/core.js" type="text/javascript"></script>
+    <script src="../apps/platon.js" type="text/javascript"></script>
 
-    <!--<script src="../interactions/click.js" type="text/javascript"></script>-->
-    <!--<script src="../interactions/hover.js" type="text/javascript"></script>-->
+    <script src="../interactions/click.js" type="text/javascript"></script>
+    <script src="../interactions/hover.js" type="text/javascript"></script>
 
-    <!--<script src="../utils/layer.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/source.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/cursor.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/feature.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/geojson.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/transform.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/map.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/style.js" type="text/javascript"></script>-->
+    <script src="../utils/layer.js" type="text/javascript"></script>
+    <script src="../utils/overlay.js" type="text/javascript"></script>
+    <script src="../utils/source.js" type="text/javascript"></script>
+    <script src="../utils/cursor.js" type="text/javascript"></script>
+    <script src="../utils/feature.js" type="text/javascript"></script>
+    <script src="../utils/geojson.js" type="text/javascript"></script>
+    <script src="../utils/transform.js" type="text/javascript"></script>
+    <script src="../utils/map.js" type="text/javascript"></script>
+    <script src="../utils/style.js" type="text/javascript"></script>
 
-    <script src="../build/platon/olmm.min.js" type="text/javascript"></script>
+    <!--<script src="../build/platon/olmm.min.js" type="text/javascript"></script>-->
 
     <title>platon example</title>
 </head>
 <body>
 
 <div id="map" class="map" style="height: 100%; width: 100%"></div>
+<div id="popup">123</div>
+
 <script type="text/javascript">
 
     olmm = new OLMM();
@@ -37,16 +40,21 @@
         console.log(coords, feature_data);
     };
 
-    olmm.initPlatonApp(sel);
-
     $(document).ready(function(){
+
+        olmm.initPlatonApp(
+            sel,
+            document.getElementById('popup'),
+            'http://www.mapize.com/generator/generatorSource/images_mapize/library/mapize_marker_green.png',
+            'http://www.dmv.ri.gov/img/map/blue-dot.png'
+        );
+
         $.ajax({
-            url: 'data/platon.json',
+            url: 'data/platons.json',
             dataType: 'json',
             success: function (data) {
                 olmm.addFeaturesFromGeoJSON({
                     "geojson_data": data,
-                    "source_name": 'edit',
                     "need_fit": true
                 });
             }
@@ -55,13 +63,12 @@
 
     redraw = function () {
         $.ajax({
-            url: 'data/platon2.json',
+            url: 'http://10.0.12.212/api/v1/tco-data/list?query=1',
             dataType: 'json',
             success: function (data) {
                 olmm.clearSources();
                 olmm.addFeaturesFromGeoJSON({
                     "geojson_data": data,
-                    "source_name": 'edit',
                     "need_fit": true
                 });
             }
