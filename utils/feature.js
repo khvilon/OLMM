@@ -135,15 +135,15 @@
         }  else {
             feature.setProperty(name, '');
         }
-
     };
 
     module.updateProperty = function (name, value) {
         var feature = this;
         var featureProperty = feature.getProperty(name);
         if (featureProperty) {
-            feature.setProperty(name, featureProperty + ' ' + value)
+            value = featureProperty + ' ' + value;
         }
+        feature.setProperty(name, value.trim());
     };
 
 })(ol.Feature.prototype);
