@@ -10,7 +10,6 @@ OLMM.prototype.createTSOLayers = function(icon_src) {
 
     self.loadWMSLayers([osm_layer]);
 
-
     self.addLayer('tso', self.createVectorLayer(
         function (feature, resolution) {
             var featureStateMap = {

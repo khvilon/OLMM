@@ -4,14 +4,18 @@ function OLMM() {
     this.overlays = {};
     this.firstLayers = [];
     this.styles = {};
+
     this.config = {
         'add_callback': [],
         'edit_callback': [],
         'delete_callback': [],
         'drag_callback': []
     };
+
     this.select = null;
     this.interaction = null;
+    this.defaultSourceName = null;
+    this.defaultLayerName = null;
 
     this.polygonName = 'Polygon';
     this.lineStringName = 'LineString';
@@ -58,6 +62,15 @@ function OLMM() {
         if (controls == undefined) {
             this.map.addControl(new ol.control.ZoomSlider());
         }
+    };
+
+    module.setDefaultSourceName = function (name) {
+        this.defaultSourceName = name;
+        this.defaultLayerName = name;
+    };
+
+    module.getDefaultSourceName = function () {
+        return this.defaultSourceName;
     };
 
     module.addToConfig = function (key, value) {

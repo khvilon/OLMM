@@ -102,6 +102,50 @@
         return feature
     };
 
+    module.setProperty = function (name, value) {
+        var feature = this;
+        var newProp = {};
+        newProp[name] = value;
+        feature.setProperties(newProp);
+    };
+
+    module.getProperty = function (name) {
+        var feature = this;
+        return feature.getProperties()[name];
+    };
+
+    module.getPropertyList = function (name) {
+        var feature = this;
+        var property = feature.getProperty(name) || '';
+        return property.split(' ')
+    };
+
+    module.removeProperty = function (name) {
+        var feature = this;
+        var property = feature.getProperty(name);
+        var propertyList = feature.getPropertyList(name);
+
+        if (!property) {
+            return;
+        }
+
+        if (propertyList.length > 1) {
+            propertyList.splice(propertyList.indexOf(name), 1);
+            feature.setProperty(name, propertyList.join(' '))
+        }  else {
+            feature.setProperty(name, '');
+        }
+
+    };
+
+    module.updateProperty = function (name, value) {
+        var feature = this;
+        var featureProperty = feature.getProperty(name);
+        if (featureProperty) {
+            feature.setProperty(name, featureProperty + ' ' + value)
+        }
+    };
+
 })(ol.Feature.prototype);
 
 
@@ -196,11 +240,11 @@
     };
 
     module.updateFeatureProperties = function (options) {
-        var source_name = options['source_name'];
+        var self = this;
+
+        var source_name = options['source_name'] || self.getDefaultSourceName();
         var filter_params = options['filter_params'];
         var update_params = options['update_params'];
-
-        var self = this;
 
         var features = self.filterFeaturesByProperties(source_name, filter_params);
 

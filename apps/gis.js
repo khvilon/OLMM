@@ -5,6 +5,7 @@ OLMM.prototype.initGisApp = function () {
     var ssk_icon_style_name, ssk_icon_style_url;
 
     var layer_name = 'edit';
+    self.setDefaultSourceName(layer_name);
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
         self.addLayer(layer_name, self.createVectorLayer(
@@ -101,15 +102,13 @@ OLMM.prototype.getCoordsForRequest = function () {
 
 OLMM.prototype.updateSSKPoints = function (ssk_name) {
     this.updateFeatureProperties({
-        source_name: 'edit',
-        update_params: {"_state_additional": ssk_name},
-        filter_params: {"objecttype": 1}
+        filter_params: {"objecttype": 1},
+        update_params: {"_state_additional": ssk_name}
     })
 };
 
 OLMM.prototype.gisFindAndMarkFeatures = function (filter_params) {
     this.updateFeatureProperties({
-        "source_name": 'edit',
         "filter_params": filter_params,
         "update_params": {"_state": 'in_search'}
     })
@@ -117,14 +116,16 @@ OLMM.prototype.gisFindAndMarkFeatures = function (filter_params) {
 
 OLMM.prototype.gisUpdateInSearchState = function (featuresId) {
     var self = this;
-    var source = self.getSourceByName('edit');
+    var source = self.getSourceByName(self.getDefaultSourceName());
     featuresId.map(function(fId){source.getFeatureById(fId).setProperties({"_state": 'selected'})})
 };
 
 OLMM.prototype.gisChangeStyleOnSelect = function(featureId) {
-    this.getSourceByName('edit').getFeatureById(featureId).setProperties({"_state": 'selected'})
+    var self = this;
+    self.getSourceByName(self.getDefaultSourceName()).getFeatureById(featureId).setProperties({"_state": 'selected'})
 };
 
 OLMM.prototype.resetFeaturesStateStyle = function () {
-    this.getSourceByName('edit').getFeatures().map(function(f){f.setProperties({"_state": "default"})})
+    var self = this;
+    self.getSourceByName(self.getDefaultSourceName()).getFeatures().map(function(f){f.setProperties({"_state": "default"})})
 };
