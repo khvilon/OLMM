@@ -36,6 +36,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/smk/olmm.min.js': 'build/smk/olmm.js'
                 }
+            },
+            dashboard: {
+                files: {
+                    'build/dashboard/olmm.min.js': 'build/dashboard/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -46,7 +51,8 @@ module.exports = function (grunt) {
                 'build/gis/olmm.js',
                 'build/ways/olmm.js',
                 'build/platon/olmm.js',
-                'build/snk/olmm.js'
+                'build/snk/olmm.js',
+                'build/dashboard/olmm.js'
             ]
         },
 
@@ -188,6 +194,27 @@ module.exports = function (grunt) {
                     'utils/layer.js',
                     'utils/source.js',
                     'utils/feature.js',
+                    'utils/points.js',
+                    'utils/style.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/cursor.js',
+                    'utils/transform.js'
+                ],
+                dest: 'build/smk/olmm.js'
+            },
+
+            dashboard: {
+                src: [
+                    'openlayers/ol.js',
+
+                    'apps/core.js',
+                    'apps/dashboard.js',
+
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/feature.js',
+                    'utils/points.js',
                     'utils/style.js',
                     'utils/map.js',
                     'utils/geojson.js',
@@ -248,5 +275,11 @@ module.exports = function (grunt) {
         'clean',
         'concat:smk',
         'uglify:smk'
-    ])
+    ]);
+
+    grunt.registerTask('dashboard', [
+        'clean',
+        'concat:dashboard',
+        'uglify:dashboard'
+    ]);
 };

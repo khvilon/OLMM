@@ -44,3 +44,12 @@ OLMM.prototype.unSelectFeatures = function (source_name, default_state) {
         }
     );
 };
+
+OLMM.prototype.addContextMenuClickFunction = function(handleFunction) {
+    var self = this;
+    var map = self.map;
+
+    map.getViewport().addEventListener('contextmenu', function (e) {
+        return handleFunction(e, olmm.transform_to_lot_lan(olmm.map.getEventCoordinate(e)))
+    })
+};

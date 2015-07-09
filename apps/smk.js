@@ -51,26 +51,12 @@ OLMM.prototype.createSMKLayers = function(icon_src) {
     self.loadWMSLayers(osm_layer);
 
     self.addLayer('ways', self.createVectorLayer(
-        function (feature, resolution) {
-            //var featureStateMap = {
-            //    true: 'red',
-            //    false: '#009933'
-            //};
-            //
-            //var featureState = feature.getProperties()['federal'];
-            //var color = featureStateMap[featureState];
-
-            var styles = [
-                new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: '#009933',
-                        width: 5
-                    })
-                })
-            ];
-
-            return styles;
-        }
+        new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#009933',
+                width: 5
+            })
+        })
     ));
 
     self.addLayer('points', self.createVectorLayer(
