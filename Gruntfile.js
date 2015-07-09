@@ -31,6 +31,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/platon/olmm.min.js': 'build/platon/olmm.js'
                 }
+            },
+            smk: {
+                files: {
+                    'build/smk/olmm.min.js': 'build/smk/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -40,7 +45,8 @@ module.exports = function (grunt) {
                 'build/mmtest_ng/olmm.js',
                 'build/gis/olmm.js',
                 'build/ways/olmm.js',
-                'build/platon/olmm.js'
+                'build/platon/olmm.js',
+                'build/snk/olmm.js'
             ]
         },
 
@@ -164,6 +170,31 @@ module.exports = function (grunt) {
                     'utils/transform.js'
                 ],
                 dest: 'build/platon/olmm.js'
+            },
+
+            smk: {
+                src: [
+                    'openlayers/ol.js',
+
+                    'apps/core.js',
+                    'apps/smk.js',
+
+                    'interactions/base.js',
+                    'interactions/add.js',
+                    'interactions/select.js',
+                    'interactions/click.js',
+                    'interactions/delete.js',
+
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/feature.js',
+                    'utils/style.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/cursor.js',
+                    'utils/transform.js'
+                ],
+                dest: 'build/smk/olmm.js'
             }
         }
     });
@@ -205,11 +236,17 @@ module.exports = function (grunt) {
         'clean',
         'concat:ways',
         'uglify:ways'
-    ]),
+    ]);
 
     grunt.registerTask('platon', [
         'clean',
         'concat:platon',
         'uglify:platon'
+    ]);
+
+    grunt.registerTask('smk', [
+        'clean',
+        'concat:smk',
+        'uglify:smk'
     ])
 };

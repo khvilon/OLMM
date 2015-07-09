@@ -146,6 +146,18 @@
         feature.setProperty(name, value.trim());
     };
 
+    module.setRandomId = function () {
+        var feature = this;
+        var s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var n = 32;
+        var id = Array.apply(null, Array(n)).map(function () {
+            return s.charAt(Math.floor(Math.random() * s.length));
+        }).join('');
+
+        feature.setId(id);
+        return id
+    }
+
 })(ol.Feature.prototype);
 
 
@@ -268,8 +280,9 @@
         self.updateFeatureWithGeoJSON(featureId, source_name, geojson)
     };
 
-    module.deleteFeatureById = function (source_name, feature_id) {
-        var source = this.getSourceByName(source_name);
+    module.deleteFeatureById = function (feature_id, source_name) {
+        var self = this;
+        var source = self.getSourceByName(source_name || self.getDefaultSourceName());
         var feature = source.getFeatureById(feature_id);
         source.removeFeature(feature);
     };

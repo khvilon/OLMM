@@ -27,4 +27,5 @@ OLMM.prototype.makePointFromLonLat = function (lon, lat, source_name) {
     var geometry = new ol.geom.Point(map_coords);
     var point = new ol.Feature({geometry: geometry});
     self.getSourceByName(source_name).addFeature(point);
+    return point;
 };

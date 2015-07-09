@@ -43,14 +43,7 @@ OLMM.prototype.enableDrawMode = function (feature_type, source_name) {
     });
 
     draw.on('drawend', function (event) {
-        var feature = event.feature;
-        var s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var n = 32;
-        feature.setId(
-            Array.apply(null, Array(n)).map(function () {
-                return s.charAt(Math.floor(Math.random() * s.length));
-            }).join('')
-        );
+        event.feature.setRandomId();
         self.getConfigValues('add_callback').map(function(callback){
             callback(event, event.feature.getMainDataWithCloneAndTransform())
         });

@@ -42,23 +42,23 @@
 
     $(document).ready(function(){
 
+        olmm.loadWMSLayers([
+            {
+                'layer_name': 'osm',
+                'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm', 'visible': true}
+            },
+            {
+                'layer_name': 'froad',
+                'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'froad', 'visible': true}
+            }
+        ]);
+
         olmm.initPlatonApp(
             sel,
             document.getElementById('popup'),
             'http://www.mapize.com/generator/generatorSource/images_mapize/library/mapize_marker_green.png',
             'http://www.dmv.ri.gov/img/map/blue-dot.png'
         );
-
-        olmm.loadWMSLayers([
-            {
-                'layer_name': 'osm',
-                'wms_conf': {'url': 'http://10.0.2.60:8000/mapcache/', 'layers': 'osm', 'visible': true}
-            },
-            {
-                'layer_name': 'froad',
-                'wms_conf': {'url': 'http://10.0.2.60:8000/mapcache/', 'layers': 'froad', 'visible': true}
-            }
-        ]);
 
         $.ajax({
             url: 'http://10.0.12.212/api/v1/tco-data/list?query=1',
@@ -74,7 +74,7 @@
 
     redraw = function () {
         $.ajax({
-            url: 'http://10.0.12.212/api/v1/tco-data/list?query=1',
+            url: 'http://10.0.12.212/api/v1/tco-data/list',
             dataType: 'json',
             success: function (data) {
                 olmm.clearSources();
