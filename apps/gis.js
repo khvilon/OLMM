@@ -4,6 +4,8 @@ OLMM.prototype.initGisApp = function () {
     self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
     var ssk_icon_style_name, ssk_icon_style_url;
 
+    self.addSource('searchSource', self.createVectorSource());
+
     var layer_name = 'edit';
     self.setDefaultSourceName(layer_name);
     var layer = self.getLayerByName(layer_name);
@@ -116,8 +118,21 @@ OLMM.prototype.gisFindAndMarkFeatures = function (filter_params) {
 
 OLMM.prototype.gisUpdateInSearchState = function (featuresId) {
     var self = this;
+    var searchSource = self.getSourceByName('searchSource');
+    searchSource.clear();
+
     var source = self.getSourceByName(self.getDefaultSourceName());
-    featuresId.map(function(fId){source.getFeatureById(fId).setProperties({"_state": 'selected'})})
+
+    var featuresInSearch = featuresId.map(function(fId){
+        var feature = source.getFeatureById(fId);
+        feature.setProperties({"_state": 'selected'});
+        return feature.clone()
+    });
+
+    searchSource.addFeatures(featuresInSearch);
+
+    self.fitToExtent('searchSource');
+
 };
 
 OLMM.prototype.gisChangeStyleOnSelect = function(featureId) {
