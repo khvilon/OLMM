@@ -57,7 +57,7 @@
         crossDomain: true,
         success: function(data) {
             olmm.addFeaturesFromGeoJSON({
-                "geojson_data": data,
+                "geojson_data": data['verb'],
                 "source_name": 'mark',
                 "need_fit": true
             })

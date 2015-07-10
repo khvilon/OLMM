@@ -87,8 +87,10 @@
         return new ol.layer.Tile({source: source, visible: visible});
     };
 
-    module.createVectorLayer = function (style, features) {
-        var source = new ol.source.Vector();
+    module.createVectorLayer = function (style, features, source) {
+        if (!source) {
+            source = new ol.source.Vector();
+        }
 
         if (features && features.length > 0) {
             source.addFeatures(features)

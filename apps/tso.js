@@ -5,7 +5,7 @@ OLMM.prototype.createTSOLayers = function(icon_src) {
 
     var osm_layer = {
         'layer_name': 'osm',
-        'wms_conf': {'url': 'http://10.0.2.60:8000/mapcache/', 'layers': 'osm'}
+        'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm'}
     };
 
     self.loadWMSLayers([osm_layer]);

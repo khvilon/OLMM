@@ -15,6 +15,30 @@
         return this.styles[name]
     };
 
+    module.createClusterIconStyle = function (f, r) {
+        var size = f.get('features').length;
+        var sizeStr = size.toString();
+
+        return new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: 10,
+              stroke: new ol.style.Stroke({
+                color: '#fff'
+              }),
+              fill: new ol.style.Fill({
+                color: '#3399CC'
+              })
+            }),
+            text: new ol.style.Text({
+                text: sizeStr,
+                size: 18,
+                fill: new ol.style.Fill({
+                    color: '#000000'
+                })
+            })
+        })
+    };
+
     module.createIconStyle = function (src) {
         return new ol.style.Style({
             image: new ol.style.Icon({

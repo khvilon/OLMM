@@ -221,7 +221,7 @@ module.exports = function (grunt) {
                     'utils/cursor.js',
                     'utils/transform.js'
                 ],
-                dest: 'build/smk/olmm.js'
+                dest: 'build/dashboard/olmm.js'
             }
         }
     });
