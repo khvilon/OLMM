@@ -47,13 +47,43 @@
     var style1 = olmm.addStyle('icon1', olmm.createIconStyle('http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'));
 
     olmm.createMap();
+    styleCache = {};
     olmm.initGisApp();
     olmm.addLayer('map', olmm.createOSMLayer());
-    olmm.addLayer('edit', olmm.createVectorLayer(olmm.getStyleByName('icon1'), [], olmm.createClusterSource(
-            olmm.createVectorSource()
-    )));
+    olmm.addLayer('edit', olmm.createVectorLayer(
 
-    olmm.sources.edit.on('addfeature', function(){console.log('e')});
+            function(feature, resolution) {
+                var size = 1;//feature.get('features').length;
+                var style = styleCache[size];
+                if (!style) {
+                  style = [new ol.style.Style({
+                    image: new ol.style.Circle({
+                      radius: 10,
+                      stroke: new ol.style.Stroke({
+                        color: '#fff'
+                      }),
+                      fill: new ol.style.Fill({
+                        color: '#3399CC'
+                      })
+                    }),
+                    text: new ol.style.Text({
+                      text: size.toString(),
+                      fill: new ol.style.Fill({
+                        color: '#fff'
+                      })
+                    })
+                  })];
+                  styleCache[size] = style;
+                }
+                return style;
+              },
+
+
+            [],
+            olmm.createClusterSource(
+                olmm.createVectorSource()
+            )
+    ));
 
     $.ajax({
         url: '../data/tso.json',
@@ -63,7 +93,7 @@
             olmm.addFeaturesFromGeoJSON({
                 "geojson_data": data,
                 "source_name": 'edit',
-                "need_fit": true
+                "need_fit": false
             })
         }
     });

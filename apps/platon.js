@@ -6,8 +6,14 @@ OLMM.prototype.togglePoints = function (tcos, state) {
     })
 };
 
-OLMM.prototype.initPlatonApp = function (callback, popup, icon1, icon2) {
-    var self = this;
+OLMM.prototype.initPlatonApp = function (options) {
+    options = options || {};
+
+    var callback = options['callback'];
+    var popup = options['popup'];
+    var icon1 = options['iconTcos'];
+    var icon2 = options['iconDefault'];
+    var mapOptions = options['mapOptions'] || {};
 
     var overlay = new ol.Overlay({
       element: popup,
@@ -17,21 +23,23 @@ OLMM.prototype.initPlatonApp = function (callback, popup, icon1, icon2) {
       }
     });
 
-    self.createMap({
-        'interactions': [new ol.interaction.DragPan]
-    });
+    var self = this;
+
+    mapOptions['interactions'] = [new ol.interaction.DragPan];
+
+    self.createMap(mapOptions);
 
     self.addOverlay('overlay', overlay);
 
     var sel = function(event, data) {
         overlay = self.getOverlayByName('overlay');
         overlay.setPosition(self.transform(data.coords));
-        return olmm.config['featureClickCallback'](event.pixel, data)
+        return self.config['featureClickCallback'](event.pixel, data)
     };
 
     self.addFeatureClickFunction(sel);
 
-    this.addToConfig('featureClickCallback', callback);
+    self.addToConfig('featureClickCallback', callback);
 
     self.map.addInteraction(new self.hoverApp.Hover());
 

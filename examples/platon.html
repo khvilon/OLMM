@@ -52,12 +52,16 @@
             }
         ]);
 
-        olmm.initPlatonApp(
-            sel,
-            document.getElementById('popup'),
-            'http://www.mapize.com/generator/generatorSource/images_mapize/library/mapize_marker_green.png',
-            'http://www.dmv.ri.gov/img/map/blue-dot.png'
-        );
+        olmm.initPlatonApp({
+            'callback': sel,
+            'popup': document.getElementById('popup'),
+            'iconTcos': 'http://www.mapize.com/generator/generatorSource/images_mapize/library/mapize_marker_green.png',
+            'iconDefault': 'http://www.dmv.ri.gov/img/map/blue-dot.png',
+            'mapOptions': {
+                "minZoom": 10,
+                "maxZoom": 15
+            }
+        });
 
         $.ajax({
             url: 'http://10.0.12.212/api/v1/tco-data/list?query=1',
