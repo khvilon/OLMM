@@ -44,12 +44,6 @@
             image: new ol.style.Icon({
                 src: src
             })
-            //text: new ol.style.Text({
-            //  text: '111',
-            //  fill: new ol.style.Fill({
-            //    color: '#000'
-            //  })
-            //})
         })
     };
 
