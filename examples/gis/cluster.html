@@ -44,8 +44,7 @@
 
     var olmm = new OLMM();
 
-    var style1 = olmm.addStyle('icon1', olmm.createIconStyle('http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'));
-
+    var style1 = olmm.addStyle('icon1', olmm.createClusterIconStyle);
     olmm.createMap();
     olmm.initGisApp();
     olmm.addLayer('map', olmm.createOSMLayer());

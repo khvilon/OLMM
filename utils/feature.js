@@ -120,6 +120,13 @@
         return property.split(' ')
     };
 
+    module.moveToLonLat = function (lon, lat) {
+        var feature = this;
+        feature.getGeometry().setCoordinates([lon, lat]);
+        feature.transformWithGeometryFromLonLat();
+        return feature
+    };
+
     module.removeProperty = function (name) {
         var feature = this;
         var property = feature.getProperty(name);

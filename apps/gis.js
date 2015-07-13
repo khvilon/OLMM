@@ -2,7 +2,34 @@ OLMM.prototype.initGisApp = function () {
     var self = this;
 
     self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
-    var ssk_icon_style_name, ssk_icon_style_url;
+
+    self.createClusterIconStyle = function (f, r) {
+        var self = this;
+
+        var size = f.get('features').length;
+        var label;
+        if (size == 1) {
+            label = ''
+        } else {
+            label = size.toString();
+        }
+
+        return [new ol.style.Style({
+            image: new ol.style.Icon({
+                src: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'
+            }),
+            text: new ol.style.Text({
+                text: label,
+                size: 24,
+                fill: new ol.style.Fill({
+                    color: '#000000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#000000'
+                })
+            })
+        })]
+    };
 
     self.addSource('searchSource', self.createVectorSource());
 

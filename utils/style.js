@@ -16,27 +16,31 @@
     };
 
     module.createClusterIconStyle = function (f, r) {
-        var size = f.get('features').length;
-        var sizeStr = size.toString();
+        var self = this;
 
-        return new ol.style.Style({
-            image: new ol.style.Circle({
-              radius: 10,
-              stroke: new ol.style.Stroke({
-                color: '#fff'
-              }),
-              fill: new ol.style.Fill({
-                color: '#3399CC'
-              })
+        var size = f.get('features').length;
+        var label;
+        if (size == 1) {
+            label = ''
+        } else {
+            label = size.toString();
+        }
+
+        return [new ol.style.Style({
+            image: new ol.style.Icon({
+                src: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'
             }),
             text: new ol.style.Text({
-                text: sizeStr,
-                size: 18,
+                text: label,
+                size: 24,
                 fill: new ol.style.Fill({
+                    color: '#000000'
+                }),
+                stroke: new ol.style.Stroke({
                     color: '#000000'
                 })
             })
-        })
+        })]
     };
 
     module.createIconStyle = function (src) {

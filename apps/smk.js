@@ -16,6 +16,7 @@ OLMM.prototype.initSMKApp = function (options) {
 
     var sel = function(event, data) {
         if (self.lastDrawPointId) {
+
             self.deleteFeatureById(self.lastDrawPointId)
         }
         self.lastDrawPointId = data.id;
@@ -26,7 +27,7 @@ OLMM.prototype.initSMKApp = function (options) {
 
     self.addStyle('draw_style', new ol.style.Style({
         image: new ol.style.Circle({
-            radius: 1   ,
+            radius: 1,
             fill: new ol.style.Fill({
                 color: 'transparent'
             })
@@ -71,8 +72,15 @@ OLMM.prototype.smkEnableDraw = function () {
 };
 
 OLMM.prototype.makePoint = function (lon, lat) {
-    var feature = this.makePointFromLonLat(lon, lat, 'points');
-    var id = feature.setRandomId();
-    this.lastDrawPointId = id;
-    this.smkEnableDraw();
+    var self = this;
+    if (self.lastDrawPointId) {
+        var feature = self.getSourceByName(self.getDefaultSourceName()).getFeatureById(self.lastDrawPointId);
+        feature.moveToLonLat(lon, lat)
+    } else {
+        var feature = self.makePointFromLonLat(lon, lat, self.getDefaultSourceName());
+        var id = feature.setRandomId();
+    }
+    self.lastDrawPointId = id;
+    self.fitToFeature(feature);
+    self.smkEnableDraw();
 };
