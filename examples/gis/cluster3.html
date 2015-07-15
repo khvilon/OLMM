@@ -27,6 +27,7 @@
     <script src="../../utils/transform.js" type="text/javascript"></script>
     <script src="../../utils/map.js" type="text/javascript"></script>
     <script src="../../utils/style.js" type="text/javascript"></script>
+    <script src="../../utils/cluster.js" type="text/javascript"></script>
 
     <style>
         .map {
@@ -44,30 +45,23 @@
 
     var olmm = new OLMM();
 
-    var style1 = olmm.addStyle('icon1', olmm.createClusterIconStyle);
+    var style1 = olmm.addStyle('icon1', olmm.createIconStyle('http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'));
+
     olmm.createMap();
-    olmm.initGisApp();
     olmm.addLayer('map', olmm.createOSMLayer());
-
-    olmm.addSource('t', new ol.source.Vector());
-    var clusterSource = olmm.createClusterSource(olmm.getSourceByName('t'));
-
-    olmm.addLayer(
-        'edit', olmm.createVectorLayer(
-            olmm.getStyleByName('icon1'), [], clusterSource
-        )
-    );
+    olmm.initGisApp();
 
     $.ajax({
-        url: '../data/tso.json',
+        url: '../data/cluster.json',
         dataType: 'json',
         crossDomain: true,
         success: function(data) {
             olmm.addFeaturesFromGeoJSON({
                 "geojson_data": data,
-                "source_name": 't',
-                "need_fit": false
-            })
+                "source_name": 'edit',
+                "need_fit": true
+            });
+            olmm.enableCluster();
         }
     });
 

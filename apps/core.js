@@ -2,7 +2,7 @@ function OLMM() {
     this.layers = {};
     this.sources = {};
     this.overlays = {};
-    this.firstLayers = [];
+    this.initLayers = [];
     this.styles = {};
 
     this.config = {
@@ -48,7 +48,7 @@ function OLMM() {
             controls: controls,
             interactions: interactions,
             target: target,
-            layers: this.firstLayers,
+            layers: this.initLayers,
             view: new ol.View({
                 projection: projection,
                 center: center,

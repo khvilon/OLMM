@@ -16,7 +16,6 @@ OLMM.prototype.initSMKApp = function (options) {
 
     var sel = function(event, data) {
         if (self.lastDrawPointId) {
-
             self.deleteFeatureById(self.lastDrawPointId)
         }
         self.lastDrawPointId = data.id;
@@ -41,12 +40,21 @@ OLMM.prototype.disableDraw = function () {
     self.disableActions();
 };
 
+OLMM.prototype.clearMap = function () {
+    var self = this;
+    self.lastDrawPointId = null;
+    self.clearSources();
+};
+
 OLMM.prototype.createSMKLayers = function(icon_src) {
     var self = this;
 
     var osm_layer = [{
         'layer_name': 'osm',
         'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
+    }, {
+        'layer_name': '__all__',
+        'wms_conf': {'url': 'http://map.prod.svp12.ru/', 'layers': '__all__', 'visible': true}
     }];
 
     self.loadWMSLayers(osm_layer);
@@ -80,7 +88,7 @@ OLMM.prototype.makePoint = function (lon, lat) {
         var feature = self.makePointFromLonLat(lon, lat, self.getDefaultSourceName());
         var id = feature.setRandomId();
     }
-    self.lastDrawPointId = id;
+    self.lastDrawPointId = feature.getId();
     self.fitToFeature(feature);
     self.smkEnableDraw();
 };

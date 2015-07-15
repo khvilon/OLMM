@@ -35,6 +35,7 @@ OLMM.prototype.initGisApp = function () {
 
     var layer_name = 'edit';
     self.setDefaultSourceName(layer_name);
+
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
         self.addLayer(layer_name, self.createVectorLayer(

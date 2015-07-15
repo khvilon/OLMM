@@ -1,13 +1,19 @@
 (function (module) {
 
     module.addLayer = function (name, layer) {
-        this.layers[name] = layer;
-        this.addSource(name, layer.getSource());
-        if (this.map) {
-            this.map.addLayer(layer);
+        var self = this;
+
+        self.layers[name] = layer;
+
+        if (!self.getSourceByName(name)) {
+            self.addSource(name, layer.getSource());
+        }
+
+        if (self.map) {
+            self.map.addLayer(layer);
         }
         else {
-            this.firstLayers.push(layer);
+            self.initLayers.push(layer);
         }
     };
 

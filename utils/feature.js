@@ -122,7 +122,7 @@
 
     module.moveToLonLat = function (lon, lat) {
         var feature = this;
-        feature.getGeometry().setCoordinates([lon, lat]);
+        feature.getGeometry().setCoordinates([parseFloat(lon), parseFloat(lat)]);
         feature.transformWithGeometryFromLonLat();
         return feature
     };
