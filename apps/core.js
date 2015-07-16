@@ -73,6 +73,11 @@ function OLMM() {
         return this.defaultSourceName;
     };
 
+    module.addForceToConfig = function (key, value) {
+        var self = this;
+        self.config[key] = value
+    };
+
     module.addToConfig = function (key, value) {
         var self = this;
         var config_value = self.config[key];

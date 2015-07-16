@@ -2,28 +2,20 @@ OLMM.prototype.initSMKApp = function (options) {
     var self = this;
 
     options = options || {};
-    var icon = options['icon'];
     var callback = options['callback'];
 
     self.lastDrawPointId = null;
 
-    self.addStyle('icon1', self.createIconStyle(icon));
-
-    //self.addStyle('icon1', new ol.style.Style({
-    //    image: new ol.style.Circle({
-    //        radius: 5,
-    //        fill: new ol.style.Fill({
-    //            color: 'red'
-    //        })
-    //    })
-    //}));
-
     self.createMap();
-    self.createSMKLayers(icon);
+    self.createSMKLayers();
     self.setDefaultSourceName('points');
     self.config['smkCallBackFunction'] = callback;
 
     var sel = function(event, data) {
+        var color = self.getConfigValue('pointColor');
+
+        event.feature.setProperties({"color": color});
+
         if (self.lastDrawPointId) {
             self.deleteFeatureById(self.lastDrawPointId)
         }
@@ -55,7 +47,7 @@ OLMM.prototype.clearMap = function () {
     self.clearSources();
 };
 
-OLMM.prototype.createSMKLayers = function(icon_src) {
+OLMM.prototype.createSMKLayers = function() {
     var self = this;
 
     var osm_layer = [{
@@ -78,18 +70,37 @@ OLMM.prototype.createSMKLayers = function(icon_src) {
     ));
 
     self.addLayer('points', self.createVectorLayer(
-        self.getStyleByName('icon1')
+        function (feature, resolution) {
+            var featureProperties = feature.getProperties();
+            var color = 'black';
+
+            if (featureProperties && featureProperties['color']) {
+                color = featureProperties['color']
+            }
+                return [
+                    new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 5,
+                            fill: new ol.style.Fill({
+                                color: color
+                            })
+                        })
+                    })
+                ]
+        }
     ))
 };
 
-OLMM.prototype.smkEnableDraw = function () {
+OLMM.prototype.smkEnableDraw = function (color) {
     var self = this;
+    self.addForceToConfig('pointColor', color);
     self.enableDrawModeForPoint('points');
     self.makePointerCursor();
 };
 
-OLMM.prototype.makePoint = function (lon, lat, type) {
+OLMM.prototype.makePoint = function (lon, lat, color) {
     var self = this;
+    self.addForceToConfig('pointColor', color);
     if (self.lastDrawPointId) {
         var feature = self.getSourceByName(self.getDefaultSourceName()).getFeatureById(self.lastDrawPointId);
         feature.moveToLonLat(lon, lat)
@@ -97,8 +108,8 @@ OLMM.prototype.makePoint = function (lon, lat, type) {
         var feature = self.makePointFromLonLat(lon, lat, self.getDefaultSourceName());
         var id = feature.setRandomId();
     }
-    feature.setProperties({"type": type});
+    feature.setProperties({"color": color});
     self.lastDrawPointId = feature.getId();
     self.fitToFeature(feature);
-    self.smkEnableDraw();
+    self.smkEnableDraw(color);
 };

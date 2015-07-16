@@ -45,13 +45,13 @@
     });
 
     $('.asd').on('click', function(){
-         olmm.smkEnableDraw();
+         olmm.smkEnableDraw('blue');
     });
 
     $('#addPoint').on('click', function(){
         var lon = document.getElementById('lon').value;
         var lat = document.getElementById('lat').value;
-        olmm.makePoint(lon, lat);
+        olmm.makePoint(lon, lat, 'blue');
     });
 
     $('#disableDraw').on('click', function(){
