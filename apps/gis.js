@@ -3,34 +3,6 @@ OLMM.prototype.initGisApp = function () {
 
     self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
 
-    self.createClusterIconStyle = function (f, r) {
-        var self = this;
-
-        var size = f.get('features').length;
-        var label;
-        if (size == 1) {
-            label = ''
-        } else {
-            label = size.toString();
-        }
-
-        return [new ol.style.Style({
-            image: new ol.style.Icon({
-                src: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'
-            }),
-            text: new ol.style.Text({
-                text: label,
-                size: 24,
-                fill: new ol.style.Fill({
-                    color: '#000000'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000000'
-                })
-            })
-        })]
-    };
-
     self.addSource('searchSource', self.createVectorSource());
 
     var layer_name = 'edit';
@@ -65,15 +37,23 @@ OLMM.prototype.initGisApp = function () {
                             }
                         }
 
-                        var icon_style_name = icon_url.replace(/\s+/g, '-').replace(/[^a-zA-Z-]/g, '').toLowerCase();
+                        //var icon_style_name = icon_url.replace(/\s+/g, '-').replace(/[^a-zA-Z-]/g, '').toLowerCase();
 
-                        var icon_style = self.getStyleByName(icon_style_name);
-
-                        if (!icon_style) {
-                            icon_style = self.addStyle('default_icon', self.createIconStyle(icon_url));
-                        }
-
-                        return [icon_style];
+                        return [new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: icon_url
+                            }),
+                            text: new ol.style.Text({
+                                text: feature.getProperties()['count'],
+                                size: 24,
+                                fill: new ol.style.Fill({
+                                    color: '#000000'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#000000'
+                                })
+                            })
+                        })]
 
                     } else {
                         return [new ol.style.Style({
@@ -86,6 +66,16 @@ OLMM.prototype.initGisApp = function () {
                                 stroke: new ol.style.Stroke({
                                     color: '#ffcc00',
                                     opacity: 0.4
+                                })
+                            }),
+                            text: new ol.style.Text({
+                                text: feature.getProperties()['count'],
+                                size: 24,
+                                fill: new ol.style.Fill({
+                                    color: '#000000'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#000000'
                                 })
                             })
                         })]

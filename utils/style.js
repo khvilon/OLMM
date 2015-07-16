@@ -15,7 +15,7 @@
         return this.styles[name]
     };
 
-    module.createClusterIconStyle = function (f, r) {
+    module.createClusterIconStyleTesting = function (f, r) {
         var self = this;
 
         var size = f.get('features').length;
@@ -41,6 +41,26 @@
                 })
             })
         })]
+    };
+
+    module.createClusterIconStyle = function (feature, res, src) {
+        return function (feature, res) {
+            return [new ol.style.Style({
+                image: new ol.style.Icon({
+                    src: src
+                }),
+                text: new ol.style.Text({
+                    text: feature.getProperties()['count'],
+                    size: 24,
+                    fill: new ol.style.Fill({
+                        color: '#000000'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000000'
+                    })
+                })
+            })]
+        }
     };
 
     module.createIconStyle = function (src) {

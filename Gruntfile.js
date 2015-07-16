@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                     'build/mmtest_ng/olmm.min.js': 'build/mmtest_ng/olmm.js'
                 }
             },
-            gis_layers: {
+            gis: {
                 files: {
                     'build/gis/olmm.min.js': 'build/gis/olmm.js'
                 }
@@ -97,7 +97,7 @@ module.exports = function (grunt) {
                 dest: 'build/mmtest_ng/olmm.js'
             },
 
-            gis_layers: {
+            gis: {
                 src: [
                     'jquery-1.10.2.js',
                     'openlayers/ol.js',
@@ -119,6 +119,7 @@ module.exports = function (grunt) {
                     'utils/feature.js',
                     'utils/geojson.js',
                     'utils/transform.js',
+                    'utils/cluster.js',
                     'utils/map.js',
                     'utils/style.js'
                 ],
@@ -253,10 +254,10 @@ module.exports = function (grunt) {
         'uglify:mmtest_ng'
     ]);
 
-    grunt.registerTask('gis_layers', [
+    grunt.registerTask('gis', [
         'clean',
-        'concat:gis_layers',
-        'uglify:gis_layers'
+        'concat:gis',
+        'uglify:gis'
     ]);
 
     grunt.registerTask('ways', [
