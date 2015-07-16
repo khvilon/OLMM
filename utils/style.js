@@ -64,9 +64,16 @@
     };
 
     module.createIconStyle = function (src) {
+        var self = this;
+        var anchorX = self.getConfigValue('iconAnchorX') || 0;
+        var anchorY = self.getConfigValue('iconAnchorY') || 0;
+
         return new ol.style.Style({
             image: new ol.style.Icon({
-                src: src
+                src: src,
+                anchor: [anchorX, anchorY],
+                anchorXUnits: 'pixels',
+                anchorYUnits: 'pixels'
             })
         })
     };

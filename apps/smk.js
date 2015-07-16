@@ -9,6 +9,15 @@ OLMM.prototype.initSMKApp = function (options) {
 
     self.addStyle('icon1', self.createIconStyle(icon));
 
+    //self.addStyle('icon1', new ol.style.Style({
+    //    image: new ol.style.Circle({
+    //        radius: 5,
+    //        fill: new ol.style.Fill({
+    //            color: 'red'
+    //        })
+    //    })
+    //}));
+
     self.createMap();
     self.createSMKLayers(icon);
     self.setDefaultSourceName('points');
@@ -79,7 +88,7 @@ OLMM.prototype.smkEnableDraw = function () {
     self.makePointerCursor();
 };
 
-OLMM.prototype.makePoint = function (lon, lat) {
+OLMM.prototype.makePoint = function (lon, lat, type) {
     var self = this;
     if (self.lastDrawPointId) {
         var feature = self.getSourceByName(self.getDefaultSourceName()).getFeatureById(self.lastDrawPointId);
@@ -88,6 +97,7 @@ OLMM.prototype.makePoint = function (lon, lat) {
         var feature = self.makePointFromLonLat(lon, lat, self.getDefaultSourceName());
         var id = feature.setRandomId();
     }
+    feature.setProperties({"type": type});
     self.lastDrawPointId = feature.getId();
     self.fitToFeature(feature);
     self.smkEnableDraw();

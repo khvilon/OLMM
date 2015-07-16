@@ -5,25 +5,25 @@
 
     <link rel="stylesheet" href="../openlayers/ol.css" type="text/css">
     <script src="../jquery-1.10.2.js"></script>
-    <!--<script src="../openlayers/ol.js" type="text/javascript"></script>-->
+    <script src="../openlayers/ol.js" type="text/javascript"></script>
 
-    <!--<script src="../apps/core.js" type="text/javascript"></script>-->
-    <!--<script src="../apps/platon.js" type="text/javascript"></script>-->
+    <script src="../apps/core.js" type="text/javascript"></script>
+    <script src="../apps/platon.js" type="text/javascript"></script>
 
-    <!--<script src="../interactions/click.js" type="text/javascript"></script>-->
-    <!--<script src="../interactions/hover.js" type="text/javascript"></script>-->
+    <script src="../interactions/click.js" type="text/javascript"></script>
+    <script src="../interactions/hover.js" type="text/javascript"></script>
 
-    <!--<script src="../utils/layer.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/overlay.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/source.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/cursor.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/feature.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/geojson.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/transform.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/map.js" type="text/javascript"></script>-->
-    <!--<script src="../utils/style.js" type="text/javascript"></script>-->
+    <script src="../utils/layer.js" type="text/javascript"></script>
+    <script src="../utils/overlay.js" type="text/javascript"></script>
+    <script src="../utils/source.js" type="text/javascript"></script>
+    <script src="../utils/cursor.js" type="text/javascript"></script>
+    <script src="../utils/feature.js" type="text/javascript"></script>
+    <script src="../utils/geojson.js" type="text/javascript"></script>
+    <script src="../utils/transform.js" type="text/javascript"></script>
+    <script src="../utils/map.js" type="text/javascript"></script>
+    <script src="../utils/style.js" type="text/javascript"></script>
 
-    <script src="../build/platon/olmm.min.js" type="text/javascript"></script>
+    <!--<script src="../build/platon/olmm.min.js" type="text/javascript"></script>-->
 
     <title>platon example</title>
 </head>
@@ -45,10 +45,6 @@
             {
                 'layer_name': 'osm',
                 'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm', 'visible': true}
-            },
-            {
-                'layer_name': 'froad',
-                'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'froad', 'visible': true}
             }
         ]);
 
@@ -58,8 +54,8 @@
             'iconTcos': 'http://www.mapize.com/generator/generatorSource/images_mapize/library/mapize_marker_green.png',
             'iconDefault': 'http://www.dmv.ri.gov/img/map/blue-dot.png',
             'mapOptions': {
-                "minZoom": 10,
-                "maxZoom": 15
+                "minZoom": 5,
+                "maxZoom": 20
             }
         });
 

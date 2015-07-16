@@ -25,6 +25,9 @@ OLMM.prototype.initPlatonApp = function (options) {
 
     var self = this;
 
+    self.addToConfig('iconAnchorX', 16);
+    self.addToConfig('iconAnchorY', 32);
+
     mapOptions['interactions'] = [new ol.interaction.DragPan];
 
     self.createMap(mapOptions);
