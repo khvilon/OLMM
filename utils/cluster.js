@@ -26,10 +26,6 @@ OLMM.prototype.enableCluster = function (sourceName, groupBy) {
     self.updateCluster(sourceName, groupBy);
 };
 
-// расстояние между кластеризуемыми точками
-var CLUSTER_DISTANCE = 20;
-// кластеризованные точки
-var clusteredPoints = [];
 /**
  * Кластеризует точки
  * @param sourceName
@@ -37,13 +33,17 @@ var clusteredPoints = [];
  */
 OLMM.prototype.updateCluster = function (sourceName, groupBy) {
     var self = this;
+    // кластеризованные точки
+    self.clusteredPoints = [];
+    // расстояние между кластеризуемыми точками
+    self.clusterDisance = 20;
     var extent = self.map.getView().calculateExtent(self.map.getSize());
     var sourceClusterName = sourceName + 'Cluster';
     self.clearSource(sourceClusterName);
     var clusterSource = self.getSourceByName(sourceClusterName);
     // фичи в экстенте
     var features = self.getPointFeaturesInExtent(extent, sourceName); // getPointsInExtent
-    var clusters = self.getClusters(features);
+    var clusters = self.getClusters(features, groupBy);
     self.setLayerVisible(sourceName, false);
     clusterSource.addFeatures(clusters);
     self.setLayerVisible(sourceClusterName, true);
@@ -57,18 +57,21 @@ OLMM.prototype.updateCluster = function (sourceName, groupBy) {
 // 5) стилим точку кластера
 // 6) создаем точку кластера на карте
  * @param features
+ * @param groupBy
  * @returns {Array}
  */
-OLMM.prototype.getClusters = function  (features) {
+OLMM.prototype.getClusters = function  (features, groupBy) {
     var self = this;
     var clusters = [];
     for (var i = 0; i < features.length; i++) {
         var feature = features[i];
         // список фич которые уже в кластере
-        if (clusteredPoints.indexOf(feature.getId()) != -1) {
+        if (self.clusteredPoints.indexOf(feature.getId()) != -1) {
             continue
         }
-        var neighbors = self.getNeighbors(feature);
+        var neighbors = self.getNeighbors(feature, groupBy);
+        console.log(neighbors);
+        console.log(neighbors.length);
         var center = self.getClusterCenter(neighbors);
         // генерим свойства для стиля кластера
         var clusterPointProperties = self.getClusterProperties(neighbors);
@@ -81,10 +84,10 @@ OLMM.prototype.getClusters = function  (features) {
     return clusters;
 };
 
-OLMM.prototype.getNeighbors = function (feature) {
+OLMM.prototype.getNeighbors = function (feature, groupBy) {
     var self = this;
 
-    var mapDistance = CLUSTER_DISTANCE * self.map.getView().getResolution();
+    var mapDistance = self.clusterDisance * self.map.getView().getResolution();
     var coords = feature.getGeometry().getCoordinates();
 
     // кластеризуемый квадрат вокруг точки
@@ -100,10 +103,11 @@ OLMM.prototype.getNeighbors = function (feature) {
 };
 
 OLMM.prototype.getClusterCenter = function  (neighbors) {
+    var self = this;
     var center = [0, 0];
     // находим центр будущего кластера
     neighbors.forEach(function (f) {
-        clusteredPoints.push(f.getId());
+        self.clusteredPoints.push(f.getId());
         var geometry = f.getGeometry();
         var coordinates = geometry.getCoordinates();
 

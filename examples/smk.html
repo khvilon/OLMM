@@ -45,18 +45,24 @@
     });
 
     $('.asd').on('click', function(){
-         olmm.smkEnableDraw('blue');
+         olmm.smkEnableDraw();
     });
 
     $('#addPoint').on('click', function(){
         var lon = document.getElementById('lon').value;
         var lat = document.getElementById('lat').value;
-        olmm.makePoint(lon, lat, 'blue');
+        olmm.makePoint(lon, lat);
     });
 
     $('#disableDraw').on('click', function(){
         olmm.disableDraw()
     });
+
+    olmm.addForceToConfig('pointRadius', 10);
+    olmm.addForceToConfig('pointColor', 'blue');
+    olmm.addForceToConfig('pointText', 'test');
+    olmm.addForceToConfig('pointTextColor', 'yellow');
+    olmm.addForceToConfig('pointTextSize', 24);
 
     $('#makeRoute').on('click', function(){
 

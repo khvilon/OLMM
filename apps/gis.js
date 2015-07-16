@@ -107,6 +107,7 @@ OLMM.prototype.initGisApp = function () {
             }
         ));
     }
+
 };
 
 OLMM.prototype.getCoordsForRequest = function () {

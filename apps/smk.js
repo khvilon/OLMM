@@ -12,9 +12,20 @@ OLMM.prototype.initSMKApp = function (options) {
     self.config['smkCallBackFunction'] = callback;
 
     var sel = function(event, data) {
-        var color = self.getConfigValue('pointColor');
 
-        event.feature.setProperties({"color": color});
+        var color = self.getConfigValue('pointColor') || '';
+        var text = self.getConfigValue('pointText') || '';
+        var textColor = self.getConfigValue('pointTextColor') || '';
+        var textSize = self.getConfigValue('pointTextSize') || '';
+        var pointRadius = self.getConfigValue('pointRadius') || '';
+
+        event.feature.setProperties({
+            "color": color,
+            "text": text,
+            "textColor": textColor,
+            "textSize": textSize,
+            "pointRadius": pointRadius
+        });
 
         if (self.lastDrawPointId) {
             self.deleteFeatureById(self.lastDrawPointId)
@@ -73,34 +84,67 @@ OLMM.prototype.createSMKLayers = function() {
         function (feature, resolution) {
             var featureProperties = feature.getProperties();
             var color = 'black';
+            var text = '';
+            var textSize = 14;
+            var textColor = 'black';
+            var pointRadius = 6;
 
-            if (featureProperties && featureProperties['color']) {
-                color = featureProperties['color']
+            if (featureProperties) {
+
+                if (featureProperties['color']) {
+                    color = featureProperties['color']
+                }
+
+                if (featureProperties['text']) {
+                    text = featureProperties['text']
+                }
+
+                if (featureProperties['textColor']) {
+                    textColor = featureProperties['textColor']
+                }
+
+                if (featureProperties['textSize']) {
+                    textSize = featureProperties['textSize']
+                }
+
+                if (featureProperties['pointRadius']) {
+                    pointRadius = featureProperties['pointRadius']
+                }
+
             }
-                return [
-                    new ol.style.Style({
-                        image: new ol.style.Circle({
-                            radius: 5,
-                            fill: new ol.style.Fill({
-                                color: color
-                            })
+
+            return [
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: pointRadius,
+                        fill: new ol.style.Fill({
+                            color: color
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        text: text,
+                        size: textSize,
+                        fill: new ol.style.Fill({
+                            color: textColor
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: textColor
                         })
                     })
-                ]
+                })
+            ]
         }
     ))
 };
 
-OLMM.prototype.smkEnableDraw = function (color) {
+OLMM.prototype.smkEnableDraw = function () {
     var self = this;
-    self.addForceToConfig('pointColor', color);
     self.enableDrawModeForPoint('points');
     self.makePointerCursor();
 };
 
-OLMM.prototype.makePoint = function (lon, lat, color) {
+OLMM.prototype.makePoint = function (lon, lat) {
     var self = this;
-    self.addForceToConfig('pointColor', color);
     if (self.lastDrawPointId) {
         var feature = self.getSourceByName(self.getDefaultSourceName()).getFeatureById(self.lastDrawPointId);
         feature.moveToLonLat(lon, lat)
@@ -108,8 +152,22 @@ OLMM.prototype.makePoint = function (lon, lat, color) {
         var feature = self.makePointFromLonLat(lon, lat, self.getDefaultSourceName());
         var id = feature.setRandomId();
     }
-    feature.setProperties({"color": color});
+
+    var color = self.getConfigValue('pointColor') || '';
+    var text = self.getConfigValue('pointText') || '';
+    var textColor = self.getConfigValue('pointTextColor') || '';
+    var textSize = self.getConfigValue('pointTextSize') || '';
+    var pointRadius = self.getConfigValue('pointRadius') || '';
+
+    feature.setProperties({
+        "color": color,
+        "text": text,
+        "textColor": textColor,
+        "textSize": textSize,
+        "pointRadius": pointRadius
+    });
+
     self.lastDrawPointId = feature.getId();
     self.fitToFeature(feature);
-    self.smkEnableDraw(color);
+    self.smkEnableDraw();
 };
