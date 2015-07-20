@@ -31,7 +31,7 @@ function OLMM() {
         var projection = options['projection'] || 'EPSG:3857';
         var center = options['center'] || [4188115.1089405594,7509151.488234565];
         var zoom = options['zoom'] || 11;
-        var maxZoom = options['maxZoom'] || 26;
+        var maxZoom = options['maxZoom'] || 20;
         var minZoom = options['minZoom'] || 3;
         var controls = options['controls'];
         var interactions = options['interactions'];

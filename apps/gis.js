@@ -1,12 +1,13 @@
 OLMM.prototype.initGisApp = function () {
     var self = this;
 
-    self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
+    var layer_name = 'edit';
+    self.setDefaultSourceName(layer_name);
 
     self.addSource('searchSource', self.createVectorSource());
 
-    var layer_name = 'edit';
-    self.setDefaultSourceName(layer_name);
+    self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
+    self.addClusterClickFunction(layer_name);
 
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
@@ -151,7 +152,6 @@ OLMM.prototype.gisUpdateInSearchState = function (featuresId) {
     searchSource.addFeatures(featuresInSearch);
 
     self.fitToExtent('searchSource');
-
 };
 
 OLMM.prototype.gisChangeStyleOnSelect = function(featureId) {
