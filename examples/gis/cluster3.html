@@ -51,6 +51,8 @@
     olmm.addLayer('map', olmm.createOSMLayer());
     olmm.initGisApp();
 
+    olmm.addFeatureClickFunction(function(){console.log(1)}, 'edit');
+
     $.ajax({
         url: '../data/cluster.json',
         dataType: 'json',

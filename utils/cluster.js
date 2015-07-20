@@ -2,7 +2,9 @@ OLMM.prototype.getPointFeaturesInExtent = function (extent, sourceName) {
     var self = this;
     var source = self.getSourceByName(sourceName);
 
-    return source.getFeaturesInExtent(extent).filter(function (feature) {
+    var features = source.getFeaturesInExtent(extent);
+
+    return features.filter(function (feature) {
         return feature.getGeometry().getType() == self.pointName
     });
 };
@@ -35,6 +37,7 @@ OLMM.prototype.updateCluster = function (sourceName, groupBy) {
     var self = this;
     // кластеризованные точки
     self.clusteredPoints = [];
+    self.pointsWithoutCluster = [];
     // расстояние между кластеризуемыми точками
     self.clusterDisance = 20;
     var extent = self.map.getView().calculateExtent(self.map.getSize());
@@ -44,9 +47,8 @@ OLMM.prototype.updateCluster = function (sourceName, groupBy) {
     // фичи в экстенте
     var features = self.getPointFeaturesInExtent(extent, sourceName); // getPointsInExtent
     var clusters = self.getClusters(features, groupBy);
-    self.setLayerVisible(sourceName, false);
+
     clusterSource.addFeatures(clusters);
-    self.setLayerVisible(sourceClusterName, true);
 };
 
 /**
@@ -70,16 +72,26 @@ OLMM.prototype.getClusters = function  (features, groupBy) {
             continue
         }
         var neighbors = self.getNeighbors(feature, groupBy);
-        console.log(neighbors);
-        console.log(neighbors.length);
-        var center = self.getClusterCenter(neighbors);
-        // генерим свойства для стиля кластера
-        var clusterPointProperties = self.getClusterProperties(neighbors);
-        var clusterPoint = new ol.Feature({
-            'geometry': new ol.geom.Point(center)
-        });
-        clusterPoint.setProperties(clusterPointProperties);
-        clusters.push(clusterPoint)
+
+        if (neighbors.length > 1) {
+
+            neighbors.forEach(function(feature){
+                feature.setProperties({'visible': false})
+            });
+
+            var center = self.getClusterCenter(neighbors);
+            // генерим свойства для стиля кластера
+            var clusterPointProperties = self.getClusterProperties(neighbors);
+            var clusterPoint = new ol.Feature({
+                'geometry': new ol.geom.Point(center)
+            });
+            clusterPoint.setProperties(clusterPointProperties);
+            clusters.push(clusterPoint)
+        } else {
+            var f = neighbors[0];
+            self.pointsWithoutCluster.push(f.getId());
+            f.setProperties({"visible": true});
+        }
     }
     return clusters;
 };
@@ -127,7 +139,7 @@ OLMM.prototype.getClusterProperties = function (neighbors) {
     if (neighbors.length > 0) {
         var props = neighbors[0].getProperties();
         clusterPointProperties = {
-            visible: props['visible'],
+            visible: true,
             objecttype: props['objecttype'],
             _state: props['_state'],
             _state_additional: props['_state_additional']
