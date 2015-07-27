@@ -27,7 +27,20 @@
 
     var olmm = new OLMM();
     olmm.initDashboardApp({
-        'carIconSrc': 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'
+        'carIconSrc': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAARVBMVEX///8AAAD6+vri4uKLi4tQUFALCwvNzc3u7u6qqqqMjIwHBwfDw8MfHx8nJyfJycn19fW9vb0uLi47Ozu2trYdHR13d3fUQDG8AAAAcUlEQVQYlW2PWw6DMAwEd93YSQBDeJT7H7VUShrRdv52tLZs4JeTH853ThYflWjpEkF7WQMgz6OLwwV5DEOoDGHM2HljB/NkLdmUCSbxJlzSJXzrA5sT833HjKIapRJVBYVc2xkrWSDGpYmFJn+e/eIFvcsDFz+ZNLAAAAAASUVORK5CYII=',
+        'tdrIconSrc': 'https://cdn2.iconfinder.com/data/icons/splashyIcons/marker_squared_red.png'
+    });
+
+    $.ajax({
+        url: 'data/dashboard.json',
+        dataType: 'json',
+        crossDomain: true,
+        success: function(data) {
+            olmm.addFeaturesFromGeoJSON({
+                "geojson_data": data,
+                "need_fit": true
+            })
+        }
     });
 
 </script>

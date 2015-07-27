@@ -2,36 +2,37 @@ OLMM.prototype.initDashboardApp = function (options) {
     var self = this;
 
     options = options || {};
-    var carIconSrc = options['carIconSrc'];
+
     var callback = options['callback'];
+    var carIconSrc = options['carIconSrc'];
+    var tdrIconSrc = options['tdrIconSrc'];
+    var mapOptions = options['mapOptions'] || {};
     var defaultSourceName = 'main';
 
-    var osm_layer = {
+    self.loadWMSLayers([{
         'layer_name': 'osm',
-        'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm'}
-    };
+        'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm'}
+    }]);
 
-    self.loadWMSLayers([osm_layer]);
-
-    self.lastDrawPointId = null;
     self.setDefaultSourceName(defaultSourceName);
     self.createMap();
 
-    var featureStateMap = {
-        1: 'carIcon',
-        0: 'simpleIcon'
-    };
+    self.addForceToConfig('carIconAnchorX', 4);
+    self.addForceToConfig('carIconAnchorY', 8);
+    self.addForceToConfig('tdrIconAnchorX', 8);
+    self.addForceToConfig('tdrIconAnchorY', 16);
 
-    self.addStyle('carIcon', self.createIconStyle(carIconSrc));
+    self.addStyle(
+        'car', self.createIconStyle(
+            carIconSrc, self.getConfigValue('carIconAnchorX'), self.getConfigValue('carIconAnchorY')
+        )
+    );
 
-    self.addStyle('simpleIcon', new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 4,
-            fill: new ol.style.Fill({
-                color: 'red'
-            })
-        })
-    }));
+    self.addStyle(
+        'tdr', self.createIconStyle(
+            tdrIconSrc, self.getConfigValue('tdrIconAnchorX'), self.getConfigValue('tdrIconAnchorY')
+        )
+    );
 
     self.addStyle('way', new ol.style.Style({
         stroke: new ol.style.Stroke({
@@ -42,15 +43,11 @@ OLMM.prototype.initDashboardApp = function (options) {
 
     self.addLayer(defaultSourceName, self.createVectorLayer(
         function (feature, resolution) {
-            var styleName;
-
-            if (feature.getGeometry().getType() == 'Point') {
-                styleName = featureStateMap[feature.getProperties()['type'] || 0];
+            if (feature.isPoint()) {
+                return [self.getStyleByName(feature.getProperties()['type'])]
             } else {
-                styleName = 'way';
+                return [self.getStyleByName('way')];
             }
-
-            return [self.getStyleByName(styleName)];
         }
     ));
 };

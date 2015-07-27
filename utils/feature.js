@@ -163,7 +163,27 @@
 
         feature.setId(id);
         return id
-    }
+    };
+
+    module.isPoint = function () {
+        return this.getGeometry().getType() == this.pointName;
+    };
+
+    module.isLineString = function () {
+        return this.getGeometry().getType() == this.lineStringName;
+    };
+
+    module.isMultiLineString = function () {
+        return this.getGeometry().getType() == this.multiLineStringName;
+    };
+
+    module.isPolygon = function () {
+        return this.getGeometry().getType() == this.polygonName;
+    };
+
+    module.isLine = function () {
+        return this.isLineString() || this.isMultiLineString();
+    };
 
 })(ol.Feature.prototype);
 

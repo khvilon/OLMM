@@ -16,17 +16,17 @@ OLMM.prototype.initPlatonApp = function (options) {
     var mapOptions = options['mapOptions'] || {};
 
     var overlay = new ol.Overlay({
-      element: popup,
-      autoPan: true,
-      autoPanAnimation: {
-        duration: 250
-      }
+        element: popup,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
     });
 
     var self = this;
 
-    self.addToConfig('iconAnchorX', 16);
-    self.addToConfig('iconAnchorY', 32);
+    self.addForceToConfig('iconAnchorX', 16);
+    self.addForceToConfig('iconAnchorY', 32);
 
     mapOptions['interactions'] = [new ol.interaction.DragPan];
 

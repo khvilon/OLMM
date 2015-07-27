@@ -65,7 +65,6 @@
     olmm.addForceToConfig('pointTextSize', 24);
 
     $('#makeRoute').on('click', function(){
-
         $.ajax({
             url: 'http://10.0.12.247:5000/route?loc=37.66,55.66&loc=37.58,55.91&loc=37.56,55.91&type=fed',
             dataType: 'json',
@@ -79,11 +78,6 @@
             }
         });
     });
-
-//    olmm.addMapClickFunction(function(e){console.log(e.coordinate)});
-//    olmm.addContextMenuClickFunction(function(e, c){console.log(c);e.preventDefault();});
-
-
 
 </script>
 </body>

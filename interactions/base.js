@@ -1,6 +1,12 @@
 (function (module) {
 
     module.addInteraction = function (interaction) {
+        var self = this;
+
+        if (self.interaction && self.map) {
+            self.map.removeInteraction(self.interaction)
+        }
+
         this.interaction = interaction;
         this.map.addInteraction(interaction);
     };

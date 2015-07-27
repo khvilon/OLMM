@@ -63,10 +63,10 @@
         }
     };
 
-    module.createIconStyle = function (src) {
+    module.createIconStyle = function (src, anchorx, anchory) {
         var self = this;
-        var anchorX = self.getConfigValue('iconAnchorX') || 0;
-        var anchorY = self.getConfigValue('iconAnchorY') || 0;
+        var anchorX = anchorx || self.getConfigValue('iconAnchorX') || 0;
+        var anchorY = anchory || self.getConfigValue('iconAnchorY') || 0;
 
         return new ol.style.Style({
             image: new ol.style.Icon({
