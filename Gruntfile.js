@@ -41,6 +41,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/dashboard/olmm.min.js': 'build/dashboard/olmm.js'
                 }
+            },
+            tso: {
+                files: {
+                    'build/tso/olmm.min.js': 'build/tso/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -52,7 +57,8 @@ module.exports = function (grunt) {
                 'build/ways/olmm.js',
                 'build/platon/olmm.js',
                 'build/snk/olmm.js',
-                'build/dashboard/olmm.js'
+                'build/dashboard/olmm.js',
+                'build/tso/olmm.js'
             ]
         },
 
@@ -223,6 +229,32 @@ module.exports = function (grunt) {
                     'utils/transform.js'
                 ],
                 dest: 'build/dashboard/olmm.js'
+            },
+
+            tso: {
+                src: [
+                    'openlayers/ol.js',
+
+                    'apps/core.js',
+                    'apps/tso.js',
+
+                    'interactions/base.js',
+                    'interactions/add.js',
+                    'interactions/select.js',
+                    'interactions/click.js',
+                    'interactions/delete.js',
+
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/feature.js',
+                    'utils/points.js',
+                    'utils/style.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/cursor.js',
+                    'utils/transform.js'
+                ],
+                dest: 'build/tso/olmm.js'
             }
         }
     });
@@ -282,5 +314,11 @@ module.exports = function (grunt) {
         'clean',
         'concat:dashboard',
         'uglify:dashboard'
+    ]);
+
+    grunt.registerTask('tso', [
+        'clean',
+        'concat:tso',
+        'uglify:tso'
     ]);
 };
