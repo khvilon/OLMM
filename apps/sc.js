@@ -35,6 +35,10 @@ OLMM.prototype.initSCApp = function (options) {
             function (feature, resolution) {
                 var featureProperties = feature.getProperties();
 
+                if (featureProperties['visible'] == false) {
+                    return []
+                }
+
                 if (feature.getGeometry().getType() == 'Point') {
                     var featureObjectType = featureProperties['objecttype'];
                     var featureState = featureProperties['_state'] || 'default';
