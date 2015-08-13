@@ -12,8 +12,7 @@
         ]
       },
       "properties": {
-        "tcos": true,
-        "name": "101"
+        "objecttype": "ssk"
       }
     },
     {
@@ -22,13 +21,25 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-            37.91965,
+            37.86965,
             55.77416
         ]
       },
       "properties": {
-        "tcos": true,
-        "name": "101"
+        "objecttype": "smk"
+      }
+    },
+    {
+      "id": 3,
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+            37.81965,
+            55.67416
+        ]
+      },
+      "properties": {
       }
     }
   ]

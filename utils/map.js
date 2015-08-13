@@ -23,4 +23,15 @@
         self.map.getView().fitExtent(source.getExtent(), self.map.getSize());
     };
 
+    module.getCoordsForRequest = function () {
+        var coords = this.getViewPortCoords();
+
+        return {
+            'min_lot': coords[0],
+            'min_lat': coords[1],
+            'max_lot': coords[2],
+            'max_lat': coords[3]
+        }
+    };
+
 })(OLMM.prototype);

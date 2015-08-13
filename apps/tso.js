@@ -48,10 +48,7 @@ OLMM.prototype.initTSOApp = function (options) {
     var callback = options['callback'];
 
     var self = this;
-    self.createMap({
-        "controls": false,
-        "interactions": false
-    });
+    self.createMap();
 
     self.createTSOLayers(icon_url);
 

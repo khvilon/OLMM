@@ -46,6 +46,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/tso/olmm.min.js': 'build/tso/olmm.js'
                 }
+            },
+            sc: {
+                files: {
+                    'build/sc/olmm.min.js': 'build/sc/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -58,7 +63,8 @@ module.exports = function (grunt) {
                 'build/platon/olmm.js',
                 'build/snk/olmm.js',
                 'build/dashboard/olmm.js',
-                'build/tso/olmm.js'
+                'build/tso/olmm.js',
+                'build/sc/olmm.js'
             ]
         },
 
@@ -130,6 +136,31 @@ module.exports = function (grunt) {
                     'utils/style.js'
                 ],
                 dest: 'build/gis/olmm.js'
+            },
+
+            sc: {
+                src: [
+                    'openlayers/ol.js',
+
+                    'apps/core.js',
+                    'apps/sc.js',
+
+                    'interactions/base.js',
+                    'interactions/select.js',
+                    'interactions/click.js',
+
+                    'utils/cluster.js',
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/cursor.js',
+                    'utils/feature.js',
+                    'utils/geojson.js',
+                    'utils/transform.js',
+                    'utils/cluster.js',
+                    'utils/map.js',
+                    'utils/style.js'
+                ],
+                dest: 'build/sc/olmm.js'
             },
 
             ways: {
@@ -320,5 +351,11 @@ module.exports = function (grunt) {
         'clean',
         'concat:tso',
         'uglify:tso'
+    ]);
+
+    grunt.registerTask('sc', [
+        'clean',
+        'concat:sc',
+        'uglify:sc'
     ]);
 };
