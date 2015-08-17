@@ -147,20 +147,20 @@ module.exports = function (grunt) {
 
             platon: {
                 src: [
-                    'openlayers/ol.js',
-
                     'apps/core.js',
                     'apps/platon.js',
                     'apps/ways.js',
                     'apps/tso.js',
                     'apps/smk.js',
 
-                    'interactions/base.js',
                     'interactions/add.js',
-                    'interactions/edit.js',
-                    'interactions/select.js',
+                    'interactions/base.js',
                     'interactions/click.js',
                     'interactions/delete.js',
+                    'interactions/drag.js',
+                    'interactions/edit.js',
+                    'interactions/hover.js',
+                    'interactions/select.js',
 
                     'utils/cursor.js',
                     'utils/feature.js',
