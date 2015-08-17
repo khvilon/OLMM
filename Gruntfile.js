@@ -22,29 +22,14 @@ module.exports = function (grunt) {
                     'build/gis/olmm.min.js': 'build/gis/olmm.js'
                 }
             },
-            ways: {
-                files: {
-                    'build/ways/olmm.min.js': 'build/ways/olmm.js'
-                }
-            },
             platon: {
                 files: {
                     'build/platon/olmm.min.js': 'build/platon/olmm.js'
                 }
             },
-            smk: {
-                files: {
-                    'build/smk/olmm.min.js': 'build/smk/olmm.js'
-                }
-            },
             dashboard: {
                 files: {
                     'build/dashboard/olmm.min.js': 'build/dashboard/olmm.js'
-                }
-            },
-            tso: {
-                files: {
-                    'build/tso/olmm.min.js': 'build/tso/olmm.js'
                 }
             },
             sc: {
@@ -59,11 +44,8 @@ module.exports = function (grunt) {
                 'build/mmtest/olmm.js',
                 'build/mmtest_ng/olmm.js',
                 'build/gis/olmm.js',
-                'build/ways/olmm.js',
                 'build/platon/olmm.js',
-                'build/snk/olmm.js',
                 'build/dashboard/olmm.js',
-                'build/tso/olmm.js',
                 'build/sc/olmm.js'
             ]
         },
@@ -163,14 +145,15 @@ module.exports = function (grunt) {
                 dest: 'build/sc/olmm.js'
             },
 
-            ways: {
+            platon: {
                 src: [
                     'openlayers/ol.js',
 
                     'apps/core.js',
+                    'apps/platon.js',
                     'apps/ways.js',
-
-                    'apps/core.js',
+                    'apps/tso.js',
+                    'apps/smk.js',
 
                     'interactions/base.js',
                     'interactions/add.js',
@@ -179,67 +162,18 @@ module.exports = function (grunt) {
                     'interactions/click.js',
                     'interactions/delete.js',
 
-                    'utils/layer.js',
-                    'utils/source.js',
-                    'utils/feature.js',
-                    'utils/points.js',
-                    'utils/fit.js',
-                    'utils/style.js',
-                    'utils/map.js',
-                    'utils/geojson.js',
                     'utils/cursor.js',
-                    'utils/transform.js'
-                ],
-                dest: 'build/ways/olmm.js'
-            },
-
-            platon: {
-                src: [
-                    'openlayers/ol.js',
-
-                    'apps/core.js',
-                    'apps/platon.js',
-
-                    'interactions/click.js',
-                    'interactions/hover.js',
-
+                    'utils/feature.js',
+                    'utils/geojson.js',
+                    'utils/layer.js',
+                    'utils/map.js',
                     'utils/overlay.js',
-                    'utils/layer.js',
+                    'utils/points.js',
                     'utils/source.js',
-                    'utils/feature.js',
                     'utils/style.js',
-                    'utils/map.js',
-                    'utils/geojson.js',
-                    'utils/cursor.js',
                     'utils/transform.js'
                 ],
                 dest: 'build/platon/olmm.js'
-            },
-
-            smk: {
-                src: [
-                    'openlayers/ol.js',
-
-                    'apps/core.js',
-                    'apps/smk.js',
-
-                    'interactions/base.js',
-                    'interactions/add.js',
-                    'interactions/select.js',
-                    'interactions/click.js',
-                    'interactions/delete.js',
-
-                    'utils/layer.js',
-                    'utils/source.js',
-                    'utils/feature.js',
-                    'utils/points.js',
-                    'utils/style.js',
-                    'utils/map.js',
-                    'utils/geojson.js',
-                    'utils/cursor.js',
-                    'utils/transform.js'
-                ],
-                dest: 'build/smk/olmm.js'
             },
 
             dashboard: {
@@ -260,32 +194,6 @@ module.exports = function (grunt) {
                     'utils/transform.js'
                 ],
                 dest: 'build/dashboard/olmm.js'
-            },
-
-            tso: {
-                src: [
-                    'openlayers/ol.js',
-
-                    'apps/core.js',
-                    'apps/tso.js',
-
-                    'interactions/base.js',
-                    'interactions/add.js',
-                    'interactions/select.js',
-                    'interactions/click.js',
-                    'interactions/delete.js',
-
-                    'utils/layer.js',
-                    'utils/source.js',
-                    'utils/feature.js',
-                    'utils/points.js',
-                    'utils/style.js',
-                    'utils/map.js',
-                    'utils/geojson.js',
-                    'utils/cursor.js',
-                    'utils/transform.js'
-                ],
-                dest: 'build/tso/olmm.js'
             }
         }
     });
@@ -323,34 +231,16 @@ module.exports = function (grunt) {
         'uglify:gis'
     ]);
 
-    grunt.registerTask('ways', [
-        'clean',
-        'concat:ways',
-        'uglify:ways'
-    ]);
-
     grunt.registerTask('platon', [
         'clean',
         'concat:platon',
         'uglify:platon'
     ]);
 
-    grunt.registerTask('smk', [
-        'clean',
-        'concat:smk',
-        'uglify:smk'
-    ]);
-
     grunt.registerTask('dashboard', [
         'clean',
         'concat:dashboard',
         'uglify:dashboard'
-    ]);
-
-    grunt.registerTask('tso', [
-        'clean',
-        'concat:tso',
-        'uglify:tso'
     ]);
 
     grunt.registerTask('sc', [

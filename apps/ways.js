@@ -44,17 +44,18 @@ OLMM.prototype.waysEnableDraw = function () {
 };
 
 OLMM.prototype.initWayApp = function (icon_src) {
-    olmm.createMap();
-    olmm.createWayLayers(icon_src);
+    var self = this;
+    self.createMap();
+    self.createWayLayers(icon_src);
 
     var sel = function(event, data) {
-        olmm.disableActions();
-        return olmm.config['waysCallBackFunction'](data["coords"])
+        self.disableActions();
+        return self.config['waysCallBackFunction'](data["coords"])
     };
 
-    olmm.attachAddCallback(sel);
+    self.attachAddCallback(sel);
 
-    olmm.addStyle('draw_style', new ol.style.Style({
+    self.addStyle('draw_style', new ol.style.Style({
         image: new ol.style.Circle({
             fill: new ol.style.Fill({
                 color: 'transparent'
@@ -64,5 +65,5 @@ OLMM.prototype.initWayApp = function (icon_src) {
 };
 
 OLMM.prototype.makePoint = function (lon, lat) {
-    this.makePointFromLonLat(lon, lat, 'mark')
+    return this.makePointFromLonLat(lon, lat, 'mark')
 };

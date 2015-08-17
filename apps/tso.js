@@ -68,6 +68,6 @@ OLMM.prototype.initTSOApp = function (options) {
     }))
 };
 
-OLMM.prototype.makePoint = function (lon, lat) {
+OLMM.prototype.tsoMakePoint = function (lon, lat) {
     return this.makePointFromLonLat(lon, lat, 'mark')
 };

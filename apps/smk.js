@@ -143,7 +143,7 @@ OLMM.prototype.smkEnableDraw = function () {
     self.makePointerCursor();
 };
 
-OLMM.prototype.makePoint = function (lon, lat) {
+OLMM.prototype.smkMakePoint = function (lon, lat) {
     var self = this;
     if (self.lastDrawPointId) {
         var feature = self.getSourceByName(self.getDefaultSourceName()).getFeatureById(self.lastDrawPointId);
@@ -170,4 +170,6 @@ OLMM.prototype.makePoint = function (lon, lat) {
     self.lastDrawPointId = feature.getId();
     self.fitToFeature(feature);
     self.smkEnableDraw();
+
+    return feature
 };
