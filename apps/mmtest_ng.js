@@ -144,7 +144,7 @@
             }
         });
 
-        olmm.showProjections(feature, 'lines');
+        self.showProjections(feature, 'lines');
     };
 
     module.setFeatureState = function (feature, state) {

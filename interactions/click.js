@@ -7,23 +7,14 @@ OLMM.prototype.addOnceMapClickFunction = function (handleMapClickFunction) {
 };
 
 OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, layer_name) {
-    var layer_obj;
     var olmm = this;
+    var layer;
+    if (layer_name) {
+        layer = olmm.getLayerByName(layer_name);
+    }
 
     olmm.map.on('singleclick', function (event) {
-        if (layer_name) {
-            layer_obj = olmm.getLayerByName(layer_name);
-        }
-        var feature = this.forEachFeatureAtPixel(event.pixel,
-            function (feature, layer) {
-                if (layer_obj) {
-                    if (layer == layer_obj) {
-                        return feature;
-                    }
-                } else {
-                    return feature
-                }
-            });
+        var feature = this.getFeatureAtPixel(event.pixel, layer);
         if (feature) {
             handleFeatureClickFunction(event, feature.getMainDataWithCloneAndTransform());
         }

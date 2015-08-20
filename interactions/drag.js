@@ -1,4 +1,4 @@
-OLMM.Drag = function (olmm) {
+OLMM.Drag = function (olmm, layer) {
     ol.interaction.Pointer.call(this, {
         handleDownEvent: OLMM.Drag.prototype.handleDownEvent,
         handleDragEvent: OLMM.Drag.prototype.handleDragEvent,
@@ -7,6 +7,7 @@ OLMM.Drag = function (olmm) {
     });
 
     this.config = olmm.config;
+    this.layer = olmm.getLayerByName(layer);
     this.coordinate_ = null;
     this.cursor_ = 'pointer';
     this.feature_ = null;
@@ -20,11 +21,7 @@ ol.inherits(OLMM.Drag, ol.interaction.Pointer);
 OLMM.Drag.prototype.handleDownEvent = function (evt) {
     var map = evt.map;
 
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
-        function (feature, layer) {
-            return feature;
-        });
-
+    var feature = map.getFeatureAtPixel(evt.pixel, this.layer);
     if (feature) {
         this.coordinate_ = evt.coordinate;
         this.feature_ = feature;
@@ -36,11 +33,6 @@ OLMM.Drag.prototype.handleDownEvent = function (evt) {
 
 OLMM.Drag.prototype.handleDragEvent = function (evt) {
     var map = evt.map;
-
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
-        function (feature, layer) {
-            return feature;
-        });
 
     var deltaX = evt.coordinate[0] - this.coordinate_[0];
     var deltaY = evt.coordinate[1] - this.coordinate_[1];
@@ -56,10 +48,8 @@ OLMM.Drag.prototype.handleDragEvent = function (evt) {
 OLMM.Drag.prototype.handleMoveEvent = function (evt) {
     if (this.cursor_) {
         var map = evt.map;
-        var feature = map.forEachFeatureAtPixel(evt.pixel,
-            function (feature, layer) {
-                return feature;
-            });
+        var feature = map.getFeatureAtPixel(evt.pixel, this.layer);
+
         var element = evt.map.getTargetElement();
         if (feature) {
             if (element.style.cursor != this.cursor_) {
@@ -87,10 +77,10 @@ OLMM.Drag.prototype.handleUpEvent = function (event) {
     return false;
 };
 
-OLMM.prototype.enableDragMode = function () {
+OLMM.prototype.enableDragMode = function (layer) {
     var self = this;
     self.disableActions();
-    self.addInteraction(new OLMM.Drag(self))
+    self.addInteraction(new OLMM.Drag(self, layer))
 };
 
 OLMM.prototype.attachDragCallback = function (callback) {

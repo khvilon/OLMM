@@ -147,6 +147,8 @@ module.exports = function (grunt) {
 
             platon: {
                 src: [
+                    'openlayers/ol-debug.js',
+
                     'apps/core.js',
                     'apps/platon.js',
                     'apps/ways.js',

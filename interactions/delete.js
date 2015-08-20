@@ -9,15 +9,7 @@ OLMM.prototype.deleteFeatureFromLayer = function(event) {
 
     var source = layer.getSource();
 
-    var feature = map.forEachFeatureAtPixel(
-        event.pixel,
-        function(feature, l) {
-            if (feature && l == layer) {
-                return feature
-            }
-        }
-    );
-
+    var feature = map.getFeatureAtPixel(event.pixel, layer);
     if (feature) {
         source.removeFeature(feature);
 

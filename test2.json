@@ -20,7 +20,7 @@
         {
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [37.0, 55.5]},
-            "properties": {"id": "value0"}
+            "properties": {"id": "value1"}
         }
     ]
 }

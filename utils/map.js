@@ -35,3 +35,20 @@
     };
 
 })(OLMM.prototype);
+
+(function (module) {
+
+    module.getFeatureAtPixel = function (pixel, layerObj) {
+        return this.forEachFeatureAtPixel(pixel,
+            function (feature, layer) {
+                if (layerObj) {
+                    if (layer == layerObj) {
+                        return feature;
+                    }
+                } else {
+                    return feature
+                }
+            });
+    }
+
+})(ol.Map.prototype);

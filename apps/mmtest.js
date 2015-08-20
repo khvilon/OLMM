@@ -18,7 +18,7 @@ OLMM.prototype.createMMTestLayers = function() {
 
     this.addLayer('mm_proj', this.createVectorLayer(this.styleMmProjFunction));
     this.addLayer('good_proj', this.createVectorLayer(this.styleGoodProjFunction));
-    this.addLayer('last_proj', this.createVectorLayesr(this.styleLastProjFunction));
+    this.addLayer('last_proj', this.createVectorLayer(this.styleLastProjFunction));
     this.addLayer('all_proj', this.createVectorLayer(this.styleLastProjFunction));
 
     this.addLayer('current_point_projections', this.createVectorLayer(this.styleGraphFunction));

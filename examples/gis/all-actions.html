@@ -20,7 +20,7 @@
 
     <script src="../../utils/layer.js" type="text/javascript"></script>
     <script src="../../utils/source.js" type="text/javascript"></script>
-
+    <script src="../../utils/cluster.js" type="text/javascript"></script>
     <script src="../../utils/cursor.js" type="text/javascript"></script>
     <script src="../../utils/feature.js" type="text/javascript"></script>
     <script src="../../utils/geojson.js" type="text/javascript"></script>
@@ -126,15 +126,29 @@
     olmm.addLayer('map', olmm.createOSMLayer());
     olmm.initGisApp();
 
+    olmm.addLayer('edit2', olmm.createVectorLayer());
+
     $(document).ready(function(){
 
         $.ajax({
-            url: '../../test9.json',
+            url: '../../test2.json',
             dataType: 'json',
             success: function (data) {
                 olmm.addFeaturesFromGeoJSON({
                     "geojson_data": data,
                     "source_name": 'edit',
+                    "need_fit": true
+                });
+            }
+        });
+
+        $.ajax({
+            url: '../../test3.json',
+            dataType: 'json',
+            success: function (data) {
+                olmm.addFeaturesFromGeoJSON({
+                    "geojson_data": data,
+                    "source_name": 'edit2',
                     "need_fit": true
                 });
             }
@@ -153,7 +167,7 @@
         });
 
         $('.enable-drag-mode').on('click', function() {
-            olmm.enableDragMode()
+            olmm.enableDragMode('edit')
         });
 
         $('.enable-delete-mode').on('click', function() {

@@ -17,10 +17,7 @@ OLMM.prototype.hoverApp.Hover = function () {
 ol.inherits(OLMM.prototype.hoverApp.Hover, ol.interaction.Pointer);
 
 OLMM.prototype.hoverApp.Hover.prototype.handleDownEvent = function (evt) {
-    var feature = evt.map.forEachFeatureAtPixel(evt.pixel,
-        function (feature, layer) {
-            return feature;
-        });
+    var feature = evt.map.getFeatureAtPixel(evt.pixel);
 
     if (feature) {
         this.coordinate_ = evt.coordinate;
@@ -32,11 +29,7 @@ OLMM.prototype.hoverApp.Hover.prototype.handleDownEvent = function (evt) {
 
 OLMM.prototype.hoverApp.Hover.prototype.handleMoveEvent = function (evt) {
     if (this.cursor_) {
-        var map = evt.map;
-        var feature = map.forEachFeatureAtPixel(evt.pixel,
-            function (feature, layer) {
-                return feature;
-            });
+        var feature = evt.map.getFeatureAtPixel(evt.pixel);
         var element = evt.map.getTargetElement();
         if (feature) {
             if (element.style.cursor != this.cursor_) {

@@ -164,22 +164,16 @@ OLMM.prototype.clusterClickHandleFunction = function (event, feature) {
 
 OLMM.prototype.addClusterClickFunction = function (layer_name) {
     var self = this;
+    var layer;
+
     layer_name += 'Cluster';
 
+    if (layer_name) {
+        layer = self.getLayerByName(layer_name);
+    }
+
     self.map.on('singleclick', function (event) {
-        if (layer_name) {
-            var layer_obj = self.getLayerByName(layer_name);
-        }
-        var feature = this.forEachFeatureAtPixel(event.pixel,
-            function (feature, layer) {
-                if (layer_obj) {
-                    if (layer == layer_obj) {
-                        return feature;
-                    }
-                } else {
-                    return feature
-                }
-            });
+        var feature = this.getFeatureAtPixel(event.pixel, layer);
         if (feature) {
             self.clusterClickHandleFunction(event, feature);
         }

@@ -18,7 +18,7 @@
         var self = this;
 
         var point_projections = pointFeature.getProperties().projections || [];
-        self.readGeoJSON(point_projections).map(
+        self.readGeoJSON(point_projections).forEach(
             function (proj) {
                 self.setFeatureState(proj, 'selected');
                 proj.setProperties({'point_id': pointFeature.getId()});
@@ -30,7 +30,7 @@
     module.drawAllProjections = function () {
         var self = this;
 
-        self.getSourceByName('main').getFeatures().map(function (pointFeature) {
+        self.getSourceByName('main').getFeatures().forEach(function (pointFeature) {
             self.drawProjections(pointFeature, 'lines')
         })
     };
