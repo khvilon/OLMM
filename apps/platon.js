@@ -44,7 +44,7 @@ OLMM.prototype.initPlatonApp = function (options) {
 
     self.addToConfig('featureClickCallback', callback);
 
-    self.map.addInteraction(new self.hoverApp.Hover());
+    self.enableHoverMode();
 
     var icon1style = self.addStyle('icon1', self.createIconStyle(icon1));
     var icon2style = self.addStyle('icon2', self.createIconStyle(icon2));

@@ -1,10 +1,7 @@
-OLMM.Drag = function (olmm, layer) {
-    ol.interaction.Pointer.call(this, {
-        handleDownEvent: OLMM.Drag.prototype.handleDownEvent,
-        handleDragEvent: OLMM.Drag.prototype.handleDragEvent,
-        handleMoveEvent: OLMM.Drag.prototype.handleMoveEvent,
-        handleUpEvent: OLMM.Drag.prototype.handleUpEvent
-    });
+var Drag = function (options) {
+    options = options || {};
+    var olmm = options['olmm'];
+    var layer = options['layer'];
 
     this.config = olmm.config;
     this.layer = olmm.getLayerByName(layer);
@@ -12,13 +9,20 @@ OLMM.Drag = function (olmm, layer) {
     this.cursor_ = 'pointer';
     this.feature_ = null;
     this.previousCursor_ = undefined;
+
+    ol.interaction.Pointer.call(this, {
+        handleDownEvent: Drag.prototype.handleDownEvent,
+        handleDragEvent: Drag.prototype.handleDragEvent,
+        handleMoveEvent: Drag.prototype.handleMoveEvent,
+        handleUpEvent: Drag.prototype.handleUpEvent
+    });
 };
 
 
-ol.inherits(OLMM.Drag, ol.interaction.Pointer);
+ol.inherits(Drag, ol.interaction.Pointer);
 
 
-OLMM.Drag.prototype.handleDownEvent = function (evt) {
+Drag.prototype.handleDownEvent = function (evt) {
     var map = evt.map;
 
     var feature = map.getFeatureAtPixel(evt.pixel, this.layer);
@@ -31,9 +35,7 @@ OLMM.Drag.prototype.handleDownEvent = function (evt) {
 };
 
 
-OLMM.Drag.prototype.handleDragEvent = function (evt) {
-    var map = evt.map;
-
+Drag.prototype.handleDragEvent = function (evt) {
     var deltaX = evt.coordinate[0] - this.coordinate_[0];
     var deltaY = evt.coordinate[1] - this.coordinate_[1];
 
@@ -45,7 +47,7 @@ OLMM.Drag.prototype.handleDragEvent = function (evt) {
 };
 
 
-OLMM.Drag.prototype.handleMoveEvent = function (evt) {
+Drag.prototype.handleMoveEvent = function (evt) {
     if (this.cursor_) {
         var map = evt.map;
         var feature = map.getFeatureAtPixel(evt.pixel, this.layer);
@@ -64,7 +66,7 @@ OLMM.Drag.prototype.handleMoveEvent = function (evt) {
 };
 
 
-OLMM.Drag.prototype.handleUpEvent = function (event) {
+Drag.prototype.handleUpEvent = function (event) {
     var feature = this.feature_;
     var callbacks = this.config['drag_callback'] || [];
 
@@ -77,11 +79,13 @@ OLMM.Drag.prototype.handleUpEvent = function (event) {
     return false;
 };
 
+
 OLMM.prototype.enableDragMode = function (layer) {
     var self = this;
     self.disableActions();
-    self.addInteraction(new OLMM.Drag(self, layer))
+    self.addInteraction(new Drag({'olmm': self, 'layer': layer}))
 };
+
 
 OLMM.prototype.attachDragCallback = function (callback) {
     this.addToConfig('drag_callback', callback);

@@ -1,23 +1,21 @@
-OLMM.prototype.hoverApp = {};
-
-OLMM.prototype.hoverApp.Hover = function () {
-
-    ol.interaction.Pointer.call(this, {
-        handleDownEvent: OLMM.prototype.hoverApp.Hover.prototype.handleDownEvent,
-        handleMoveEvent: OLMM.prototype.hoverApp.Hover.prototype.handleMoveEvent,
-        handleUpEvent: OLMM.prototype.hoverApp.Hover.prototype.handleUpEvent
-    });
-
+var Hover = function (layer) {
     this.coordinate_ = null;
     this.cursor_ = 'pointer';
     this.feature_ = null;
     this.previousCursor_ = undefined;
+    this.layer = layer;
+
+    ol.interaction.Pointer.call(this, {
+        handleDownEvent: Hover.prototype.handleDownEvent,
+        handleMoveEvent: Hover.prototype.handleMoveEvent,
+        handleUpEvent: Hover.prototype.handleUpEvent
+    });
 };
 
-ol.inherits(OLMM.prototype.hoverApp.Hover, ol.interaction.Pointer);
+ol.inherits(Hover, ol.interaction.Pointer);
 
-OLMM.prototype.hoverApp.Hover.prototype.handleDownEvent = function (evt) {
-    var feature = evt.map.getFeatureAtPixel(evt.pixel);
+Hover.prototype.handleDownEvent = function (evt) {
+    var feature = evt.map.getFeatureAtPixel(evt.pixel, this.layer);
 
     if (feature) {
         this.coordinate_ = evt.coordinate;
@@ -27,9 +25,9 @@ OLMM.prototype.hoverApp.Hover.prototype.handleDownEvent = function (evt) {
     return !!feature;
 };
 
-OLMM.prototype.hoverApp.Hover.prototype.handleMoveEvent = function (evt) {
+Hover.prototype.handleMoveEvent = function (evt) {
     if (this.cursor_) {
-        var feature = evt.map.getFeatureAtPixel(evt.pixel);
+        var feature = evt.map.getFeatureAtPixel(evt.pixel, this.layer);
         var element = evt.map.getTargetElement();
         if (feature) {
             if (element.style.cursor != this.cursor_) {
@@ -43,9 +41,12 @@ OLMM.prototype.hoverApp.Hover.prototype.handleMoveEvent = function (evt) {
     }
 };
 
-OLMM.prototype.hoverApp.Hover.prototype.handleUpEvent = function (evt) {
+Hover.prototype.handleUpEvent = function (evt) {
     this.coordinate_ = null;
     this.feature_ = null;
     return false;
 };
 
+OLMM.prototype.enableHoverMode = function (layer) {
+    this.map.addInteraction(new Hover());
+};
