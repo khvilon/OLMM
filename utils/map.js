@@ -38,8 +38,8 @@
 
 (function (module) {
 
-    module.getFeatureAtPixel = function (pixel, layerObj) {
-        return this.forEachFeatureAtPixel(pixel,
+    module.getFeatureAtPixel = function (pixel, layerObj, type) {
+        var feature = this.forEachFeatureAtPixel(pixel,
             function (feature, layer) {
                 if (layerObj) {
                     if (layer == layerObj) {
@@ -49,6 +49,11 @@
                     return feature
                 }
             });
+        if (type && feature && feature.getGeometry().getType() == type) {
+            return feature
+        } else if (!type) {
+            return feature
+        }
     }
 
 })(ol.Map.prototype);

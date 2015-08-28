@@ -8,13 +8,9 @@ OLMM.prototype.addOnceMapClickFunction = function (handleMapClickFunction) {
 
 OLMM.prototype.addFeatureClickFunction = function(handleFeatureClickFunction, layer_name) {
     var olmm = this;
-    var layer;
-    if (layer_name) {
-        layer = olmm.getLayerByName(layer_name);
-    }
 
     olmm.map.on('singleclick', function (event) {
-        var feature = this.getFeatureAtPixel(event.pixel, layer);
+        var feature = this.getFeatureAtPixel(event.pixel, olmm.getLayerByName(layer_name));
         if (feature) {
             handleFeatureClickFunction(event, feature.getMainDataWithCloneAndTransform());
         }
@@ -41,6 +37,6 @@ OLMM.prototype.addContextMenuClickFunction = function(handleFunction) {
     var map = self.map;
 
     map.getViewport().addEventListener('contextmenu', function (e) {
-        return handleFunction(e, olmm.transform_to_lot_lan(olmm.map.getEventCoordinate(e)))
+        return handleFunction(e, self.transform_to_lot_lan(self.map.getEventCoordinate(e)))
     })
 };

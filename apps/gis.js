@@ -1,112 +1,117 @@
-OLMM.prototype.initGisApp = function () {
+OLMM.prototype.initGisApp = function (layers) {
+
+    var styleFunction = function (feature, resolution) {
+
+        var featureProperties = feature.getProperties();
+        var featureVisible = featureProperties['visible'];
+
+        if (featureVisible == false) {
+            return []
+        }
+
+        if (feature.getGeometry().getType() == 'Point') {
+            var featureObjectType = featureProperties['objecttype'];
+            var featureState = featureProperties['_state'] || 'default';
+            featureState += featureProperties['_state_additional'] || '';
+
+            if (featureObjectType != undefined) {
+
+                var icon_config = self.config.icons.objecttype[featureObjectType];
+                if (icon_config) {
+                    var icon_url = icon_config[featureState];
+                } else {
+                    icon_url = self.config.icons.objecttype[featureState];
+                    if (!icon_url) {
+                        icon_url = self.config.icons[featureState];
+                    }
+                }
+
+                return [new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: icon_url
+                    }),
+                    text: new ol.style.Text({
+                        text: feature.getProperties()['count'],
+                        size: 24,
+                        fill: new ol.style.Fill({
+                            color: '#000000'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#000000'
+                        })
+                    })
+                })]
+
+            } else {
+                return [new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        fill: new ol.style.Fill({
+                            color: '#ff9900',
+                            opacity: 0.6
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#ffcc00',
+                            opacity: 0.4
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        text: feature.getProperties()['count'],
+                        size: 24,
+                        fill: new ol.style.Fill({
+                            color: '#000000'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#000000'
+                        })
+                    })
+                })]
+            }
+        } else {
+
+            var line_style_name = 'baseLineStyle';
+            var line_style = self.getStyleByName(line_style_name);
+            if (!line_style) {
+                line_style = self.addStyle(
+                    line_style_name,
+                    new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: feature.getProperties()['color'] || 'green',
+                            width: 3
+                        })
+                    })
+                )
+            }
+
+            return [line_style];
+        }
+    };
+
+    layers = layers || {};
+
+    var svpLayerName = layers['svpLayerName'];
+    //var nosignalLayerName = layers['nosignalLayerName'];
+    //var cpointsLayerName = layers['cpointsLayerName'];
+
     var self = this;
 
-    var layer_name = 'edit';
-    self.setDefaultSourceName(layer_name);
+    self.setDefaultSourceName(svpLayerName);
 
     self.addSource('searchSource', self.createVectorSource());
 
     self.addMapClickFunction(self.resetFeaturesStateStyle.bind(self));
-    self.addClusterClickFunction(layer_name);
+    self.addClusterClickFunction(svpLayerName);
 
-    var layer = self.getLayerByName(layer_name);
-    if (!layer) {
-        self.addLayer(layer_name, self.createVectorLayer(
-            function (feature, resolution) {
+    var layers = Object.keys(layers).map(function (layerName) {
+        return layers[layerName];
+    });
 
-                if (feature.getGeometry().getType() == 'Point') {
-
-                    var featureProperties = feature.getProperties();
-                    var featureVisible = featureProperties['visible'];
-                    var featureObjectType = featureProperties['objecttype'];
-                    var featureState = featureProperties['_state'] || 'default';
-                    featureState += featureProperties['_state_additional'] || '';
-
-                    if (featureVisible == false) {
-                        return []
-                    }
-
-                    if (featureObjectType != undefined) {
-
-                        var icon_config = self.config.icons.objecttype[featureObjectType];
-                        if (icon_config) {
-                            var icon_url = icon_config[featureState];
-                        } else {
-                            icon_url = self.config.icons.objecttype[featureState];
-                            if (!icon_url) {
-                                icon_url = self.config.icons[featureState];
-                            }
-                        }
-
-                        //var icon_style_name = icon_url.replace(/\s+/g, '-').replace(/[^a-zA-Z-]/g, '').toLowerCase();
-
-                        return [new ol.style.Style({
-                            image: new ol.style.Icon({
-                                src: icon_url
-                            }),
-                            text: new ol.style.Text({
-                                text: feature.getProperties()['count'],
-                                size: 24,
-                                fill: new ol.style.Fill({
-                                    color: '#000000'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#000000'
-                                })
-                            })
-                        })]
-
-                    } else {
-                        return [new ol.style.Style({
-                            image: new ol.style.Circle({
-                                radius: 7,
-                                fill: new ol.style.Fill({
-                                    color: '#ff9900',
-                                    opacity: 0.6
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#ffcc00',
-                                    opacity: 0.4
-                                })
-                            }),
-                            text: new ol.style.Text({
-                                text: feature.getProperties()['count'],
-                                size: 24,
-                                fill: new ol.style.Fill({
-                                    color: '#000000'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#000000'
-                                })
-                            })
-                        })]
-                    }
-                } else {
-                    var featureProperties = feature.getProperties();
-                    var featureVisible = featureProperties['visible'];
-
-                    if (featureVisible == false) {
-                        return []
-                    }
-
-                    var line_style_name = 'baseLineStyle';
-                    var line_style = self.getStyleByName(line_style_name);
-                    if (!line_style) {
-                        line_style = self.addStyle(
-                            line_style_name,
-                            new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: feature.getProperties()['color'] || 'green',
-                                    width: 3
-                                })
-                            })
-                        )
-                    }
-
-                    return [line_style];
-                }
-            }
-        ));
+    for (var i = 0; i < layers.length; i++) {
+        var layerName = layers[i];
+        var layer = self.getLayerByName(layerName);
+        if (!layer) {
+            self.addLayer(layerName, self.createVectorLayer(styleFunction));
+        }
     }
 
 };

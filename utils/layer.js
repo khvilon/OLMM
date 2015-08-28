@@ -21,12 +21,31 @@
         return this.layers[name];
     };
 
+    module.getRelatedLayers = function (layerName) {
+        var relatedLayers = this.relatedLayers[layerName];
+        if (!relatedLayers) {
+            this.relatedLayers[layerName] = []
+        }
+        return this.relatedLayers[layerName]
+    };
+
+    module.addRelatedLayer = function (layerName, relatedLayerName) {
+        var relatedLayers = this.getRelatedLayers(layerName);
+        relatedLayers.push(relatedLayerName);
+    };
+
     module.getLayerVisible = function (layer_name) {
         return this.getLayerByName(layer_name).getVisible()
     };
 
     module.setLayerVisible = function (layer_name, visible) {
+        var self = this;
         this.getLayerByName(layer_name).setVisible(visible);
+        var relatedLayers = this.getRelatedLayers(layer_name);
+        for (var i = 0; i < relatedLayers.length; i++) {
+            var layer = self.getLayerByName(relatedLayers[i]);
+                layer.setVisible(visible);
+        }
     };
 
     module.toggleLayerVisible = function (layer_name) {
@@ -87,7 +106,10 @@
             url: server,
             crossOrigin:'anonymous',
             params: {'LAYERS': layers, 'WIDTH': 256, 'HEIGHT': 256, 'VERSION': '1.1.1'},
-            serverType: 'geoserver'
+            serverType: 'geoserver',
+            attributions: [new ol.Attribution({
+              html: "&copy 2015"
+            })]
         });
 
         return new ol.layer.Tile({source: source, visible: visible});

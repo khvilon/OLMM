@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../openlayers/ol.css" type="text/css">
+    <script src="../jquery-1.10.2.js"></script>
+
+    <script src="../build/uragan/olmm.js" type="text/javascript"></script>
+    <title>uragan example</title>
+</head>
+<body>
+<div id="map" class="map" style="height: 100%; width: 100%; margin-top: 20px;"></div>
+<script type="text/javascript">
+    var olmm = new OLMM();
+    olmm.initUraganApp({
+        'featureClickFunction': function (e, f) {console.log(e, f)}
+    });
+
+    $.ajax({
+        url: 'data/uragan.json',
+        dataType: 'json',
+        crossDomain: true,
+        success: function(data) {
+            olmm.addFeaturesFromGeoJSON({
+                "geojson_data": data,
+                "need_fit": true
+            })
+        }
+    });
+
+</script>
+</body>
+</html>

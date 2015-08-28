@@ -1,5 +1,6 @@
 function OLMM() {
     this.layers = {};
+    this.relatedLayers = {};
     this.sources = {};
     this.overlays = {};
     this.initLayers = [];

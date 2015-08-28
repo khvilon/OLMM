@@ -124,11 +124,17 @@
     });
 
     olmm.addLayer('map', olmm.createOSMLayer());
-    olmm.initGisApp();
+    olmm.initGisApp({
+        'svpLayerName': 'edit',
+        'nosignalLayerName': 'nosignal',
+        'cpointsLayerName': 'cpoints'
+    });
 
     olmm.addLayer('edit2', olmm.createVectorLayer());
 
     $(document).ready(function(){
+
+        olmm.enableCluster('edit', 'objecttype');
 
         $.ajax({
             url: '../../test2.json',

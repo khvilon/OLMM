@@ -11,6 +11,16 @@
     module.geometryTypeMap[module.polygonName] = ol.geom.Polygon;
     module.geometryTypeMap[module.multiLineStringName] = ol.geom.MultiLineString;
 
+    module._olmm_props = {};
+
+    module.setOwnProp = function (name, value) {
+        this._olmm_props[name] = value
+    };
+
+    module.getOwnProp = function (name) {
+        return this._olmm_props[name]
+    };
+
     module.toGeoJSON = function (useOriginFeature) {
         var feature;
 
@@ -29,10 +39,11 @@
         var feature = this;
         var geometry = feature.getGeometry();
         return {
-            'id': this.getId() || '',
+            'id': feature.getId() || '',
             'coords': geometry.getCoordinates() || '',
             'type': geometry.getType() || '',
-            'geojson': feature.toGeoJSON(true)
+            'geojson': feature.toGeoJSON(true),
+            'properties': feature.getProperties()
         }
     };
 
@@ -185,14 +196,30 @@
         return this.isLineString() || this.isMultiLineString();
     };
 
+    module.makeHidden = function () {
+        this.setOwnProp('visible', false);
+    };
+
+    module.makeHiddenByFilter = function () {
+        this.setOwnProp('filterVisible', false);
+    };
+
+    module.isVisible = function () {
+        return this.getOwnProp('visible') || this.getOwnProp('filterVisible');
+    };
+
+    module.isHidden = function () {
+        return !this.isVisible();
+    };
+
 })(ol.Feature.prototype);
 
 
 (function (module) {
 
-    module.getFeaturesVisibleByType = function (type) {
+    module.getFeaturesVisibleByType = function (sourceName, type) {
         var self = this;
-        var features = self.getSourceByName('edit').getFeatures();
+        var features = self.getSourceByName(sourceName).getFeatures();
         var visible;
 
         if (type == self.pointName || type == self.polygonName) {
@@ -219,9 +246,9 @@
         return visible;
     };
 
-    module.filterFeaturesByType = function (type) {
+    module.filterFeaturesByType = function (sourceName, type) {
         var self = this;
-        return self.getSourceByName('edit').getFeatures().filter(function(feature){
+        return self.getSourceByName(sourceName).getFeatures().filter(function(feature){
             return feature.getGeometry().getType() == type
         })
     };

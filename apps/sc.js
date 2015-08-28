@@ -6,6 +6,13 @@ OLMM.prototype.initSCApp = function (options) {
     var icon_ssk_selected = options['icon_ssk_selected'];
     var icon_smk_default = options['icon_smk_default'];
     var icon_smk_selected = options['icon_smk_selected'];
+
+    var icon_cod_default = options['icon_cod_default'];
+    var icon_cod_selected = options['icon_cod_selected'];
+
+    var icon_cipp_default = options['icon_cipp_default'];
+    var icon_cipp_selected = options['icon_cipp_selected'];
+
     var icon_default = options['icon_default'];
     var wmsLayers = options['wmsLayers'];
 
@@ -19,15 +26,9 @@ OLMM.prototype.initSCApp = function (options) {
 
     self.addSource('searchSource', self.createVectorSource());
 
-    self.addMapClickFunction(self.SCResetFeaturesStateStyle.bind(self));
     self.addClusterClickFunction(layer_name);
 
-    var sel = function (event, feature_data) {
-        self.SCChangeStyleOnSelect(feature_data.id);
-        return featureSelectFunction(event, feature_data);
-    };
-
-    self.addFeatureClickFunction(sel, 'edit');
+    self.addFeatureClickFunction(function(e, f){console.log(e, f)}, 'edit');
 
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
@@ -35,28 +36,23 @@ OLMM.prototype.initSCApp = function (options) {
             function (feature, resolution) {
                 var featureProperties = feature.getProperties();
 
-                if (featureProperties['visible'] == false) {
+                if (featureProperties['visible'] === false || featureProperties['filterVisible']) {
                     return []
                 }
 
                 if (feature.getGeometry().getType() == 'Point') {
-                    var featureObjectType = featureProperties['objecttype'];
-                    var featureState = featureProperties['_state'] || 'default';
+                    var featureObjectType = featureProperties['type'];
 
                     var icon_url;
 
                     if (featureObjectType == 'ssk') {
-                        if (featureState == 'selected') {
-                            icon_url = icon_ssk_selected
-                        } else {
-                            icon_url = icon_ssk_default
-                        }
+                        icon_url = icon_ssk_default
                     } else if (featureObjectType == 'smk') {
-                        if (featureState == 'selected') {
-                            icon_url = icon_smk_selected
-                        } else {
-                            icon_url = icon_smk_default
-                        }
+                        icon_url = icon_smk_default
+                    } else if (featureObjectType == 'cod') {
+                        icon_url = icon_cod_default
+                    } else if (featureObjectType == 'cipp') {
+                        icon_url = icon_cipp_default
                     } else {
                         icon_url = icon_default
                     }
@@ -99,17 +95,6 @@ OLMM.prototype.initSCApp = function (options) {
         ));
     }
 
-    self.enableCluster('edit', 'objecttype');
+    self.enableCluster('edit', 'type');
 };
 
-OLMM.prototype.SCChangeStyleOnSelect = function (featureId) {
-    var self = this;
-    self.getSourceByName(self.getDefaultSourceName()).getFeatureById(featureId).setProperties({"_state": 'selected'})
-};
-
-OLMM.prototype.SCResetFeaturesStateStyle = function () {
-    var self = this;
-    self.getSourceByName(self.getDefaultSourceName()).getFeatures().map(function (f) {
-        f.setProperties({"_state": "default"})
-    })
-};

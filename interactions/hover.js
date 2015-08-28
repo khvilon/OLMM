@@ -1,9 +1,10 @@
-var Hover = function (layer) {
+var Hover = function (layer, featureType) {
     this.coordinate_ = null;
     this.cursor_ = 'pointer';
     this.feature_ = null;
     this.previousCursor_ = undefined;
     this.layer = layer;
+    this.featureType = featureType;
 
     ol.interaction.Pointer.call(this, {
         handleDownEvent: Hover.prototype.handleDownEvent,
@@ -15,7 +16,7 @@ var Hover = function (layer) {
 ol.inherits(Hover, ol.interaction.Pointer);
 
 Hover.prototype.handleDownEvent = function (evt) {
-    var feature = evt.map.getFeatureAtPixel(evt.pixel, this.layer);
+    var feature = evt.map.getFeatureAtPixel(evt.pixel, this.layer, this.featureType);
 
     if (feature) {
         this.coordinate_ = evt.coordinate;
@@ -27,7 +28,7 @@ Hover.prototype.handleDownEvent = function (evt) {
 
 Hover.prototype.handleMoveEvent = function (evt) {
     if (this.cursor_) {
-        var feature = evt.map.getFeatureAtPixel(evt.pixel, this.layer);
+        var feature = evt.map.getFeatureAtPixel(evt.pixel, this.layer, this.featureType);
         var element = evt.map.getTargetElement();
         if (feature) {
             if (element.style.cursor != this.cursor_) {
@@ -47,6 +48,6 @@ Hover.prototype.handleUpEvent = function (evt) {
     return false;
 };
 
-OLMM.prototype.enableHoverMode = function (layer) {
-    this.map.addInteraction(new Hover());
+OLMM.prototype.enableHoverMode = function (layer, featureType) {
+    this.map.addInteraction(new Hover(layer, featureType));
 };

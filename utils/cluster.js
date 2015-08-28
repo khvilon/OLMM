@@ -12,7 +12,7 @@ OLMM.prototype.getPointFeaturesInExtent = function (extent, sourceName) {
 OLMM.prototype.enableCluster = function (sourceName, groupBy) {
     var self = this;
 
-    sourceName = sourceName || self.getDefaultSourceName() || 'edit';
+    sourceName = sourceName || self.getDefaultSourceName();
     var sourceClusterName = sourceName + 'Cluster';
 
     self.addSource('neighborsSource');
@@ -20,6 +20,8 @@ OLMM.prototype.enableCluster = function (sourceName, groupBy) {
     self.addLayer(sourceClusterName, self.createVectorLayer(
         self.getLayerByName(sourceName).getStyleFunction()
     ));
+
+    self.addRelatedLayer(sourceName, sourceClusterName);
 
     self.map.getView().on('propertychange', function (e) {
         switch (e.key) {
@@ -48,9 +50,14 @@ OLMM.prototype.updateCluster = function (sourceName, groupBy) {
     var clusterSource = self.getSourceByName(sourceClusterName);
     // фичи в экстенте
     var features = self.getPointFeaturesInExtent(extent, sourceName); // getPointsInExtent
-    var clusters = self.getClusters(features, groupBy);
+    var clusters = self.getClusters(features, groupBy, sourceName);
 
     clusterSource.addFeatures(clusters);
+
+    var callback = self.config['updateClusterCallback'];
+    if (callback) {
+        callback(sourceName, groupBy);
+    }
 };
 
 /**
@@ -62,9 +69,10 @@ OLMM.prototype.updateCluster = function (sourceName, groupBy) {
 // 6) создаем точку кластера на карте
  * @param features
  * @param groupBy
+ * @param sourceName
  * @returns {Array}
  */
-OLMM.prototype.getClusters = function  (features, groupBy) {
+OLMM.prototype.getClusters = function  (features, groupBy, sourceName) {
     var self = this;
     var clusters = [];
     for (var i = 0; i < features.length; i++) {
@@ -73,30 +81,29 @@ OLMM.prototype.getClusters = function  (features, groupBy) {
         if (self.clusteredPoints.indexOf(feature.getId()) != -1) {
             continue
         }
-        var neighbors = self.getNeighbors(feature, groupBy);
+        var neighbors = self.getNeighbors(feature, groupBy, sourceName);
 
         if (neighbors.length > 1) {
+            var center = self.getClusterCenter(neighbors);
+            // точка кластера и установка ей аналогичных свойств(влияет на ее стиль отображения)
+            var clusterPoint = new ol.Feature(new ol.geom.Point(center));
+            clusterPoint.setProperties(self.getClusterProperties(neighbors));
+            clusterPoint.setProperties({'visible': true});
+            clusters.push(clusterPoint);
 
             neighbors.forEach(function(feature){
                 feature.setProperties({'visible': false})
             });
-
-            var center = self.getClusterCenter(neighbors);
-            // генерим свойства для стиля кластера
-            var clusterPointProperties = self.getClusterProperties(neighbors);
-            var clusterPoint = new ol.Feature(new ol.geom.Point(center));
-            clusterPoint.setProperties(clusterPointProperties);
-            clusters.push(clusterPoint)
         } else {
             var f = neighbors[0];
             self.pointsWithoutCluster.push(f.getId());
-            f.setProperties({"visible": true});
+            f.setProperties({'visible': true})
         }
     }
     return clusters;
 };
 
-OLMM.prototype.getNeighbors = function (feature, groupBy) {
+OLMM.prototype.getNeighbors = function (feature, groupBy, sourceName) {
     var self = this;
 
     var mapDistance = self.clusterDisance * self.map.getView().getResolution();
@@ -109,7 +116,7 @@ OLMM.prototype.getNeighbors = function (feature, groupBy) {
 
     var featureProperties = feature.getProperties() || {};
     // отбираем в кластеризуемом квадрате нужные точки (соседи)
-    return self.getPointFeaturesInExtent(featureExtent, 'edit').filter(function (f) {
+    return self.getPointFeaturesInExtent(featureExtent, sourceName).filter(function (f) {
         return f.getProperties()[groupBy] == featureProperties[groupBy];
     });
 };
@@ -141,8 +148,9 @@ OLMM.prototype.getClusterProperties = function (neighbors) {
         var state = props['_state'] || '';
         state.replace('selected', 'default');
         clusterPointProperties = {
-            visible: true,
+            visible: props['visible'],
             objecttype: props['objecttype'],
+            type: props['type'],  // TODO hardcore
             _state_additional: props['_state_additional'],
             _state: state
         }
@@ -168,14 +176,13 @@ OLMM.prototype.addClusterClickFunction = function (layer_name) {
 
     layer_name += 'Cluster';
 
-    if (layer_name) {
-        layer = self.getLayerByName(layer_name);
-    }
-
     self.map.on('singleclick', function (event) {
-        var feature = this.getFeatureAtPixel(event.pixel, layer);
-        if (feature) {
-            self.clusterClickHandleFunction(event, feature);
+        if (layer_name) {
+            layer = self.getLayerByName(layer_name);
+            var feature = this.getFeatureAtPixel(event.pixel, layer);
+            if (feature) {
+                self.clusterClickHandleFunction(event, feature);
+            }
         }
     });
 };

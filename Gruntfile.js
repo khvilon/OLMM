@@ -36,6 +36,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/sc/olmm.min.js': 'build/sc/olmm.js'
                 }
+            },
+            uragan: {
+                files: {
+                    'build/uragan/olmm.min.js': 'build/uragan/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -46,12 +51,12 @@ module.exports = function (grunt) {
                 'build/gis/olmm.js',
                 'build/platon/olmm.js',
                 'build/dashboard/olmm.js',
-                'build/sc/olmm.js'
+                'build/sc/olmm.js',
+                'build/uragan/olmm.js'
             ]
         },
 
         concat: {
-            // Для примера mmtest.html
             mmtest: {
                 src: [
                     'OpenLayers/build/ol.js',
@@ -196,6 +201,29 @@ module.exports = function (grunt) {
                     'utils/transform.js'
                 ],
                 dest: 'build/dashboard/olmm.js'
+            },
+
+            uragan: {
+                src: [
+                    'openlayers/ol.js',
+
+                    'apps/core.js',
+                    'apps/uragan.js',
+
+                    'interactions/click.js',
+                    'interactions/hover.js',
+
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/feature.js',
+                    'utils/points.js',
+                    'utils/style.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/cursor.js',
+                    'utils/transform.js'
+                ],
+                dest: 'build/uragan/olmm.js'
             }
         }
     });
@@ -249,5 +277,11 @@ module.exports = function (grunt) {
         'clean',
         'concat:sc',
         'uglify:sc'
+    ]);
+
+    grunt.registerTask('uragan', [
+        'clean',
+        'concat:uragan',
+        'uglify:uragan'
     ]);
 };
