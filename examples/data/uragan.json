@@ -48,7 +48,36 @@
               55.47416
             ]
         ]
-      }
+      },
+        "properties": {
+          "name": "101",
+          "federal": true
+        }
+    },
+    {
+      "id": 4,
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+            [
+              37.93995,
+              55.77416
+            ],
+            [
+              38.91965,
+              57.77416
+            ],
+            [
+              38.61965,
+              57.47416
+            ]
+        ]
+      },
+        "properties": {
+          "name": "102",
+          "federal": false
+        }
     }
   ]
 }

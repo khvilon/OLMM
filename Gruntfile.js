@@ -41,6 +41,11 @@ module.exports = function (grunt) {
                 files: {
                     'build/uragan/olmm.min.js': 'build/uragan/olmm.js'
                 }
+            },
+            tsotemp: {
+                files: {
+                    'build/tsotemp/olmm.min.js': 'build/tsotemp/olmm.js'
+                }
             }
         },
         // перед выполнением конкатенации, нужно удалить старые файлы
@@ -52,7 +57,8 @@ module.exports = function (grunt) {
                 'build/platon/olmm.js',
                 'build/dashboard/olmm.js',
                 'build/sc/olmm.js',
-                'build/uragan/olmm.js'
+                'build/uragan/olmm.js',
+                'build/tsotemp/olmm.js'
             ]
         },
 
@@ -152,7 +158,7 @@ module.exports = function (grunt) {
 
             platon: {
                 src: [
-                    'openlayers/ol-debug.js',
+                    'openlayers/ol.js',
 
                     'apps/core.js',
                     'apps/platon.js',
@@ -224,7 +230,31 @@ module.exports = function (grunt) {
                     'utils/transform.js'
                 ],
                 dest: 'build/uragan/olmm.js'
+            },
+
+            tsotemp: {
+                src: [
+                    'openlayers/ol.js',
+
+                    'apps/core.js',
+                    'apps/tso_temp.js',
+
+                    'utils/layer.js',
+                    'utils/source.js',
+                    'utils/feature.js',
+                    'utils/points.js',
+                    'utils/style.js',
+                    'utils/map.js',
+                    'utils/geojson.js',
+                    'utils/cursor.js',
+                    'utils/transform.js'
+                ],
+                dest: 'build/tsotemp/olmm.js'
             }
+        },
+        jsbeautifier: {
+            options: {},
+            files: ['build/platon/olmm.js']
         }
     });
 
@@ -232,6 +262,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
 
     // Сборка для всех тестов
     grunt.registerTask('default',
@@ -264,6 +295,7 @@ module.exports = function (grunt) {
     grunt.registerTask('platon', [
         'clean',
         'concat:platon',
+        'jsbeautifier',
         'uglify:platon'
     ]);
 
@@ -272,6 +304,8 @@ module.exports = function (grunt) {
         'concat:dashboard',
         'uglify:dashboard'
     ]);
+
+    // TODO beatify and then uglify 2!!!
 
     grunt.registerTask('sc', [
         'clean',
@@ -283,5 +317,11 @@ module.exports = function (grunt) {
         'clean',
         'concat:uragan',
         'uglify:uragan'
+    ]);
+
+    grunt.registerTask('tsotemp', [
+        'clean',
+        'concat:tsotemp',
+        'uglify:tsotemp'
     ]);
 };

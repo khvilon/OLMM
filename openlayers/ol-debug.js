@@ -35023,7 +35023,6 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
 
 };
 
-
 /**
  * @param {?olx.FrameState} frameState Frame state.
  * @private

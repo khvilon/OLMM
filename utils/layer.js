@@ -98,8 +98,21 @@
     };
 
     module.createWMSLayer = function (server, layers, visible) {
+        var self = this;
+
+        self.copyCreated = false;
+
         if (visible == undefined) {
             visible = true
+        }
+
+        if (!self.copyCreated) {
+            var attrs = [new ol.Attribution({
+              html: "&copy 2015"
+            })];
+            self.copyCreated = true;
+        } else {
+            attrs = [];
         }
 
         var source = new ol.source.TileWMS({
@@ -107,9 +120,7 @@
             crossOrigin:'anonymous',
             params: {'LAYERS': layers, 'WIDTH': 256, 'HEIGHT': 256, 'VERSION': '1.1.1'},
             serverType: 'geoserver',
-            attributions: [new ol.Attribution({
-              html: "&copy 2015"
-            })]
+            attributions: attrs
         });
 
         return new ol.layer.Tile({source: source, visible: visible});

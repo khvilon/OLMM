@@ -13,7 +13,10 @@ OLMM.prototype.initPlatonApp = function (options) {
     var popup = options['popup'];
     var icon1 = options['iconTcos'];
     var icon2 = options['iconDefault'];
-    var mapOptions = options['mapOptions'] || {};
+    var mapOptions = options['mapOptions'] || {
+            "maxZoom": 10,
+            "minZoom": 3
+        };
 
     var overlay = new ol.Overlay({
         element: popup,

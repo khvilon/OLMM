@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../openlayers/ol.css" type="text/css">
+    <script src="../jquery-1.10.2.js"></script>
+
+    <script src="../build/tsotemp/olmm.js" type="text/javascript"></script>
+    <title>tso temp example</title>
+</head>
+<body>
+<div id="map" class="map" style="height: 100%; width: 100%; margin-top: 20px;"></div>
+<script type="text/javascript">
+    var olmm = new OLMM();
+    olmm.initTSOTempApp({
+        'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUUlEQVR42sWXbUhTYRTHzxiaiQgpI1MwLEmrD1FK+br5UpZpWt8CIepL9iWImqmxu01zqL1RJGVmIASC9CEEBVGuL6WVNtNPpRUZgkQFfghJMufT/w528brd3b3c0cPOzhnbPb//7n2ec55HQ/95aIK5uM6+N5GRQ2dNn5kMuQDbVOZmxhxHGFs9BWgJvA6e4GHwiIk5BhEPIO6yZfycU0WAbSpHS+Q4j8R1Eqg7XIwZWyO2ttaJ2NKU/etzwAIATwG8G4lTJFBluCtewQdLc+7vJr8FAH4M8GdIHBUgHN8JMRPiDsZY5S3DyopPAgA3AN6PxOEqwGGCZ1238/6eVhQAeBLg40isUxGOzE5vupPvsCkIyBxGYkMI4C7bf7eQTXsUADiWl6MnhHAYDdw7zIo8Cmh4d9AOWFoI4S5feL+IBiUCAE8DzK4G/Kb+DxlHwuTgwngKAWckAq5PHqhBwsZg4Tf0y858xuFwObjgF1uOUqxEQP3kPhSc1bJg4M36JfFxGoci5OAu2/GgmOZEAWgsn5A4WQ5ed2ieuFfxHuER2miyZM1LVpNxMNIbXLCih8dpQBRgtad+AzxO7p9bM746f8eNbZPANaSlhtzvbsWsio/2BhesorWEOkUBlrfJP5zFR+a2W7K+iMnNo/EivD53wQ1ezccowYUFUtFauk6AeSLJ+QjknrklS9rUGsZSyZQ94wav4bf6AhdexY9KqU8UwE0kdgNeJjfhzNkfSWlc4xN8hTsnYduJdZOQG0+oAbzR22zncmZl4SZ+uz/wRcCly9D0Jk6ogHalpcbp3W+7md/pD1wIOtrK6JxEgPMWvo61A56mVF45wwfxGgu/y1+44PMel9OIm4DasS0lgPf4UtvN+e/Jyu8OBN4HeLGL6daOq0ejeMAL/Ggs/sAdcOnt5TQtL+BlJLbaTJgLOpXhgqsFXLI/9Lglq3qxKQcAHhauIrwT8IqNLNlN6ZXhsAJchk0pi1EB3oG3yvaT5Num1DUuD2nRnBi6JNsTIHwZ7ir+eYscQ/FgconXaJHoLOA4mFCCH/AncPWAz3vL7/PR7GI/YT4QjmaEck0FsOQN8CXEowh64Z9jqS34kjeow+mFXkLbIx262mygOYISoMb4B8v3m2yY8jLlAAAAAElFTkSuQmCC'
+    });
+
+    $.ajax({
+        url: 'data/uragan.json',
+        dataType: 'json',
+        crossDomain: true,
+        success: function(data) {
+            olmm.addFeaturesFromGeoJSON({
+                "geojson_data": data,
+                "need_fit": true
+            })
+        }
+    });
+
+</script>
+</body>
+</html>
