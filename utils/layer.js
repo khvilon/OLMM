@@ -3,10 +3,11 @@
     module.addLayer = function (name, layer) {
         var self = this;
 
-        self.layers[name] = layer;
-
-        if (!self.getSourceByName(name)) {
-            self.addSource(name, layer.getSource());
+        if (!self.getLayerByName(name)) {
+            self.layers[name] = layer;
+            if (!self.getSourceByName(name)) {
+                self.addSource(name, layer.getSource());
+            }
         }
 
         if (self.map) {

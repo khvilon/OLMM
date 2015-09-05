@@ -28,10 +28,9 @@
 
     module.addSource = function(name, source) {
         var self = this;
-        if (source === undefined) {
-            source = self.createVectorSource()
+        if (!self.getSourceByName(name)) {
+            self.sources[name] = source || self.createVectorSource()
         }
-        self.sources[name] = source
     };
 
 })(OLMM.prototype);

@@ -78,6 +78,27 @@
           "name": "102",
           "federal": false
         }
+    },
+    {
+      "id": 5,
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+            [
+              37.77416,
+              55.93995
+            ],
+            [
+              131.47416,
+              43.61965
+            ]
+        ]
+      },
+        "properties": {
+          "name": "102",
+          "federal": false
+        }
     }
   ]
 }
