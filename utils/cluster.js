@@ -163,10 +163,8 @@ OLMM.prototype.getClusterProperties = function (neighbors) {
             }
         }
     }
-    if (neighbors.length > 1) {
-        clusterPointProperties['count'] = neighbors.length;
-        clusterPointProperties['neighbors'] = neighbors;
-    }
+    clusterPointProperties['count'] = neighbors.length;
+    clusterPointProperties['neighbors'] = neighbors;
     if (propsCallback) {
         clusterPointProperties = propsCallback(clusterPointProperties)
     }
@@ -192,6 +190,7 @@ OLMM.prototype.addClusterClickFunction = function (layer_name) {
     }
 
     self.map.on('singleclick', function (event) {
+
         var feature = this.getFeatureAtPixel(event.pixel, layer);
         if (feature) {
             self.clusterClickHandleFunction(event, feature);

@@ -26,10 +26,6 @@ OLMM.prototype.initSCApp = function (options) {
 
     self.addSource('searchSource', self.createVectorSource());
 
-    self.addClusterClickFunction(layer_name);
-
-    self.addFeatureClickFunction(function(e, f){console.log(e, f)}, 'edit');
-
     var styleIconMap = {
         'smk': icon_smk_default,
         'ssk': icon_ssk_default,
@@ -94,7 +90,6 @@ OLMM.prototype.initSCApp = function (options) {
     };
 
     var layer_owners = 'owners';
-    self.addClusterClickFunction(layer_owners);
 
     var layerOwner = self.getLayerByName(layer_owners);
     if (!layerOwner) {
@@ -109,7 +104,7 @@ OLMM.prototype.initSCApp = function (options) {
 
                 var owners = featureProperties['owners'] || 0;
                 var stroke;
-                if (featureProperties['count'] && featureProperties['count'] > 0) {
+                if (featureProperties['count'] && featureProperties['count'] > 1) {
                     stroke = new ol.style.Stroke({
                         color: '#000000'
                     })

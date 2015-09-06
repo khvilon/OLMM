@@ -1,3 +1,75 @@
+var Click = function (options) {
+    options = options || {};
+    var self = this;
+    this.olmm = options['olmm'];
+    this.callbacks = [];
+    this.olmm.map.on('singleclick', this.handleClickFunction.bind(self));
+};
+
+Click.prototype.handleClickFunction = function (event) {
+    var self = this;
+    var features = [];
+    var layerFeaturesMap = {};
+
+    self.olmm.map.forEachFeatureAtPixel(event.pixel, function(feature, layer){
+
+        var layerName;
+        var layerObj;
+
+        for (layerName in self.olmm.layers) {
+            layerObj = self.olmm.layers[layerName];
+            if (layerObj == layer) {
+                break;
+            }
+        }
+
+        features.push(feature);
+
+        if (!layerFeaturesMap[layerName]) {
+            layerFeaturesMap[layerName] = []
+        }
+
+        layerFeaturesMap[layerName].push(feature)
+    });
+
+    self.callbacks.forEach(function(callbackData){  // simpleclick
+        var callback = callbackData['fn'];
+        var params = callbackData['params'] || {};
+
+        if (!!params) {
+            var layerName = params['layerName'];
+            var featureType = params['featureType'];
+            var featureProperties = params['featureProperties'];
+
+            if (layerName) {
+                features = layerFeaturesMap[layerName] || [];
+            }
+
+            if (featureType) {
+                features = features.filter(function(feature){
+                    return feature.getGeometry().getType() === featureType
+                })
+            }
+        }
+
+        if (features.length > 0) {
+            callback.call(self.olmm, event, features[0]);
+        }
+    });
+};
+
+
+OLMM.prototype.enableClickInteraction = function () {
+    var self = this;
+    self.clickApp = new Click({'olmm': self})
+};
+
+
+OLMM.prototype.addClickFunction = function (fn, params) {
+    this.clickApp.callbacks.push({'fn': fn, 'params': params})
+};
+
+
 OLMM.prototype.addMapClickFunction = function (handleMapClickFunction) {
     this.map.on('singleclick', handleMapClickFunction)
 };
