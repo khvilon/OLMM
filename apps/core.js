@@ -10,7 +10,9 @@ function OLMM() {
         'add_callback': [],
         'edit_callback': [],
         'delete_callback': [],
-        'drag_callback': []
+        'drag_callback': [],
+        'iconAnchorX': 0,
+        'iconAnchorY': 0
     };
 
     this.select = null;

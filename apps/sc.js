@@ -29,6 +29,7 @@ OLMM.prototype.initSCApp = function (options) {
     var styleIconMap = {
         'smk': icon_smk_default,
         'ssk': icon_ssk_default,
+        'sskWarning': icon_ssk_selected,
         'cod': icon_cod_default,
         'cipp': icon_cipp_default
     };
@@ -46,6 +47,10 @@ OLMM.prototype.initSCApp = function (options) {
 
                 var featureObjectType = featureProperties['type'];
 
+                if (featureProperties['entity']) {
+                    featureObjectType += 'Warning'
+                }
+
                 var icon_url = styleIconMap[featureObjectType];
                 if (!icon_url) {
                     icon_url = icon_default
@@ -57,11 +62,8 @@ OLMM.prototype.initSCApp = function (options) {
                     }),
                     text: new ol.style.Text({
                         text: feature.getProperties()['count'],
-                        size: 24,
+                        size: 30,
                         fill: new ol.style.Fill({
-                            color: '#000000'
-                        }),
-                        stroke: new ol.style.Stroke({
                             color: '#000000'
                         })
                     })
@@ -77,16 +79,13 @@ OLMM.prototype.initSCApp = function (options) {
         {"from": 10, "to": 19, 'color': '#7BAB0D'},
         {"from": 20, "to": 29, 'color': '#6A901A'},
         {"from": 30, "to": 39, 'color': '#597528'},
-        {"from": 40, "to": 99999999, 'color': '#485A35'}
+        {"from": 40, "to": 99999, 'color': '#485A35'}
     ];
 
-    var selectOwnerColor = function(owners, rate) {
-        if (!rate) {
-            rate = 1;
-        }
+    var selectOwnerColor = function(owners) {
         return styleOwnerColorMap.filter(function(colorMap){
-            return colorMap["from"] * rate <= owners && owners <= colorMap["to"] * rate
-        })[0]['color']
+            return colorMap["from"] <= owners && owners <= colorMap["to"]
+        })[0]['color'] || 'black'
     };
 
     var layer_owners = 'owners';
@@ -103,6 +102,8 @@ OLMM.prototype.initSCApp = function (options) {
                 ) { return [] }
 
                 var owners = featureProperties['owners'] || 0;
+                var rate = featureProperties['rate'] || 0;
+
                 var stroke;
                 if (featureProperties['count'] && featureProperties['count'] > 1) {
                     stroke = new ol.style.Stroke({
@@ -112,7 +113,7 @@ OLMM.prototype.initSCApp = function (options) {
 
                 return [new ol.style.Style({
                     image: new ol.style.Circle({
-                        radius: 10,
+                        radius: 18,
                         fill: new ol.style.Fill({
                             color: selectOwnerColor(owners)
                         }),
@@ -120,11 +121,8 @@ OLMM.prototype.initSCApp = function (options) {
                     }),
                     text: new ol.style.Text({
                         text: owners,
-                        size: 25,
+                        size: 30,
                         fill: new ol.style.Fill({
-                            color: '#FFFFFF'
-                        }),
-                        stroke: new ol.style.Stroke({
                             color: '#FFFFFF'
                         })
                     })

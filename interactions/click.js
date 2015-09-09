@@ -1,4 +1,4 @@
-var Click = function (options) {
+var ClickModule = function (options) {
     options = options || {};
     var self = this;
     this.olmm = options['olmm'];
@@ -6,7 +6,7 @@ var Click = function (options) {
     this.olmm.map.on('singleclick', this.handleClickFunction.bind(self));
 };
 
-Click.prototype.handleClickFunction = function (event) {
+ClickModule.prototype.handleClickFunction = function (event) {
     var self = this;
     var features = [];
     var layerFeaturesMap = {};
@@ -61,7 +61,7 @@ Click.prototype.handleClickFunction = function (event) {
 
 OLMM.prototype.enableClickInteraction = function () {
     var self = this;
-    self.clickApp = new Click({'olmm': self})
+    self.clickApp = new ClickModule({'olmm': self})
 };
 
 

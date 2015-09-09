@@ -41,7 +41,8 @@
         'icon': 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png',
         'callback': function (coordinates) {
             console.log(coordinates);
-        }
+        },
+        'waysColors': ['white', 'black', 'yellow']
     });
 
     $('.asd').on('click', function(){
@@ -63,6 +64,7 @@
     olmm.addForceToConfig('pointText', 'test');
     olmm.addForceToConfig('pointTextColor', 'yellow');
     olmm.addForceToConfig('pointTextSize', 24);
+    olmm.addForceToConfig('defaultWayColor', 'yellow');
 
     $('#makeRoute').on('click', function(){
         $.ajax({

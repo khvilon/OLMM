@@ -3,12 +3,17 @@ OLMM.prototype.initSMKApp = function (options) {
 
     options = options || {};
     var callback = options['callback'];
+    var icon = options['icon'];
+    var wmsLayers = options['wmsLayers'];
+    var waysColors = options['waysColors'];
+    var mapOptions = options['mapOptions'];
 
     self.lastDrawPointId = null;
 
-    self.createMap();
-    self.createSMKLayers();
+    self.createMap(mapOptions);
+    self.createSMKLayers(wmsLayers, waysColors);
     self.setDefaultSourceName('points');
+
     self.config['smkCallBackFunction'] = callback;
 
     var sel = function(event, data) {
@@ -58,26 +63,31 @@ OLMM.prototype.clearMap = function () {
     self.clearSources();
 };
 
-OLMM.prototype.createSMKLayers = function() {
+OLMM.prototype.createSMKLayers = function(wmsLayers, waysColors) {
     var self = this;
 
-    var osm_layer = [{
-        'layer_name': 'osm',
-        'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
-    }, {
-        'layer_name': '__all__',
-        'wms_conf': {'url': 'http://map.prod.svp12.ru/', 'layers': '__all__', 'visible': true}
-    }];
+    if (!wmsLayers) {
+        wmsLayers = [{
+            'layer_name': 'osm',
+            'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
+        }, {
+            'layer_name': 'froad',
+            'wms_conf': {'url': 'http://map.prod.svp12.ru/', 'layers': 'froad', 'visible': true}
+        }];
+    }
 
-    self.loadWMSLayers(osm_layer);
+    self.loadWMSLayers(wmsLayers);
 
     self.addLayer('ways', self.createVectorLayer(
-        new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: '#009933',
-                width: 5
-            })
-        })
+        function (feature, resolution) {
+            return [new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: feature.getProperties()['color'] || 'black',
+                    width: 5
+                })
+            })]
+        }
+
     ));
 
     self.addLayer('points', self.createVectorLayer(
@@ -88,15 +98,16 @@ OLMM.prototype.createSMKLayers = function() {
             var textSize = 14;
             var textColor = 'black';
             var pointRadius = 6;
+            var icon;
 
             if (featureProperties) {
 
-                if (featureProperties['color']) {
-                    color = featureProperties['color']
-                }
-
                 if (featureProperties['text']) {
                     text = featureProperties['text']
+                }
+
+                if (featureProperties['color']) {
+                    color = featureProperties['color']
                 }
 
                 if (featureProperties['textColor']) {
@@ -111,16 +122,27 @@ OLMM.prototype.createSMKLayers = function() {
                     pointRadius = featureProperties['pointRadius']
                 }
 
+                if (featureProperties['icon']) {
+                    icon = featureProperties['icon']
+                }
+
+            }
+
+            var imageStyle;
+            if (icon) {
+                imageStyle = self.createBaseIconStyle(icon)
+            } else {
+                imageStyle = new ol.style.Circle({
+                    radius: pointRadius,
+                    fill: new ol.style.Fill({
+                        color: color
+                    })
+                })
             }
 
             return [
                 new ol.style.Style({
-                    image: new ol.style.Circle({
-                        radius: pointRadius,
-                        fill: new ol.style.Fill({
-                            color: color
-                        })
-                    }),
+                    image: imageStyle,
                     text: new ol.style.Text({
                         text: text,
                         size: textSize,

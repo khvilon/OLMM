@@ -15,34 +15,6 @@
         return this.styles[name]
     };
 
-    module.createClusterIconStyleTesting = function (f, r) {
-        var self = this;
-
-        var size = f.get('features').length;
-        var label;
-        if (size == 1) {
-            label = ''
-        } else {
-            label = size.toString();
-        }
-
-        return [new ol.style.Style({
-            image: new ol.style.Icon({
-                src: 'http://icons.iconarchive.com/icons/icojam/blueberry-basic/32/check-icon.png'
-            }),
-            text: new ol.style.Text({
-                text: label,
-                size: 24,
-                fill: new ol.style.Fill({
-                    color: '#000000'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000000'
-                })
-            })
-        })]
-    };
-
     module.createClusterIconStyle = function (feature, res, src) {
         return function (feature, res) {
             return [new ol.style.Style({
@@ -63,6 +35,47 @@
         }
     };
 
+    module.iconStyle = function (options) {
+        options = options || {};
+
+        var self = this;
+        var src = options['src'] || self.getConfigValue('iconSrc');
+        var anchorX = options['anchorx'] || self.getConfigValue('iconAnchorX');
+        var anchorY = options['anchory'] || self.getConfigValue('iconAnchorY');
+
+        return new ol.style.Icon({
+            src: src,
+            anchor: [anchorX, anchorY],
+            anchorXUnits: 'pixels',
+            anchorYUnits: 'pixels'
+        })
+    };
+
+
+    module.textStyle = function (options) {
+        options = options || {};
+
+        var fill = options['fillStyle'];
+        var stroke = options['strokeStyle'];
+        var text = options['text'];
+
+        return new ol.style.Text({
+            text: text,
+            size: 24,
+            fill: new ol.style.Fill({
+                color: '#000000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#000000'
+            })
+        })
+
+
+    };
+    //module.fillStyle
+    //module.strokeStyle
+    //module.baseStyle
+
     module.createIconStyle = function (src, anchorx, anchory) {
         var self = this;
         var anchorX = anchorx || self.getConfigValue('iconAnchorX') || 0;
@@ -75,6 +88,19 @@
                 anchorXUnits: 'pixels',
                 anchorYUnits: 'pixels'
             })
+        })
+    };
+
+    module.createBaseIconStyle = function (src, anchorx, anchory) {
+        var self = this;
+        var anchorX = anchorx || self.getConfigValue('iconAnchorX') || 0;
+        var anchorY = anchory || self.getConfigValue('iconAnchorY') || 0;
+
+        return new ol.style.Icon({
+            src: src,
+            anchor: [anchorX, anchorY],
+            anchorXUnits: 'pixels',
+            anchorYUnits: 'pixels'
         })
     };
 
