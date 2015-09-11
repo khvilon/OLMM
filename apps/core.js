@@ -3,6 +3,7 @@ function OLMM() {
     this.relatedLayers = {};
     this.sources = {};
     this.overlays = {};
+    this.clusters = [];
     this.initLayers = [];
     this.styles = {};
 
@@ -30,6 +31,8 @@ function OLMM() {
 
     module.createMap = function (options) {
         options = options || {};
+
+        var self = this;
 
         var target = options['target'] || 'map';
         var projection = options['projection'] || 'EPSG:3857';
@@ -61,6 +64,15 @@ function OLMM() {
                 minZoom: minZoom,
                 tileSize: [256, 256]
             })
+        });
+
+        this.map.getView().on('propertychange', function (e) {
+            switch (e.key) {
+                case 'resolution':
+                    if (e.oldValue != this.getResolution()) {
+                        self.clusters.forEach(function(cluster){cluster.update()});
+                    }
+            }
         });
 
         if (controls == undefined) {

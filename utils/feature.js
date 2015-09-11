@@ -341,4 +341,16 @@
         source.removeFeature(feature);
     };
 
+
+    module.getPointFeaturesInExtent = function (extent, sourceName) {
+        var self = this;
+        var source = self.getSourceByName(sourceName);
+
+        var features = source.getFeaturesInExtent(extent);
+
+        return features.filter(function (feature) {
+            return feature.getGeometry().getType() == self.pointName
+        });
+    };
+
 })(OLMM.prototype);

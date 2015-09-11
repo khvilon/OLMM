@@ -15,26 +15,6 @@
         return this.styles[name]
     };
 
-    module.createClusterIconStyle = function (feature, res, src) {
-        return function (feature, res) {
-            return [new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: src
-                }),
-                text: new ol.style.Text({
-                    text: feature.getProperties()['count'],
-                    size: 24,
-                    fill: new ol.style.Fill({
-                        color: '#000000'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000000'
-                    })
-                })
-            })]
-        }
-    };
-
     module.iconStyle = function (options) {
         options = options || {};
 
@@ -51,44 +31,45 @@
         })
     };
 
-
     module.textStyle = function (options) {
         options = options || {};
 
-        var fill = options['fillStyle'];
-        var stroke = options['strokeStyle'];
+        var fill = options['fill'];
+        var stroke = options['stroke'];
         var text = options['text'];
+        var size = options['size'];
 
         return new ol.style.Text({
             text: text,
-            size: 24,
-            fill: new ol.style.Fill({
-                color: '#000000'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#000000'
-            })
+            size: size,
+            fill: fill,
+            stroke: stroke
         })
-
-
     };
-    //module.fillStyle
-    //module.strokeStyle
-    //module.baseStyle
+
+    module.fillStyle = function (options) {
+        options = options || {};
+
+        var color = options['color'];
+
+        return new ol.style.Fill({
+            color: color
+        })
+    };
+
+    module.strokeStyle = function (options) {
+        options = options || {};
+
+        var color = options['color'];
+        var width = options['width'] || 1;
+
+        return new ol.style.Stroke({
+            color: color
+        })
+    };
 
     module.createIconStyle = function (src, anchorx, anchory) {
-        var self = this;
-        var anchorX = anchorx || self.getConfigValue('iconAnchorX') || 0;
-        var anchorY = anchory || self.getConfigValue('iconAnchorY') || 0;
-
-        return new ol.style.Style({
-            image: new ol.style.Icon({
-                src: src,
-                anchor: [anchorX, anchorY],
-                anchorXUnits: 'pixels',
-                anchorYUnits: 'pixels'
-            })
-        })
+        return this.createBaseIconStyle(src, anchorx, anchory);  // backward compatibility
     };
 
     module.createBaseIconStyle = function (src, anchorx, anchory) {
