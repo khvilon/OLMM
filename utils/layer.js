@@ -145,6 +145,10 @@
     module.loadWMSLayers = function (layers_data) {
         var self = this;
 
+        if (!layers_data || layers_data.length == 0) {
+            throw "Layers data not set"
+        }
+
         layers_data.map(function (layer_data) {
             var layer_name = layer_data['layer_name'];
             var wms_conf = layer_data['wms_conf'];

@@ -66,7 +66,10 @@ OLMM.prototype.enableClickInteraction = function () {
 
 
 OLMM.prototype.addClickFunction = function (fn, params) {
-    this.clickApp.callbacks.push({'fn': fn, 'params': params})
+    if (!this.clickApp) {
+        this.enableClickInteraction();
+    }
+    this.clickApp.callbacks.push({'fn': fn, 'params': params});
 };
 
 

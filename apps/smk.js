@@ -5,13 +5,12 @@ OLMM.prototype.initSMKApp = function (options) {
     var callback = options['callback'];
     var icon = options['icon'];
     var wmsLayers = options['wmsLayers'];
-    var waysColors = options['waysColors'];
     var mapOptions = options['mapOptions'];
 
     self.lastDrawPointId = null;
 
     self.createMap(mapOptions);
-    self.createSMKLayers(wmsLayers, waysColors);
+    self.createSMKLayers(wmsLayers);
     self.setDefaultSourceName('points');
 
     self.config['smkCallBackFunction'] = callback;
@@ -63,18 +62,8 @@ OLMM.prototype.clearMap = function () {
     self.clearSources();
 };
 
-OLMM.prototype.createSMKLayers = function(wmsLayers, waysColors) {
+OLMM.prototype.createSMKLayers = function(wmsLayers) {
     var self = this;
-
-    if (!wmsLayers) {
-        wmsLayers = [{
-            'layer_name': 'osm',
-            'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
-        }, {
-            'layer_name': 'froad',
-            'wms_conf': {'url': 'http://map.prod.svp12.ru/', 'layers': 'froad', 'visible': true}
-        }];
-    }
 
     self.loadWMSLayers(wmsLayers);
 
@@ -83,11 +72,10 @@ OLMM.prototype.createSMKLayers = function(wmsLayers, waysColors) {
             return [new ol.style.Style({
                 stroke: new ol.style.Stroke({
                     color: feature.getProperties()['color'] || 'black',
-                    width: 5
+                    width: feature.getProperties()['width'] || 5
                 })
             })]
         }
-
     ));
 
     self.addLayer('points', self.createVectorLayer(

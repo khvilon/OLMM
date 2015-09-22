@@ -70,7 +70,7 @@ function OLMM() {
             switch (e.key) {
                 case 'resolution':
                     if (e.oldValue != this.getResolution()) {
-                        self.clusters.forEach(function(cluster){cluster.update()});
+                        self.updateClusters()
                     }
             }
         });

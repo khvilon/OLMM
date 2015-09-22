@@ -5,6 +5,7 @@ var Cluster = function (options) {
     this.sourceName = options['sourceName'] || this.olmm.getDefaultSourceName();
     this.sourceClusterName = this.sourceName + 'Cluster';
     this.groupBy = options['groupBy'];
+    this.distance = options['distance'];
 
     this.olmm.addSource('neighborsSource');
 
@@ -31,6 +32,11 @@ OLMM.prototype.enableCluster = function (options) {
 };
 
 
+OLMM.prototype.updateClusters = function () {
+    this.clusters.forEach(function(cluster){cluster.update()});
+};
+
+
 Cluster.prototype.update = function () {
     var self = this;
     var olmm = self.olmm;
@@ -38,8 +44,6 @@ Cluster.prototype.update = function () {
     if (olmm.getLayerVisible(self.sourceName) === false) {
         return;
     }
-
-    var extent = olmm.map.getView().calculateExtent(olmm.map.getSize());
 
     olmm.clearSource(self.sourceClusterName);
 
@@ -63,8 +67,6 @@ Cluster.prototype.update = function () {
 // 5) стилим точку кластера
 // 6) создаем точку кластера на карте
  * @param features
- * @param groupBy
- * @param sourceName
  * @returns {Array}
  */
 Cluster.prototype.getClusterPoints = function  (features) {
@@ -110,7 +112,7 @@ Cluster.prototype.getNeighbors = function (feature) {
     var self = this;
     var olmm = self.olmm;
 
-    var mapDistance = olmm.getConfigValue('clusterDistance') || 30;
+    var mapDistance = self.distance || olmm.getConfigValue('clusterDistance') || 30;
     mapDistance *= olmm.map.getView().getResolution();
 
     var coords = feature.getGeometry().getCoordinates();

@@ -1,14 +1,9 @@
-OLMM.prototype.createTSOLayers = function(icon_src) {
+OLMM.prototype.createTSOLayers = function(icon_src, wmsLayers) {
     var self = this;
 
     self.addStyle('icon1', self.createIconStyle(icon_src));
 
-    var osm_layer = {
-        'layer_name': 'osm',
-        'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm'}
-    };
-
-    self.loadWMSLayers([osm_layer]);
+    self.loadWMSLayers(wmsLayers);
 
     self.addLayer('tso', self.createVectorLayer(
         function (feature, resolution) {
@@ -20,7 +15,7 @@ OLMM.prototype.createTSOLayers = function(icon_src) {
             var featureState = feature.getProperties()['federal'];
             var color = featureStateMap[featureState];
 
-            var styles = [
+            return [
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: color,
@@ -28,8 +23,6 @@ OLMM.prototype.createTSOLayers = function(icon_src) {
                     })
                 })
             ];
-
-            return styles;
         }
     ));
 
@@ -46,11 +39,13 @@ OLMM.prototype.initTSOApp = function (options) {
     options = options || {};
     var icon_url = options['icon'];
     var callback = options['callback'];
+    var wmsLayers = options['wmsLayers'];
+    var mapOptions = options['mapOptions'];
 
     var self = this;
-    self.createMap();
+    self.createMap(mapOptions);
 
-    self.createTSOLayers(icon_url);
+    self.createTSOLayers(icon_url, wmsLayers);
 
     var sel = function(event, data) {
         self.disableActions();

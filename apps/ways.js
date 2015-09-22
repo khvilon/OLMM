@@ -1,15 +1,9 @@
-OLMM.prototype.createWayLayers = function(icon_src) {
+OLMM.prototype.createWayLayers = function(icon_src, wmsLayers) {
     var self = this;
 
     self.addStyle('icon1', self.createIconStyle(icon_src));
 
-    var osm_layer = [{
-        'layer_name': 'osm',
-        'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
-    }];
-
-    self.loadWMSLayers(osm_layer);
-
+    self.loadWMSLayers(wmsLayers);
 
     self.addLayer('ways', self.createVectorLayer(
         function (feature, resolution) {
@@ -21,7 +15,7 @@ OLMM.prototype.createWayLayers = function(icon_src) {
             var featureState = feature.getProperties()['federal'];
             var color = featureStateMap[featureState];
 
-            var styles = [
+            return [
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: color,
@@ -29,8 +23,6 @@ OLMM.prototype.createWayLayers = function(icon_src) {
                     })
                 })
             ];
-
-            return styles;
         }
     ));
 
@@ -53,7 +45,7 @@ OLMM.prototype.initWayApp = function (icon_src) {
         return self.config['waysCallBackFunction'](data["coords"])
     };
 
-    self.attachAddCallback(sel);
+    self.attachAddCallack(sel);
 
     self.addStyle('draw_style', new ol.style.Style({
         image: new ol.style.Circle({
