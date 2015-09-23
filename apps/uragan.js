@@ -43,11 +43,6 @@ OLMM.prototype.initUraganApp = function (options) {
 
     self.createMap();
 
-    var osm_layer = {
-        'layer_name': 'osm',
-        'wms_conf': {'url': 'http://svp-gis-frontend-1.svp.prod/mapcache/', 'layers': 'osm'}
-    };
-
     //self.loadWMSLayers([osm_layer]);
     self.addLayer('osm', self.createOSMLayer());
 

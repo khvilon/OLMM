@@ -4,12 +4,14 @@
     module.lineStringName = 'LineString';
     module.multiLineStringName = 'MultiLineString';
     module.pointName = 'Point';
+    module.MultiPoint = 'MultiPoint';
 
     module.geometryTypeMap = {};
     module.geometryTypeMap[module.lineStringName] = ol.geom.LineString;
     module.geometryTypeMap[module.pointName] = ol.geom.Point;
     module.geometryTypeMap[module.polygonName] = ol.geom.Polygon;
     module.geometryTypeMap[module.multiLineStringName] = ol.geom.MultiLineString;
+    module.geometryTypeMap[module.MultiPoint] = ol.geom.MultiPoint;
 
     module._olmm_props = {};
 

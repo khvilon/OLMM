@@ -1,17 +1,10 @@
 OLMM.prototype.initTSOTempApp = function (options) {
     var self = this;
 
-    var wmsLayersDev = [
-        {
-            'layer_name': 'osm',
-            'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm', 'visible': true}
-        }
-    ];
-
     var mapOptionsDev = {controls: false, interactions: false};
 
     options = options || {};
-    var wmsLayers = options['wmsLayers'] || wmsLayersDev;
+    var wmsLayers = options['wmsLayers'];
     var mapOptions = options['mapOptions'] || mapOptionsDev;
     var icon = options['icon'];
 
@@ -34,7 +27,7 @@ OLMM.prototype.initTSOTempApp = function (options) {
             var featureState = feature.getProperties()['federal'];
             var color = featureStateMap[featureState];
 
-            var lineStyle = [
+            return [
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: color,
@@ -42,7 +35,6 @@ OLMM.prototype.initTSOTempApp = function (options) {
                     })
                 })
             ];
-            return lineStyle;
         }
     };
 

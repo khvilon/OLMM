@@ -161,6 +161,22 @@ OLMM.prototype.initSCApp = function (options) {
             function (feature, r) {
                 var styles = [];
                 var props = feature.getProperties();
+                var geometry = feature.getGeometry();
+
+                geometry.forEachSegment(function(start, end) {
+                    styles.push(new ol.style.Style({
+                        geometry: new ol.geom.Point(end),
+                        fill: new ol.style.Fill({
+                            color: 'red'
+                        }),
+                        image: new ol.style.Circle({
+                            radius: 3,
+                            fill: new ol.style.Fill({
+                                color: 'green'
+                            })
+                        })
+                    }))
+                });
 
                 if (props && props['last_point']) {
                     styles.push(new ol.style.Style({
@@ -168,12 +184,6 @@ OLMM.prototype.initSCApp = function (options) {
                         image: self.createIconStyle(icon_truck, 16, 16)
                     }));
                 }
-                styles.push(new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: '#46E218',
-                        width: 5
-                    })
-                }));
                 return styles
             }
         ));

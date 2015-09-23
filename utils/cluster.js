@@ -48,7 +48,6 @@ Cluster.prototype.update = function () {
     olmm.clearSource(self.sourceClusterName);
 
     var features = olmm.getSourceByName(self.sourceName).getFeatures();
-    // olmm.getPointFeaturesInExtent(extent, self.sourceName); // getPointsInExtent
     var clusters = self.getClusterPoints(features);
 
     olmm.getSourceByName(self.sourceClusterName).addFeatures(clusters);
@@ -59,16 +58,6 @@ Cluster.prototype.update = function () {
 };
 
 
-/**
-// 1) рассчет mapdistance расстояние между точками в зависимосте от зума
-// 2) проверка надо ли рисовать фичу, или она уже в кластере (такие пропускаем)
-// 3) ищет соседей точки такого же типа
-// 4) поиск координат кластера
-// 5) стилим точку кластера
-// 6) создаем точку кластера на карте
- * @param features
- * @returns {Array}
- */
 Cluster.prototype.getClusterPoints = function  (features) {
     var self = this;
     var olmm = self.olmm;
@@ -80,7 +69,7 @@ Cluster.prototype.getClusterPoints = function  (features) {
 
     for (var i = 0; i < features.length; i++) {
         var feature = features[i];
-        // список фич которые уже в кластере
+        // пропускаем точку, если она уже кластеризованна(входила в список neighbors другой точки, например)
         if (clusteredPoints.indexOf(feature.getId()) != -1) {
             continue
         }

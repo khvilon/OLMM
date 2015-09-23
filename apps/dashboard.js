@@ -6,13 +6,11 @@ OLMM.prototype.initDashboardApp = function (options) {
     var callback = options['callback'];
     var carIconSrc = options['carIconSrc'];
     var tdrIconSrc = options['tdrIconSrc'];
+    var wmsLayers = options['wmsLayers'];
     var mapOptions = options['mapOptions'] || {};
     var defaultSourceName = 'main';
 
-    self.loadWMSLayers([{
-        'layer_name': 'osm',
-        'wms_conf': {'url': 'http://10.0.2.60/mapcache/', 'layers': 'osm'}
-    }]);
+    self.loadWMSLayers(wmsLayers);
 
     self.setDefaultSourceName(defaultSourceName);
     self.createMap();

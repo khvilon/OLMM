@@ -24,7 +24,8 @@ function OLMM() {
     this.polygonName = 'Polygon';
     this.lineStringName = 'LineString';
     this.multiLineStringName = 'MultiLineString';
-    this.pointName = 'Point'
+    this.pointName = 'Point';
+    this.multiPointName = 'MultiPoint';
 }
 
 (function (module) {
