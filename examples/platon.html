@@ -32,6 +32,21 @@
 <div id="map" class="map" style="height: 100%; width: 100%"></div>
 <div id="popup">123</div>
 
+<button id="left" onclick="olmm.shiftLeft()">Влево</button>
+<button id="right" onclick="olmm.shiftRight()">Вправо</button>
+<button id="up" onclick="olmm.shiftUp()">Вверх</button>
+<button id="down" onclick="olmm.shiftDown()">Вниз</button>
+<hr/>
+<button id="left2x" onclick="olmm.shiftLeft(80)">Влево 2x</button>
+<button id="right2x" onclick="olmm.shiftRight(80)">Вправо 2x</button>
+<button id="up2x" onclick="olmm.shiftUp(80)">Вверх 2x</button>
+<button id="down2x" onclick="olmm.shiftDown(80)">Вниз 2x</button>
+<hr/>
+<button id="left4x" onclick="olmm.shiftLeft(240)">Влево 4x</button>
+<button id="right4x" onclick="olmm.shiftRight(240)">Вправо 4x</button>
+<button id="up4x" onclick="olmm.shiftUp(240)">Вверх 4x</button>
+<button id="down4x" onclick="olmm.shiftDown(240)">Вниз 4x</button>
+
 <script type="text/javascript">
 
     olmm = new OLMM();
@@ -41,12 +56,14 @@
     };
 
     $(document).ready(function(){
-        olmm.loadWMSLayers([
-            {
-                'layer_name': 'osm',
-                'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm', 'visible': true}
-            },
-        ]);
+//        olmm.loadWMSLayers([
+//            {
+//                'layer_name': 'osm',
+//                'wms_conf': {'url': 'http://10.0.2.60:80/mapcache/', 'layers': 'osm', 'visible': true}
+//            }
+//        ]);
+
+        olmm.addLayer('osm', olmm.createOSMLayer());
 
         olmm.initPlatonApp({
             'callback': sel,
@@ -59,16 +76,16 @@
             }
         });
 
-        $.ajax({
-            url: 'http://10.0.12.212/api/v1/tco-data/list?query=1',
-            dataType: 'json',
-            success: function (data) {
-                olmm.addFeaturesFromGeoJSON({
-                    "geojson_data": data,
-                    "need_fit": true
-                });
-            }
-        });
+//        $.ajax({
+//            url: 'http://10.0.12.212/api/v1/tco-data/list?query=Ульяновская',
+//            dataType: 'json',
+//            success: function (data) {
+//                olmm.addFeaturesFromGeoJSON({
+//                    "geojson_data": data,
+//                    "need_fit": true
+//                });
+//            }
+//        });
 
         $('.ol-attribution').find('ul').remove();
         $('.ol-attribution').append('<ul><li>&copy 2015</li></ul>');
@@ -77,7 +94,7 @@
 
     redraw = function () {
         $.ajax({
-            url: 'http://10.0.12.212/api/v1/tco-data/list',
+            url: 'data/platon.json',
             dataType: 'json',
             success: function (data) {
                 olmm.clearSources();

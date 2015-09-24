@@ -5,6 +5,11 @@
     };
 
     module.transform_to_lot_lan = function (data) {
+        console.warn('Use transformToLonLat instead of transform_to_lot_lan function');
+        return module._transform(data, 'EPSG:3857', 'EPSG:4326');
+    };
+
+    module.transformToLonLat = function (data) {
         return module._transform(data, 'EPSG:3857', 'EPSG:4326');
     };
 

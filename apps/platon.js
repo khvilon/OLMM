@@ -53,7 +53,7 @@ OLMM.prototype.initPlatonApp = function (options) {
     var icon2style = self.addStyle('icon2', self.createIconStyle(icon2));
 
     var layer_name = 'edit';
-    self.defaultSourceName = layer_name;
+    self.setDefaultSourceName('edit');
     var layer = self.getLayerByName(layer_name);
     if (!layer) {
         self.addLayer(layer_name, self.createVectorLayer(

@@ -34,6 +34,44 @@
         }
     };
 
+    module.baseShift = function (isHorizon, isPositive, ratio) {
+        var view = olmm.map.getView();
+        var center = view.getCenter();
+        var res = view.getResolution();
+        var diff = (ratio || 40) * res;
+
+        var index = 1;
+        if (isHorizon === true) {
+            index = 0
+        }
+
+        if (isPositive === true) {
+            center[index] += diff
+        } else {
+            center[index] -= diff
+        }
+
+        var newCenter = [center[0], center[1]];
+        view.setCenter(newCenter);
+        return newCenter;
+    };
+
+    module.shiftLeft = function (ratio) {
+        return this.baseShift(true, false, ratio)
+    };
+
+    module.shiftRight = function (ratio) {
+        return this.baseShift(true, true, ratio)
+    };
+
+    module.shiftUp = function (ratio) {
+        return this.baseShift(false, true, ratio)
+    };
+
+    module.shiftDown = function (ratio) {
+        return this.baseShift(false, false, ratio)
+    };
+
 })(OLMM.prototype);
 
 (function (module) {

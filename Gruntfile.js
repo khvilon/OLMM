@@ -175,6 +175,7 @@ module.exports = function (grunt) {
                     'interactions/hover.js',
                     'interactions/select.js',
 
+                    'utils/cluster.js',
                     'utils/cursor.js',
                     'utils/feature.js',
                     'utils/geojson.js',
